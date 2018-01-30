@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const server = http.Server(app);
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 server.listen(port, function () {
-    `Tasks service running on ${port}`;
+    console.log(`Tasks service running on ${port}`);
 });
