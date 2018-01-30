@@ -12,9 +12,9 @@
     "_moduleAliases": {
         "@root": ".",
         "@BudgetManager": "./services/BudgetManagerAPI",
-        "@BudgetManagerModels": "./services/BudgetManagerAPI/app/models",
+        "@models": "./services/app/models",
         "@BudgetManagerAPI": "./services/BudgetManagerAPI/config/app.js",
-        "@config": "./services/BudgetManagerAPI/config/index.js"
+        "@config": "./services/app/config/index.js"
     },
     "dependencies": {
         "body-parser": "^1.18.2",
