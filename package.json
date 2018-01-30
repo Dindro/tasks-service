@@ -7,7 +7,14 @@
     },
     "description": "Server",
     "author": {
-        "name": "dindro"
+        "name": "Dindro"
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@BudgetManager": "./services/BudgetManagerAPI",
+        "@BudgetManagerModels": "./services/BudgetManagerAPI/app/models",
+        "@BudgetManagerAPI": "./services/BudgetManagerAPI/config/app.js",
+        "@config": "./services/BudgetManagerAPI/config/index.js"
     },
     "dependencies": {
         "body-parser": "^1.18.2",
