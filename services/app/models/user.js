@@ -3,7 +3,23 @@ var config = require("../libs/config");
 var db = require("./../libs/db");
 var ModelRight = require("./right");
 
+async function IsExist(array) { return array.length != 0 }
+
 module.exports = {
+    GetByEmail: async (email) => {
+        const query = `SELECT * FROM users WHERE email = ?;`;
+        const array = [email];
+        try {
+            var result = await db.GetResults(query, array);
+            if (IsExist(result))
+                return result[0];
+            else
+                return undefined;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     GetById: async function (id) {
         var query = "SELECT * FROM users WHERE id = ?;";
         var array = [id];
