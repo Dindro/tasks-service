@@ -1,5 +1,4 @@
-var config = require("../libs/config");
-var db = require("./../libs/db");
+var db = require("@config/db");
 
 module.exports = {
     GetIdByName: async function (name) {

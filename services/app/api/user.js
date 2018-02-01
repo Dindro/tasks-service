@@ -5,32 +5,32 @@ const crypto = require('crypto'), //Занимается шифрованием
 let api = {};
 
 api.registration = async (req, res) => {
-    const { email, password } = req.body;
-    
+    const { email, password, surname, name } = req.body;
+
     try {
         if (CheckEmailFilter(email) == false) {
-            res.status(400).json({ success: false, message: "Неккоректный email" })
-            break;
+            res.status(400).json({ success: false, message: "Неккоректный email" });
+            return;
         }
 
         if (CheckPasswordFilter(password) == false) {
-            res.status(400).json({ success: false, message: "Неккоректный пароль" })
-            break;
+            res.status(400).json({ success: false, message: "Неккоректный пароль" });
+            return;
         }
 
         const user = await ModelUser.GetByEmail(email);
         if (user != undefined) {
-            res.status(400).json({ success: false, message: "Пользователь уже существует" })
-            break;
+            res.status(400).json({ success: false, message: "Пользователь уже существует" });
+            return;
         }
 
         const id_right = await ModelRight.GetIdByName("user");
         const salt = Math.random() + 'salt';
         const hashedpassword = EncryptPassword(password, salt)
-        const insertId = await ModelUser.Registration(email, hashedpassword, salt);
+        const insertId = await ModelUser.Registration(email, hashedpassword, salt, { surname, name, id_right });
         res.status(200).json({ success: true, insertId });
     } catch (e) {
-        res.status(500).json(e);
+        res.status(500).json({e});
     }
 };
 
@@ -52,16 +52,16 @@ api.auth = async (req, res) => {
     }
 };
 
-module.exports = api;
+
 
 function CheckEmailFilter(email) {
-    const emailFilter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let emailFilter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailFilter.test(email)
 }
 
 function CheckPasswordFilter(password) {
     const passwordFilter = /^[a-zA-Z0-9,!,%,&,@,#,$,\^,*,?,_,~,+]*$/;
-    return (passwordFilter.test(password)) || (password.length < 4)
+    return (passwordFilter.test(password) && password.length > 8);
 }
 
 function EncryptPassword(password, salt) {
@@ -69,6 +69,8 @@ function EncryptPassword(password, salt) {
 };
 
 //Проверка пароля
-function CheckPasswordFilter(password, salt, hashedPassword) {
+function CheckPassword(password, salt, hashedPassword) {
     return EncryptPassword(password, salt) === hashedPassword;
 }
+
+module.exports = api;

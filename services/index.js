@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false })); //Аналогично пр
 app.use(bodyParser.json()); //Парсит тело только тех запросов, для которых 'Content-Type' равен 'application/json'. Результат парсинга сохраняется в объекте req.body
 app.use(cors()); //Доступность с любого домена
 
+require('@routes')(app);
+
 const port = process.env.PORT || 3000;
 server.listen(port, function () {
     console.log(`Tasks service running on ${port}`);

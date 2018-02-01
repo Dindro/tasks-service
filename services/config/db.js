@@ -1,5 +1,5 @@
 var mysql = require("mysql");
-var config = require("./config").db;
+var config = require("./index").db;
 
 module.exports = {
     GetResults: async function (query, list) {

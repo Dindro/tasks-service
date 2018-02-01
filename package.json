@@ -13,8 +13,8 @@
         "@root": ".",
         "@api": "./services/app/api",
         "@models": "./services/app/models",
-        "@BudgetManagerAPI": "./services/BudgetManagerAPI/config/app.js",
-        "@config": "./services/app/config/index.js"
+        "@routes": "./services/app/routes",
+        "@config": "./services/config"
     },
     "dependencies": {
         "body-parser": "^1.18.2",
