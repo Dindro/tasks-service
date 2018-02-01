@@ -2,7 +2,7 @@ var crypto = require('crypto'); //Занимается шифрованием
 var db = require("@config/db");
 var ModelRight = require("@models/right");
 
-async function IsExist(array) { return array.length != 0 }
+function IsExist(array) { return array.length != 0 }
 
 module.exports = {
     GetByEmail: async (email) => {

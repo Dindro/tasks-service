@@ -1,16 +1,15 @@
-var config = require("../../libs/config");
-var db = require("../../libs/db");
+var db = require("@config/db");
 
 module.exports = {
-    GetDialoguesByTime: async function (id_user, messageCount, startTime) {
+    GetDialoguesByTime: async function (id_user, dialoguesLimit, startTime) {
         var query = `
             SELECT * FROM 
             (
-                SELECT DISTINCT m.id_dialog, m.id, m.text, m.created, m.isRead FROM
+                SELECT m.* FROM
                 (
-                    SELECT m.* FROM 
+                    SELECT m.*, d.id_user AS id_user_interlocutor FROM 
                     (
-                        SELECT ud1.id_dialog FROM users_dialogues AS ud1 INNER JOIN 
+                        SELECT ud1.id_dialog, ud1.id_user FROM users_dialogues AS ud1 INNER JOIN 
                         (
                             SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?
                         )
@@ -20,15 +19,16 @@ module.exports = {
                 )
                 AS m LEFT JOIN messagesdeleted AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC
             ) 
-            AS mlimit WHERE mlimit.created < ? LIMIT ?;`;
+            AS mlimit WHERE mlimit.created < ? GROUP BY mlimit.id_dialog LIMIT ?;
+        `;
 
 
-        var ud2 = "SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?";
+        /* var ud2 = "SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?";
         var d = "SELECT ud1.id_dialog FROM users_dialogues AS ud1 INNER JOIN (" + ud2 + ") AS ud2 ON ud1.id_dialog = ud2.id_dialog WHERE ud1.id_user != ?";
         var m = "SELECT m.* FROM (" + d + ") AS d INNER JOIN messages AS m ON d.id_dialog = m.id_dialog";
         var mlimit = "SELECT DISTINCT m.id_dialog, m.id, m.text, m.created, m.isRead FROM (" + m + ") AS m LEFT JOIN messagesdeleted AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC";
-        var query = "SELECT * FROM (" + mlimit + ") AS mlimit WHERE mlimit.created < ? LIMIT ?;";
-        var array = [id_user, id_user, startTime, messageCount];
+        var query = "SELECT * FROM (" + mlimit + ") AS mlimit WHERE mlimit.created < ? LIMIT ?;"; */
+        var array = [id_user, id_user, startTime, dialoguesLimit];
         try {
             var dialogues = await db.GetResults(query, array);
             return dialogues
@@ -37,15 +37,15 @@ module.exports = {
         }
     },
 
-    GetDialogues_alpha: async function (id_user, dialoguesLimit) {
+    GetDialogues: async function (id_user, dialoguesLimit) {
         var query = `
             SELECT * FROM 
             (
-                SELECT DISTINCT m.id_dialog, m.id, m.text, m.created, m.isRead FROM 
+                SELECT m.* FROM 
                 (
-                    SELECT m.* FROM 
+                    SELECT m.*, d.id_user AS id_user_interlocutor FROM 
                     (
-                        SELECT ud1.id_dialog FROM users_dialogues AS ud1 INNER JOIN 
+                        SELECT ud1.id_dialog, ud1.id_user FROM users_dialogues AS ud1 INNER JOIN 
                         (
                             SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?
                         ) 
@@ -55,14 +55,14 @@ module.exports = {
                 )
                 AS m LEFT JOIN messagesdeleted AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC
             )
-            AS mlimit LIMIT ?;
+            AS mlimit GROUP BY mlimit.id_dialog LIMIT ?;
         `;
 
-        var ud2 = "SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?";
-        var d = "SELECT ud1.id_dialog FROM users_dialogues AS ud1 INNER JOIN (" + ud2 + ") AS ud2 ON ud1.id_dialog = ud2.id_dialog WHERE ud1.id_user != ?";
-        var m = "SELECT m.* FROM (" + d + ") AS d INNER JOIN messages AS m ON d.id_dialog = m.id_dialog";
-        var mlimit = "SELECT DISTINCT m.id_dialog, m.id, m.text, m.created, m.isRead FROM (" + m + ") AS m LEFT JOIN messagesdeleted AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC";
-        var query = "SELECT * FROM (" + mlimit + ") AS mlimit LIMIT ?;";
+        /*  var ud2 = "SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?";
+         var d = "SELECT ud1.id_dialog FROM users_dialogues AS ud1 INNER JOIN (" + ud2 + ") AS ud2 ON ud1.id_dialog = ud2.id_dialog WHERE ud1.id_user != ?";
+         var m = "SELECT m.* FROM (" + d + ") AS d INNER JOIN messages AS m ON d.id_dialog = m.id_dialog";
+         var mlimit = "SELECT DISTINCT m.id_dialog, m.id, m.text, m.created, m.isRead FROM (" + m + ") AS m LEFT JOIN messagesdeleted AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC";
+         var query = "SELECT * FROM (" + mlimit + ") AS mlimit LIMIT ?;"; */
         var array = [id_user, id_user, dialoguesLimit];
         try {
             var dialogues = await db.GetResults(query, array);
@@ -72,7 +72,7 @@ module.exports = {
         }
     },
 
-    GetDialogues: async function (id_user, count) {
+    /* GetDialogues: async function (id_user, count) {
         var ud2 = "SELECT * FROM users_dialogues WHERE users_dialogues.id_user = ?";
         var query = "SELECT ud1.* FROM users_dialogues AS ud1 INNER JOIN (" + ud2 + ") AS ud2 ON ud1.id_dialog = ud2.id_dialog WHERE ud1.id_user != ?";
         var array = [id_user, id_user];
@@ -82,7 +82,7 @@ module.exports = {
         } catch (e) {
             throw e;
         }
-    },
+    }, */
 
     GetUserByIdDialog: async function (id_dialog, id_user) {
         var query = "SELECT id_dialog FROM dialogues_users WHERE id_dialog = ? AND id_user != ?;";

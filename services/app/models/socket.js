@@ -1,5 +1,4 @@
-var config = require("../libs/config");
-var db = require("./../libs/db");
+var db = require("@config/db");
 module.exports = {
     Add: async function (id_user, value, type) {
         var query = "INSERT INTO sockets (id_user, type, value) VALUES (?,?,?);";

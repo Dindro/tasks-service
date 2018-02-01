@@ -1,4 +1,4 @@
-var config = require("./config").db;
+var config = require("./index").db;
 var session = require("express-session");
 var MySQLStore = require("express-mysql-session")(session);
 
