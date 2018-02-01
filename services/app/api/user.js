@@ -42,12 +42,16 @@ api.Auth = async (req, res) => {
             res.status(400).json({ success: false, message: "Не правильный логин" });
             return;
         }
-        throw new Error("fffff");
+
         if (CheckPasswordFilter(password, user.salt, user.hashedpassword) == false) {
             res.status(400).json({ success: false, message: "Не правильный пароль" });
             return;
         }
-        else res.status(200).json({ user });
+        else {
+            req.session.authorized = true;
+            req.session.id_user = user.id;
+            res.status(200).json({ user });
+        }
     }
     catch (e) {
         res.status(500).json({ success: false, message: e });

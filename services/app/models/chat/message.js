@@ -55,7 +55,7 @@ module.exports = {
         }
     },
 
-    GetNext: async function (id_dialog, id_user, startTime, limitMessages) {
+    GetByTime: async function (id_dialog, id_user, startTime, limitMessages) {
         var query = `
             SELECT m.* FROM 
             (

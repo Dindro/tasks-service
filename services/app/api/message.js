@@ -10,16 +10,17 @@ module.exports = {
             res.status(401).json({ success: false, message: "Вы не авторизованы" });
             return;
         }
+
         const id_sender = req.session.id_user;
-        const { id_receiver, startTime, limitMessages } = req.body;
+        let { id_receiver, startTime, limitMessages } = req.body;
         startTime = startTime || false;
         limitMessages = limitMessages || 30;
 
         try {
             const commonIdDialog = await ModelDialogUser.GetCommonIdDialog(id_sender, id_receiver);
-            const messages = (() => {
+            const messages = await (async () => {
                 if (startTime)
-                    return await ModelMessage.GetNext(commonIdDialog, id_sender, startTime, limitMessages);
+                    return await ModelMessage.GetByTime(commonIdDialog, id_sender, startTime, limitMessages);
                 else
                     return await ModelMessage.Get(commonIdDialog, id_sender, limitMessages);
             })();
