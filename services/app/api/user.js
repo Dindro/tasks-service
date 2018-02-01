@@ -6,9 +6,7 @@ let api = {};
 
 api.registration = async (req, res) => {
     const { email, password } = req.body;
-
-
-
+    
     try {
         if (CheckEmailFilter(email) == false) {
             res.status(400).json({ success: false, message: "Неккоректный email" })
@@ -36,7 +34,7 @@ api.registration = async (req, res) => {
     }
 };
 
-api.login = async (req, res) => {
+api.auth = async (req, res) => {
     const { email, password } = req.body;
     try {
         let user = await ModelUser.GetByEmail(email);

@@ -11,7 +11,7 @@
     },
     "_moduleAliases": {
         "@root": ".",
-        "@BudgetManager": "./services/BudgetManagerAPI",
+        "@api": "./services/app/api",
         "@models": "./services/app/models",
         "@BudgetManagerAPI": "./services/BudgetManagerAPI/config/app.js",
         "@config": "./services/app/config/index.js"
