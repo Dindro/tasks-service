@@ -4,7 +4,7 @@ const crypto = require('crypto'), //Занимается шифрованием
 
 let api = {};
 
-api.registration = async (req, res) => {
+api.Registration = async (req, res) => {
     const { email, password, surname, name } = req.body;
 
     try {
@@ -30,25 +30,27 @@ api.registration = async (req, res) => {
         const insertId = await ModelUser.Registration(email, hashedpassword, salt, { surname, name, id_right });
         res.status(200).json({ success: true, insertId });
     } catch (e) {
-        res.status(500).json({e});
+        res.status(500).json({ success: false, message: e });
     }
 };
 
-api.auth = async (req, res) => {
+api.Auth = async (req, res) => {
     const { email, password } = req.body;
     try {
         let user = await ModelUser.GetByEmail(email);
-        if (user != undefined) {
-            if (CheckPasswordFilter(password, user.salt, user.hashedpassword)) {
-                res.json(user);
-            }
-            else
-                res.status(400).json({ success: false, message: "Не правильный пароль" });
-        }
-        else
+        if (user == undefined) {
             res.status(400).json({ success: false, message: "Не правильный логин" });
-    } catch (e) {
-
+            return;
+        }
+        throw new Error("fffff");
+        if (CheckPasswordFilter(password, user.salt, user.hashedpassword) == false) {
+            res.status(400).json({ success: false, message: "Не правильный пароль" });
+            return;
+        }
+        else res.status(200).json({ user });
+    }
+    catch (e) {
+        res.status(500).json({ success: false, message: e });
     }
 };
 

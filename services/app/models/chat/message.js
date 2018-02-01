@@ -30,27 +30,51 @@ module.exports = {
         }
     },
 
-    Get: async function (id_dialog, id_user) {
+    Get: async function (id_dialog, id_user, limitMessages) {
+        var query = `
+            SELECT m.* FROM 
+            (
+                SELECT * FROM messages WHERE id_dialog = ?
+            ) 
+            AS m LEFT JOIN 
+            (
+                SELECT * FROM messagesdeleted WHERE id_user = ?
+            ) 
+            AS md ON m.id = md.id_message WHERE md.id_message IS NULL  ORDER BY m.created DESC LIMIT ?;
+        `;
+
         var m = "SELECT * FROM messages WHERE id_dialog = ?";
         var md = "SELECT * FROM messagesdeleted WHERE id_user = ?"
         var query = "SELECT m.* FROM (" + m + ") AS m LEFT JOIN (" + md + ") AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC LIMIT 30;";
-        var array = [id_dialog, id_user];
+        var array = [id_dialog, id_user, limitMessages];
         try {
-            var result = await db.GetResults(query, array);
-            return result;
+            var messages = await db.GetResults(query, array);
+            return messages;
         } catch (e) {
             throw e;
         }
     },
 
-    GetNext: async function (id_dialog, id_user, time) {
+    GetNext: async function (id_dialog, id_user, startTime, limitMessages) {
+        var query = `
+            SELECT m.* FROM 
+            (
+                SELECT * FROM messages WHERE id_dialog = ?
+            ) 
+            AS m LEFT JOIN 
+            (
+                SELECT * FROM messagesdeleted WHERE id_user = ?
+            ) 
+            AS md ON m.id = md.id_message WHERE md.id_message IS NULL AND m.created < ? ORDER BY m.created DESC LIMIT ?;
+        `;
+        
         var m = "SELECT * FROM messages WHERE id_dialog = ?";
         var md = "SELECT * FROM messagesdeleted WHERE id_user = ?"
-        var query = "SELECT m.* FROM (" + m + ") AS m LEFT JOIN (" + md + ") AS md ON m.id = md.id_message WHERE md.id_message IS NULL AND m.created < ? ORDER BY m.created DESC LIMIT 30;";
-        var array = [id_dialog, id_user, time];
+        var query = "SELECT m.* FROM (" + m + ") AS m LEFT JOIN (" + md + ") AS md ON m.id = md.id_message WHERE md.id_message IS NULL AND m.created < ? ORDER BY m.created DESC LIMIT ?;";
+        var array = [id_dialog, id_user, startTime, limitMessages];
         try {
-            var result = await db.GetResults(query, array);
-            return result;
+            var messages = await db.GetResults(query, array);
+            return messages;
         } catch (e) {
             throw e;
         }
