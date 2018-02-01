@@ -6,30 +6,33 @@ let api = {};
 
 api.registration = async (req, res) => {
     const { email, password } = req.body;
-    const emailFilter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passwordFilter = /^[a-zA-Z0-9,!,%,&,@,#,$,\^,*,?,_,~,+]*$/;
+
+
 
     try {
-        //Если не удовлетворяют фильтру
-        if (!emailFilter.test(email))
-            throw new Error('userError');
+        if (CheckEmailFilter(email) == false) {
+            res.status(400).json({ success: false, message: "Неккоректный email" })
+            break;
+        }
 
-        //Если не подходит фильтру и меньше 4 символов
-        if ((!passwordFilter.test(password)) || (password.length < 4))
-            throw new Error('passwordError');
+        if (CheckPasswordFilter(password) == false) {
+            res.status(400).json({ success: false, message: "Неккоректный пароль" })
+            break;
+        }
 
         const user = await ModelUser.GetByEmail(email);
         if (user != undefined) {
-            throw new Error('double user');
+            res.status(400).json({ success: false, message: "Пользователь уже существует" })
+            break;
         }
 
         const id_right = await ModelRight.GetIdByName("user");
         const salt = Math.random() + 'salt';
-        const hashedpassword = encryptPassword(password, salt)
+        const hashedpassword = EncryptPassword(password, salt)
         const insertId = await ModelUser.Registration(email, hashedpassword, salt);
-        res.json({insertId});
+        res.status(200).json({ success: true, insertId });
     } catch (e) {
-
+        res.status(500).json(e);
     }
 };
 
@@ -38,18 +41,14 @@ api.login = async (req, res) => {
     try {
         let user = await ModelUser.GetByEmail(email);
         if (user != undefined) {
-            if (checkPassword(password, user.salt, user.hashedpassword)) {
+            if (CheckPasswordFilter(password, user.salt, user.hashedpassword)) {
                 res.json(user);
             }
-            else {
-                res.status = 301;
-                res.json({ error: "Не правильный пароль" });
-            }
+            else
+                res.status(400).json({ success: false, message: "Не правильный пароль" });
         }
-        else {
-            res.status = 301;
-            res.json({ error: "Не правильный логин" });
-        }
+        else
+            res.status(400).json({ success: false, message: "Не правильный логин" });
     } catch (e) {
 
     }
@@ -57,11 +56,21 @@ api.login = async (req, res) => {
 
 module.exports = api;
 
-function encryptPassword(password, salt) {
+function CheckEmailFilter(email) {
+    const emailFilter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailFilter.test(email)
+}
+
+function CheckPasswordFilter(password) {
+    const passwordFilter = /^[a-zA-Z0-9,!,%,&,@,#,$,\^,*,?,_,~,+]*$/;
+    return (passwordFilter.test(password)) || (password.length < 4)
+}
+
+function EncryptPassword(password, salt) {
     return crypto.createHmac('sha256', salt).update(password).digest('hex');
 };
 
 //Проверка пароля
-function checkPassword(password, salt, hashedPassword) {
-    return encryptPassword(password, salt) === hashedPassword;
+function CheckPasswordFilter(password, salt, hashedPassword) {
+    return EncryptPassword(password, salt) === hashedPassword;
 }
