@@ -58,7 +58,7 @@ api.Auth = async (req, res) => {
     }
 };
 
-
+module.exports = api;
 
 function CheckEmailFilter(email) {
     let emailFilter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -78,5 +78,3 @@ function EncryptPassword(password, salt) {
 function CheckPassword(password, salt, hashedPassword) {
     return EncryptPassword(password, salt) === hashedPassword;
 }
-
-module.exports = api;

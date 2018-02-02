@@ -1,6 +1,6 @@
-var ModelDialogUser = require("@models/chat/dialog_user");
-var ModelUser = require("@models/user");
-var ModelMessage = require("@models/chat/message");
+const ModelDialogUser = require("@models/chat/dialog_user"),
+    ModelUser = require("@models/user"),
+    ModelMessage = require("@models/chat/message");
 
 let api = {};
 
@@ -39,7 +39,7 @@ api.Get = async (req, res) => {
         dialogues.sort(CompareTime);
         user = await user;
 
-        res.status(200).json({ dialogues, user });
+        res.status(200).json({ success: true, dialogues, user });
     } catch (e) {
         res.status(500).json({ e });
     }

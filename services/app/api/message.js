@@ -31,4 +31,29 @@ api.Get = async (req, res) => {
     }
 };
 
+api.Post = async (req, res) => {
+    if (req.session.authorized == false) {
+        res.status(401).json({ success: false, message: "Вы не авторизованы" });
+        return;
+    }
+
+    const id_sender = req.session.id_user;
+    let { id_receiver, text } = req.body;
+
+    try {
+        let commonIdDialog = await ModelDialogUser.GetCommonIdDialog(id_user_sender, id_user_receiver);
+        if (commonIdDialog == undefined) {
+            const insertedIdDialog = await ModelDialog.Create();
+            const insertedIdUserSender = ModelDialogUser.Add(insertedIdDialog, id_user_sender);
+            const insertedIdUserReceiver = ModelDialogUser.Add(insertedIdDialog, id_user_receiver);
+            await Promise.all([insertedIdUserSender, insertedIdUserReceiver]);
+            commonIdDialog = insertedIdDialog;
+        }
+        const insertedIdMessage = await ModelMessage.Create(id_user_sender, id_dialog, msg);
+        res.status(200).json({ success: true, insertedIdMessage });
+    } catch (e) {
+        res.status(500).json({ e });
+    }
+};
+
 module.exports = api;
