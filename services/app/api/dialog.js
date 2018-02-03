@@ -5,12 +5,13 @@ const ModelDialogUser = require("@models/chat/dialog_user"),
 let api = {};
 
 api.Get = async (req, res) => {
-    if (req.session.authorized == false) {
+    /* if (req.session.authorized == false) {
         res.status(401).json({ success: false, message: "Вы не авторизованы" });
         return;
-    }
+    } */
 
-    const { id_user } = req.session;
+    //const { id_user } = req.session;
+    const id_user = 1;
     let { startTime, limitDialogues } = req.query;
     startTime = startTime || false;
     limitDialogues = Number(limitDialogues) || 15;
