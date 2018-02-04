@@ -7,15 +7,16 @@ var ModelSocket = require("@models/socket");
 let api = {};
 
 api.Get = async (req, res) => {
-    if (req.session.authorized == false) {
+    /* if (req.session.authorized == false) {
         res.status(401).json({ success: false, message: "Вы не авторизованы" });
         return;
-    }
+    } */
 
-    const id_sender = req.session.id_user;
-    let { id_receiver, startTime, limitMessages } = req.body;
+    //const id_sender = req.session.id_user;
+    const id_sender = 1;
+    let { id_receiver, startTime, limitMessages } = req.query;
     startTime = startTime || false;
-    limitMessages = limitMessages || 30;
+    limitMessages = Number(limitMessages) || 30;
 
     try {
         const commonIdDialog = await ModelDialogUser.GetCommonIdDialog(id_sender, id_receiver);

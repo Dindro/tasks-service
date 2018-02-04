@@ -42,9 +42,9 @@ module.exports = {
             AS md ON m.id = md.id_message WHERE md.id_message IS NULL  ORDER BY m.created DESC LIMIT ?;
         `;
 
-        var m = "SELECT * FROM messages WHERE id_dialog = ?";
+        /* var m = "SELECT * FROM messages WHERE id_dialog = ?";
         var md = "SELECT * FROM messagesdeleted WHERE id_user = ?"
-        var query = "SELECT m.* FROM (" + m + ") AS m LEFT JOIN (" + md + ") AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC LIMIT 30;";
+        var query = "SELECT m.* FROM (" + m + ") AS m LEFT JOIN (" + md + ") AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC LIMIT 30;"; */
         var array = [id_dialog, id_user, limitMessages];
         try {
             var messages = await db.GetResults(query, array);
