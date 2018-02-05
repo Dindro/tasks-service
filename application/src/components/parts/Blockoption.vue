@@ -31,7 +31,6 @@
     import ListMessage from '@/components/pages/Message/ListMessage'
 
     console.log("ЫЫЫ");
-    
 
     export default {
         props: ["id"],
