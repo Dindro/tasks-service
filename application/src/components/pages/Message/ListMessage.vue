@@ -1,6 +1,5 @@
 <template>
     <div>
-        <button v-on:click="Get">Get</button>
         <template v-for="message in messages">
             <p>Отправитель: id{{message.id_user}}</p>
             <p>Отправитель: {{message.text}}</p>
@@ -22,26 +21,11 @@
                 messages: []
             };
         },
-        created: function () {
-            Axios.get(`${TaskAPI}/api/v1/messages`, {
-                params: {
-                    id_receiver: this.$route.params.id,
-                    limitMessages: 2
-                }
-            })
-                .then(({ data }) => {
-                    this.messages = data.messages;
-                    this.messages.reverse();
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        },
         methods: {
-            Get: function () {
+            GetMessages: function () {
                 Axios.get(`${TaskAPI}/api/v1/messages`, {
                     params: {
-                        id_receiver: this.$route.params.id
+                        id_receiver: this.$route.query.id,
                     }
                 })
                     .then(({ data }) => {
@@ -51,6 +35,16 @@
                     .catch(e => {
                         console.log(e);
                     });
+            }
+        },
+        created: function () {
+            this.GetMessages();
+        },
+
+        watch:{
+            "$route": function(val){
+                console.log("Выполняем");
+                this.GetMessages();
             }
         }
     };

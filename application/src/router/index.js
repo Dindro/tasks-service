@@ -7,6 +7,7 @@ import ListDialog from '@/components/pages/Dialog/ListDialog'
 import ListMessage from '@/components/pages/Message/ListMessage'
 import Upp from '@/components/parts/Upp'
 import Workplace from '@/components/parts/Workplace'
+import Blockoption from '@/components/parts/Blockoption'
 Vue.use(Router)
 
 export default new Router({
@@ -15,21 +16,37 @@ export default new Router({
     {
       path: "",
       component: Upp,
-      name: "Upp",
       children: [
         {
           path: "",
           component: Workplace,
-          name: "Workplace",
           children: [
-            {
+            /* {
               path: "/dialogues",
               name: "Dialog",
               component: ListDialog
-            }, {
+            },  *//* {
               path: "/dialogues/:id",
               name: "Message",
               component: ListMessage
+            }, */
+            {
+              path: "/dialogues",
+              name: "Blockoption",
+              component: Blockoption,
+              props: (route) => ({ id: route.query.id }, { option: route.query.unread }),
+              children: [
+                {
+                  path: "/dialogues",
+                  name: "Dialog",
+                  component: ListDialog,
+                },
+                {
+                  path: "/dialogues/:id",
+                  name: "Message",
+                  component: ListMessage,
+                }
+              ]
             }
           ]
         },
@@ -38,15 +55,6 @@ export default new Router({
           name: "Authentication",
           component: Authentication
         },
-        {
-          path: "/dialogues",
-          name: "Dialog",
-          component: ListDialog
-        }, {
-          path: "/dialogues/:id",
-          name: "Message",
-          component: ListMessage
-        }
       ]
     }
   ]

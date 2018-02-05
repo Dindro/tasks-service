@@ -1,28 +1,81 @@
 <template>
-  <div class="dialog">
-    <router-link v-bind:to="{name: 'Message', params: { id:dialog.interlocutor.id}}">Открыть переписки</router-link>
-    <p>ID сообщения {{dialog.message.id}}</p>
-    <p>ID диалога {{dialog.message.id_dialog}}</p>
-    <p>Имя: {{dialog.interlocutor.name}} {{dialog.interlocutor.surname}}</p>
-    <p>Последнее сообщение: {{dialog.message.text}}</p>
-    <p>Прочитано {{dialog.message.isRead}}</p>
-    <p>Дата {{dialog.message.created}}</p>
-    <hr>
+  <div class="dialog" v-on:click="OpenMessages">
+    <div class="content">
+      <div class="photo"></div>
+      <div class="other">
+        <div class="name">
+          <span>{{dialog.interlocutor.surname}} {{dialog.interlocutor.name}}</span>
+        </div>
+        <div class="lastmessage">
+          <div class="photosender"></div>
+          <div class="message">{{dialog.message.text}}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
     props: {
-      dialog: Object,
+      dialog: Object
     },
     data: function () {
       return {
-        d: 3
+
+      };
+    },
+    methods: {
+      OpenMessages: function () {
+        this.$router.push("/dialogues?id="+this.dialog.interlocutor.id);
       }
     }
   };
 </script>
 
-<style>
+<style scoped>
+  .dialog {
+    /* border-bottom: 1px solid rgb(226, 226, 226); */
+  }
+
+  .dialog:hover{
+    background-color: rgb(246, 253, 255);
+    cursor: pointer;
+  }
+
+  .content {
+    padding: 10px 30px;
+    display: flex;
+  }
+
+  .photo {
+    width: 50px;
+    height: 50px;
+    background-color: cadetblue;
+    border-radius: 50%;
+  }
+
+  .other {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+
+  .photosender {
+    width: 25px;
+    height: 25px;
+    background-color: black;
+    border-radius: 50%;
+  }
+
+  .lastmessage {
+    display: flex;
+    align-items: center;
+  }
+
+  .message {
+    margin-left: 10px;
+  }
 </style>

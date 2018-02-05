@@ -6,12 +6,14 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App"
+};
 </script>
 
 <style>
-body{
+body {
   margin: 0;
+  font-family: "Roboto";
+  font-size: 13px;
 }
 </style>

@@ -2,13 +2,17 @@
     <div class="main">
         <div class="workplace">
             <div class="menu">
-                <ul>
-                    <li><router-link to="/">Главная</router-link></li>
-                    <li><router-link to="/dialogues">Сообщения</router-link></li>
-                    <li><router-link to="/login">Авторизация</router-link></li>
-                </ul>
+                <div class="list">
+                    <router-link to="/">Главная</router-link>
+                    <router-link to="/dialogues">Сообщения</router-link>
+                    <router-link to="/login">Авторизация</router-link>
+                    <router-link to="/test">Тест</router-link>
+                </div>
             </div>
-            <router-view></router-view>
+            <div class="router">
+                <router-view></router-view>
+            </div>
+
         </div>
     </div>
 </template>
@@ -27,13 +31,32 @@
     .workplace {
         width: 960px;
         height: 100%;
-        background-color: rgb(238, 238, 238);
         display: flex;
     }
 
     .menu {
-        width: 200px;
-        height: 400px;
-        background-color: rgb(194, 193, 193);
+        width: 165px;
+    }
+
+    .list{
+        width: 155px;
+    }
+
+    a {
+        display: block;
+        text-decoration: none;
+        padding: 7px 7px 7px 35px;
+        font-family: "Roboto";
+        font-size: 13px;
+        color: rgb(42, 88, 133);
+    }
+
+    a:hover {
+        background-color: rgb(240, 242, 245);
+        border-radius: 3px;
+    }
+
+    .router {
+        width: 795px;
     }
 </style>
