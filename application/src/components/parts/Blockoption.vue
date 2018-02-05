@@ -30,8 +30,6 @@
     import ListDialog from '@/components/pages/Dialog/ListDialog'
     import ListMessage from '@/components/pages/Message/ListMessage'
 
-    console.log("ЫЫЫ");
-
     export default {
         props: ["id"],
         components: {
