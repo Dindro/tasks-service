@@ -1,8 +1,8 @@
 <template>
     <div class="block">
         <div class="content">
-            <app-list-message v-if="state='messages'" ></app-list-message>
-            <app-list-dialog v-else="state='dialogues'" v-bind:dialogues="dialogues"></app-list-dialog>
+            <app-list-message v-if="state=='messages'"></app-list-message>
+            <app-list-dialog v-else-if="state=='dialogues'" v-bind:dialogues="dialogues"></app-list-dialog>
         </div>
         <div class="menuright">
             <div class="menu">
@@ -25,20 +25,22 @@
 <script>
     import Vue from "vue"
     import Axios from "axios"
-
-    import sBlockoption from "./sBlockoption.js"
+    import store from "./sBlockoption.js"
 
     import ListDialog from '@/components/pages/Dialog/ListDialog'
     import ListMessage from '@/components/pages/Message/ListMessage'
-    Vue.component("app-list-dialog", ListDialog);
-    Vue.component("app-list-message", ListMessage);
 
-    const TaskAPI = `http://${window.location.hostname}:3000`;
+    console.log("ЫЫЫ");
+    
+
     export default {
         props: ["id"],
+        components: {
+            "app-list-dialog": ListDialog,
+            "app-list-message": ListMessage
+        },
         data: function () {
             return {
-                dialogues: [],
                 activeDialogues: [],
                 state: ""
             }
@@ -46,21 +48,22 @@
         methods: {
 
         },
+        computed: {
+            dialogues: function () {
+                return store.getters.dialogues;
+            }
+        },
         created: function () {
-            console.log(this.id);
-            if (this.id == undefined) {
-                this.state = "dialogues";
-                Axios.get(`${TaskAPI}/api/v1/dialogues`)
-                    .then(({ data }) => {
-                        store.commit("setDialogues", data.dialogues);
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
-            }
-            else {
-                this.state = "messages";
-            }
+            this.state = "dialogues";
+            store.dispatch("GetDialogues");
+            /* Axios.get(`${TaskAPI}/api/v1/dialogues`)
+                .then(({ data }) => {
+                    console.log(sBlockoption);
+                    sBlockoption.commit("setDialogues", data.dialogues);
+                })
+                .catch(e => {
+                    console.log(e);
+                }); */
         },
     }
 </script>
