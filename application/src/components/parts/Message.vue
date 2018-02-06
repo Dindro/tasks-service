@@ -46,6 +46,28 @@
     </div>
 </template>
 
+<script>
+    export default {
+        data: function () {
+            return 
+            {};
+        },
+        computed:{
+
+        },
+        beforeRouteEnter(to, from, next) {
+            /* store.dispatch("RouteUpdate", { query: to.query }); */
+            next();
+        },
+        beforeRouteUpdate(to, from, next) {
+            /* store.dispatch("RouteUpdate", { query: to.query }); */
+            next();
+        }
+        
+    };
+</script>
+
+
 <style scoped>
     .block {
         background-color: rgb(202, 210, 214);
@@ -69,7 +91,7 @@
         align-items: stretch;
     }
 
-    .dialogues > .top {
+    .dialogues>.top {
         background-color: brown;
         height: 50px;
         opacity: 0.5;
@@ -86,7 +108,7 @@
         padding: 0;
     }
 
-    .dialogues > .bottom {
+    .dialogues>.bottom {
         background-color: chartreuse;
         height: 50px;
         opacity: 0.5;
@@ -98,7 +120,7 @@
         padding: 10px 0;
     }
 
-    .dialog > .photo {
+    .dialog>.photo {
         height: 50px;
         width: 50px;
         background-color: black;
@@ -106,12 +128,12 @@
         float: left;
     }
 
-    .dialog > .content{
+    .dialog>.content {
         background-color: aquamarine;
         margin-left: 70px;
     }
 
-    .time{
+    .time {
         float: right;
     }
 
