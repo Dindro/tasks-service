@@ -13,40 +13,14 @@
 <script>
     import Axios from "axios";
     import Vue from 'vue';
+    import store from "@/components/parts/sBlockoption.js"
 
-    const TaskAPI = `http://${window.location.hostname}:3000`;
     export default {
-        data: function () {
-            return {
-                messages: []
-            };
-        },
-        methods: {
-            GetMessages: function () {
-                Axios.get(`${TaskAPI}/api/v1/messages`, {
-                    params: {
-                        id_receiver: this.$route.query.id,
-                    }
-                })
-                    .then(({ data }) => {
-                        this.messages = data.messages;
-                        this.messages.reverse();
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+        computed:{
+            messages: function(){
+                return store.getters.messages;
             }
         },
-        created: function () {
-            this.GetMessages();
-        },
-
-        watch:{
-            "$route": function(val){
-                console.log("Выполняем");
-                this.GetMessages();
-            }
-        }
     };
 </script>
 

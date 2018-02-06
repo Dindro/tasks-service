@@ -10,9 +10,9 @@
                     <router-link class="active" to="/dialogues">Все сообщения</router-link>
                     <router-link to="/dialogues">Непрочитанные</router-link>
                     <router-link to="/dialogues">Важные сообщения</router-link>
-                    <div class="hr" v-if="activeDialogues.length>0"></div>
-                    <template v-for="dialog in activeDialogues">
-                        <router-link :to="{name: 'Message', params:{id: dialog.interlocutor.id}}">
+                    <div class="hr" v-if="dialogues.length>0"></div>
+                    <template v-for="dialog in dialogues">
+                        <router-link :to="{name: 'Blockoption', query:{id: dialog.interlocutor.id}}">
                             {{dialog.interlocutor.surname}} {{dialog.interlocutor.name}}
                         </router-link>
                     </template>
@@ -36,32 +36,22 @@
             "app-list-dialog": ListDialog,
             "app-list-message": ListMessage
         },
-        data: function () {
-            return {
-                activeDialogues: [],
-                state: ""
-            }
-        },
-        methods: {
-
-        },
         computed: {
             dialogues: function () {
                 return store.getters.dialogues;
+            },
+            state: function () {
+                return store.getters.state;
             }
         },
-        created: function () {
-            this.state = "dialogues";
-            store.dispatch("GetDialogues");
-            /* Axios.get(`${TaskAPI}/api/v1/dialogues`)
-                .then(({ data }) => {
-                    console.log(sBlockoption);
-                    sBlockoption.commit("setDialogues", data.dialogues);
-                })
-                .catch(e => {
-                    console.log(e);
-                }); */
+        beforeRouteEnter(to, from, next) {
+            store.dispatch("RouteUpdate", { query: to.query });
+            next();
         },
+        beforeRouteUpdate(to, from, next) {
+            store.dispatch("RouteUpdate", { query: to.query });
+            next();
+        }
     }
 </script>
 
@@ -75,6 +65,7 @@
         width: 550px;
         border: 1px solid rgb(224, 224, 224);
         border-radius: 3px;
+        height: auto;
     }
 
     .menuright {

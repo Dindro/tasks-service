@@ -32,6 +32,7 @@
         width: 960px;
         height: 100%;
         display: flex;
+        align-items: flex-start;
     }
 
     .menu {
