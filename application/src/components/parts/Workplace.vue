@@ -5,8 +5,9 @@
                 <div class="list">
                     <router-link to="/">Главная</router-link>
                     <router-link to="/dialogues">Сообщения</router-link>
-                    <router-link to="/login">Авторизация</router-link>
                     <router-link to="/test">Тест</router-link>
+                    <router-link to="/login">Авторизация</router-link>
+                    <router-link to="/signup">Регистрация</router-link>
                 </div>
             </div>
             <div class="router">
@@ -25,7 +26,7 @@
         display: flex;
         justify-content: center;
         min-width: 960px;
-        margin-top: 10px;
+        padding-top:60px;
     }
 
     .workplace {

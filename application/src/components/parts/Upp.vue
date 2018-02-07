@@ -18,6 +18,8 @@
         display: flex;
         justify-content: center;
         min-width: 960px;
+        width: 100%;
+        position: fixed;
     }
     .content{
         width: 960px;

@@ -47,24 +47,22 @@
 </template>
 
 <script>
+    import store from "@/store/message.js"
     export default {
-        data: function () {
-            return 
-            {};
-        },
-        computed:{
+        data: function(){
+            return{
 
+            }
         },
         beforeRouteEnter(to, from, next) {
-            /* store.dispatch("RouteUpdate", { query: to.query }); */
+            store.dispatch("RouteUpdate", { query: to.query });
             next();
         },
         beforeRouteUpdate(to, from, next) {
-            /* store.dispatch("RouteUpdate", { query: to.query }); */
+            store.dispatch("RouteUpdate", { query: to.query });
             next();
         }
-        
-    };
+    }
 </script>
 
 

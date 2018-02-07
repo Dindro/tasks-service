@@ -9,6 +9,7 @@ import Upp from '@/components/parts/Upp'
 import Workplace from '@/components/parts/Workplace'
 import Blockoption from '@/components/parts/Blockoption'
 import Message from '@/components/parts/Message'
+import registration from '@/components/pages/Registration/Registration'
 Vue.use(Router)
 
 export default new Router({
@@ -18,6 +19,11 @@ export default new Router({
       path: "",
       component: Upp,
       children: [
+        {
+          path: "/signup",
+          name: "registration",
+          component: registration
+        },
         {
           path: "",
           component: Workplace,

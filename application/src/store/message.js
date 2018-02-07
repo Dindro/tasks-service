@@ -31,19 +31,21 @@ const store = new Vuex.Store({
     actions: {
         GetMessages: function ({ state, dispatch, commit }, { id }) {
             let { messages } = GetMessagesFromApi(id);
-            store.commit("setAddMessages", messages);
+            commit("setAddMessages", messages);
         },
 
-        RouteUpdate: function ({ state, dispatch, commit }, { query }) {
+        RouteUpdate: async function ({ state, dispatch, commit }, { query }) {
+            console.log(query);
             if (query.id == undefined) {
-                store.commit("set", { type: "state", items: "dialogues" });
-                store.commit("set", { type: "selectedDialog", items: query.id });
+                commit("set", { type: "state", items: "dialogues" });
+                commit("set", { type: "selectedDialog", items: query.id });
             }
             else {
-                store.commit("set", { type: "state", items: "messages" });
-                let { messages } = GetMessagesFromApi(query.id);
-                store.commit("set", { type: "messages", items: messages });
-                store.commit("set", { type: "selectedDialog", items: query.id });
+                commit("set", { type: "state", items: "messages" });
+                let { messages } = await GetMessagesFromApi(query.id);
+                console.log(messages);
+                commit("set", { type: "messages", items: messages });
+                commit("set", { type: "selectedDialog", items: query.id });
             }
         }
     }
@@ -52,18 +54,20 @@ const store = new Vuex.Store({
 export default store;
 
 function GetMessagesFromApi(id) {
-    Axios.get(`${TaskAPI}/api/v1/messages`,
-        {
-            params: {
-                id_receiver: id,
-            }
-        })
-        .then(({ data }) => {
-            return data;
-        })
-        .catch(e => {
-            console.log(e);
-        });
+    return new Promise(function(resolve, reject){
+        Axios.get(`${TaskAPI}/api/v1/messages`,
+            {
+                params: {
+                    id_receiver: id,
+                }
+            })
+            .then(({ data }) => {
+                resolve(data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    })
 }
 
 function GetDialogById(dialogues, id) {
