@@ -1,5 +1,5 @@
 <template>
-    <div class="block">
+    <div class="block" :style="{height: height + 'px'}">
         <div class="dialogues">
             <div class="top"></div>
             <ul class="list">
@@ -49,16 +49,34 @@
 <script>
     import store from "@/store/message.js"
     export default {
-        data: function(){
-            return{
-
+        data: function () {
+            return {
+                height: 0,
             }
         },
-        beforeRouteEnter(to, from, next) {
+        methods: {
+            getWindowHeight: function (event) {
+                this.height = document.documentElement.clientHeight - 74;
+            }
+        },
+        mounted() {
+            this.$nextTick(function () {
+                window.addEventListener('resize', this.getWindowHeight);
+                this.getWindowHeight()
+            })
+
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.getWindowHeight);
+        },
+        created: function () {
+            store.dispatch("GetSocket");
+        },
+        beforeRouteEnter: function (to, from, next) {
             store.dispatch("RouteUpdate", { query: to.query });
             next();
         },
-        beforeRouteUpdate(to, from, next) {
+        beforeRouteUpdate: function (to, from, next) {
             store.dispatch("RouteUpdate", { query: to.query });
             next();
         }

@@ -16,6 +16,15 @@ app.use(require("@config/sessionoption").sessionMiddleware); //Настройк�
 
 require('@routes')(app);
 
+
+io.on("connection", function(socket){
+    socket.on("hello", function(message){
+        console.log(message);
+        socket.emit("hello", "Привет от сервера");
+    });
+})
+
+
 const port = process.env.PORT || 3000;
 server.listen(port, function () {
     console.log(`Tasks service running on ${port}`);

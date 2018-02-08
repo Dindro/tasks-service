@@ -1,6 +1,7 @@
 import Vuex from "vuex"
 import Vue from 'vue'
 import Axios from 'axios'
+import io from 'socket.io-client'
 
 Vue.use(Vuex);
 const TaskAPI = `http://${window.location.hostname}:3000`;
@@ -47,6 +48,14 @@ const store = new Vuex.Store({
                 commit("set", { type: "messages", items: messages });
                 commit("set", { type: "selectedDialog", items: query.id });
             }
+        },
+
+        GetSocket: function({ state, dispatch, commit }){
+            const socket = io(TaskAPI);
+            socket.emit("hello", { message: "Привет"});
+            socket.on("message", function(data){
+                
+            });
         }
     }
 });

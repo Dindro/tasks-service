@@ -8,7 +8,8 @@ import ListMessage from '@/components/pages/Message/ListMessage'
 import Upp from '@/components/parts/Upp'
 import Workplace from '@/components/parts/Workplace'
 import Blockoption from '@/components/parts/Blockoption'
-import Message from '@/components/parts/Message'
+/* import message from '@/components/parts/Message' */
+const message = () => import("@/components/parts/Message");
 import registration from '@/components/pages/Registration/Registration'
 Vue.use(Router)
 
@@ -30,8 +31,8 @@ export default new Router({
           children: [
             {
               path: "/test",
-              name: "Message",
-              component: Message
+              name: "message",
+              component: message
             },
             {
               path: "/dialogues",
