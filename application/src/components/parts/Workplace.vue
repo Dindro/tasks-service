@@ -13,7 +13,6 @@
             <div class="router">
                 <router-view></router-view>
             </div>
-
         </div>
     </div>
 </template>
@@ -27,17 +26,17 @@
         justify-content: center;
         min-width: 960px;
         padding-top:60px;
+        flex: 1;
     }
 
     .workplace {
         width: 960px;
-        height: 100%;
         display: flex;
-        align-items: flex-start;
     }
 
     .menu {
         width: 165px;
+        height: auto;
     }
 
     .list{
@@ -60,5 +59,7 @@
 
     .router {
         width: 795px;
+        flex: 1;
+        display: flex;
     }
 </style>

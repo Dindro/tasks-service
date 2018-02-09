@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="blocks">
         <div class="upp">
             <div class="content"></div>
         </div>
@@ -25,5 +25,10 @@
         width: 960px;
         background-color: #6584a8;
         height: 100%;
+    }
+
+    .blocks{
+        flex: 1;
+        display: flex;
     }
 </style>
