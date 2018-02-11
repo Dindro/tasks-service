@@ -18,7 +18,7 @@
 						</div>
 					</div>
 				</li>
-				<li class="dialog">
+				<li class="dialog active">
 					<div class="photo"></div>
 					<div class="content">
 						<div class="top">
@@ -386,12 +386,24 @@ export default {
   }
 }
 
+
+
 .dialog {
   background-color: white;
   padding: 10px 0;
   display: flex;
   border-top: 1px solid transparent;
   border-bottom: 1px solid #e7e8ec;
+	font-size: 12.5px;
+
+	&.active{
+		background-color:rgb(91, 136, 189);
+		color: white;
+
+		& .text{
+			color: white;
+		}
+	}
 
   & .photo {
     height: 50px;
