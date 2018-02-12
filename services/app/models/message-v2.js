@@ -2,7 +2,7 @@ const db = require("@config/db");
 let models = {};
 
 models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMessages) {
-    
+
     function GetСondition(table) {
         let condition = "";
         for (const view, i of views) {
@@ -18,13 +18,13 @@ models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMes
         (
             SELECT m.* FROM 
             (
-                SELECT * FROM messages WHERE id_chat = ? WHERE messages.created > ${GetFromChat}
+                SELECT * FROM messages WHERE id_chat = ${id_chat} WHERE messages.created > ${GetFromChat}
             )
             AS m WHERE ${GetСondition("messages.created") /* Получаем условие */}
         ) 
         AS m LEFT JOIN 
         (
-            SELECT * FROM messages_deleted WHERE id_user = ?
+            SELECT * FROM messages_deleted WHERE id_user = ${id_user}
         ) 
         AS md ON m.id = md.id_message WHERE md.id_message IS NULL ORDER BY m.created DESC LIMIT ${limitMessages};
     `;
