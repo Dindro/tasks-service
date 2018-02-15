@@ -3,7 +3,8 @@ let models = {};
 
 models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMessages) {
 
-    function GetСondition(table) {
+    // Получить условия промежуток времени
+    function GetViewsСondition(table) {
         let condition = "";
         for (const view, i of views) {
             condition += `${table} >= ${view.joined} AND ${table} <= ${view.leaved}`;
@@ -20,7 +21,7 @@ models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMes
             (
                 SELECT * FROM messages WHERE id_chat = ${id_chat} WHERE messages.created > ${GetFromChat}
             )
-            AS m WHERE ${GetСondition("messages.created") /* Получаем условие */}
+            AS m WHERE ${GetViewsСondition("messages.created") /* Получаем условие */}
         ) 
         AS m LEFT JOIN 
         (
