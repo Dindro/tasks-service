@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .header {
+            z-index: 100;
+            position: fixed;
+            height: 42px;
+            width: 100%;
+            background-color: rgba(49, 197, 30, 0.37);
+            top: 0;
+            left: 0;
+        }
+
+        .header-content {
+            height: 100%;
+            width: 960px;
+            margin: 0 auto;
+            background-color: rgb(20, 124, 165);
+        }
+
+        .main {
+            height: 100%;
+            width: 960px;
+            margin: 0 auto;
+            background-color: rgba(255, 0, 0, 0.575);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #nav {
+            position: relative;
+            width: 200px;
+            min-height: 100vh;
+            background-color: rgb(185, 45, 45);
+
+        }
+
+        #nav-content {
+            width: 200px;
+            height: 400px;
+            z-index: 2;
+            background-color: rgb(78, 185, 45);
+            margin-top: 57px;
+            position: fixed;
+        }
+
+        .dinamic {
+            width: 700px;
+            height: 10000px;
+            background: linear-gradient(to bottom, #F6EFD2, rgb(109, 170, 199));
+        }
+        #dinamic-top{
+            height: 50px;
+            background-color: rgb(67, 116, 189);
+            width: 700px;
+            position: fixed;
+            margin-top: 57px;
+        }
+        #dinamic-bottom {
+            height: 50px;
+            background-color: rgb(91, 189, 67);
+            width: 700px;
+            bottom: 0;
+            position: fixed;
+        }
+    </style>
+
+    <script>
+        function hscrollbar() {
+            var left = window.pageXOffset;
+            var value = -left + "px";
+            document.getElementById('nav-content').style.transform = "translateX("+value+")";
+            document.getElementById('dinamic-top').style.transform = "translateX("+value+")";
+            document.getElementById('dinamic-bottom').style.transform = "translateX("+value+")";
+        }
+        window.onscroll = hscrollbar; /* Call the function when the user scrolls */
+        window.onresize = hscrollbar; /* Call the function when the window resizes */
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-content">Контент</div>
+    </div>
+    <div class="main">
+        <div id="nav">
+            <div id="nav-content"></div>
+        </div>
+        <div class="dinamic">
+            <div id="dinamic-top"></div>
+            <div id="dinamic-bottom"></div>
+        </div>
+    </div>
+</body>
+
+</html>

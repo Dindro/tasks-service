@@ -13,9 +13,17 @@ const message = () => import("@/components/parts/Message");
 import registration from '@/components/pages/Registration/Registration'
 Vue.use(Router)
 
+//Draft
+import full from '@/components/pages/DRAFT/full'
+
+
 export default new Router({
   mode: "history",
   routes: [
+    {
+      path: "/full",
+      component: full
+    },
     {
       path: "",
       component: Upp,
