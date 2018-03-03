@@ -33,16 +33,17 @@
             width: 960px;
             margin: 0 auto;
             background-color: rgba(255, 0, 0, 0.575);
-            display: flex;
-            justify-content: space-between;
+            /* display: flex;
+            justify-content: space-between; */
         }
 
         #nav {
-            position: relative;
+            position: fixed;
             width: 200px;
             min-height: 100vh;
             background-color: rgb(185, 45, 45);
-
+            float: left;
+            margin-top: 57px;
         }
 
         #nav-content {
@@ -50,14 +51,15 @@
             height: 400px;
             z-index: 2;
             background-color: rgb(78, 185, 45);
-            margin-top: 57px;
-            position: fixed;
+            /* margin-top: 57px;
+            position: fixed; */
         }
 
         .dinamic {
             width: 700px;
-            height: 10000px;
+            min-height: 100vh;
             background: linear-gradient(to bottom, #F6EFD2, rgb(109, 170, 199));
+            float: right;
         }
         #dinamic-top{
             height: 50px;
@@ -79,7 +81,7 @@
         function hscrollbar() {
             var left = window.pageXOffset;
             var value = -left + "px";
-            document.getElementById('nav-content').style.transform = "translateX("+value+")";
+            document.getElementById('nav').style.transform = "translateX("+value+")";
             document.getElementById('dinamic-top').style.transform = "translateX("+value+")";
             document.getElementById('dinamic-bottom').style.transform = "translateX("+value+")";
         }

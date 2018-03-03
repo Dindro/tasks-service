@@ -15,7 +15,7 @@ Vue.use(Router)
 
 //Draft
 import full from '@/components/pages/DRAFT/full'
-
+import real from '@/components/pages/DRAFT/real'
 
 export default new Router({
   mode: "history",
@@ -23,6 +23,10 @@ export default new Router({
     {
       path: "/full",
       component: full
+    },
+    {
+      path: "/real",
+      component: real
     },
     {
       path: "",

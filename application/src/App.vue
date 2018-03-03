@@ -12,17 +12,17 @@ export default {
 
 <style>
 html, body{
-  height: 100%;
+  /* height: 100%; */
 }
 body {
   margin: 0;
   font-family: "Roboto";
   font-size: 13px;
-  display: flex;
+  /* display: flex; */
 }
 
 #app{
-  flex: 1;
-  display: flex;
+  /* flex: 1;
+  display: flex; */
 }
 </style>
