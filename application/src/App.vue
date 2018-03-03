@@ -11,18 +11,10 @@ export default {
 </script>
 
 <style>
-html, body{
-  /* height: 100%; */
-}
 body {
   margin: 0;
-  font-family: "Roboto";
+  font-family: "Segoe UI";
   font-size: 13px;
-  /* display: flex; */
 }
 
-#app{
-  /* flex: 1;
-  display: flex; */
-}
 </style>
