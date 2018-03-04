@@ -309,7 +309,7 @@
 						<span>Потрясилов Дмитрий</span>
 						<span>Доставить букет цветов</span>
 						<div class="line"></div>
-						<span>C задачами</span>
+						<span>C задачами  34</span>
 						<div id="tasks">
 							<span>Все сообщенияrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</span>
 							<span>Очень сложное задание по моему</span>
@@ -361,7 +361,7 @@ window.onresize = hscrollbar;
 <style lang="scss">
 $color-background: #f5f5f5;
 $color-border: #e3e4e8;
-$color-black: #4e4e4e;
+$color-black: #444444;
 $color-active: #f0f2f5;
 
 body {
@@ -483,15 +483,17 @@ body {
         }
 
         span {
-          white-space: nowrap;
-          /* Запрещаем перенос строк */
-          overflow: hidden;
-          /* Обрезаем все, что не помещается в область */
-          text-overflow: ellipsis;
-          /* Добавляем многоточие */
+          white-space: nowrap; /* Запрещаем перенос строк */
+          overflow: hidden; /* Обрезаем все, что не помещается в область */
+          text-overflow: ellipsis; /* Добавляем многоточие */
           display: block;
           color: $color-black;
           padding: 8px 10px 8px 40px;
+          transition: background-color ease-out 0.1s;
+
+          &:hover {
+            background-color: #f0f2f5;
+          }
         }
       }
     }
@@ -575,7 +577,7 @@ body {
         display: flex;
 
         & .name {
-          color: #4e4e4e;
+          color: $color-black;
           max-width: 250px;
           font-size: 14px;
           font-weight: 500;
