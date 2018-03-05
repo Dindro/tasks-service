@@ -445,6 +445,13 @@ body {
         display: block;
         padding: 8px 0 8px 25px;
         color: $color-black;
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+
+				&:hover{
+					background-color: #e1e5eb;
+					border-radius: 2px;
+				}
       }
     }
   }
@@ -455,7 +462,6 @@ body {
 
     & .dinamic-content {
       width: 550px;
-      background-color: rgb(177, 129, 129);
       float: left;
     }
 
@@ -474,9 +480,9 @@ body {
       }
 
       & .options-content {
+        max-height: 100%;
         display: flex;
         flex-direction: column;
-        flex: 1 1 auto;
         margin-top: 57px;
         margin-bottom: 15px;
         overflow: hidden;
@@ -591,9 +597,9 @@ body {
 .chat {
   border-bottom: 1px solid $color-border;
   display: flex;
-	padding: 5px 0;
-	overflow: hidden;
-	width: 100%;
+  padding: 5px 0;
+  overflow: hidden;
+  width: 100%;
 
   & .photo {
     margin-left: 20px;
@@ -606,36 +612,36 @@ body {
   }
 
   & .chat-details {
-		display: flex;
-		box-sizing: border-box;
+    display: flex;
+    box-sizing: border-box;
     flex-direction: column;
-		flex: 1;
-		width: 0;	// Что бы в содержимое работало троеточие
+    flex: 1;
+    width: 0; // Что бы в содержимое работало троеточие
     justify-content: space-around;
 
     & .chat-details-top {
-			box-sizing: border-box;
+      box-sizing: border-box;
       display: flex;
       justify-content: space-between;
-			padding: 0 20px 0 10px;
+      padding: 0 20px 0 10px;
 
       & .name-task {
-				display: flex;
-				flex: 1;
-				min-width: 0;
+        display: flex;
+        flex: 1;
+        min-width: 0;
 
         & .name {
-					display: block;
+          display: block;
           color: $color-black;
           font-size: 14px;
-					font-weight: 500;
+          font-weight: 500;
           white-space: nowrap; /* Запрещаем перенос строк */
           overflow: hidden; /* Обрезаем все, что не помещается в область */
           text-overflow: ellipsis; /* Добавляем многоточие */
         }
 
         & .task {
-          white-space: nowrap;/* Запрещаем перенос строк */
+          white-space: nowrap; /* Запрещаем перенос строк */
           color: #7a7a7a;
           padding: 0 15px 0 10px;
         }
