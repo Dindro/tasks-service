@@ -385,6 +385,12 @@
 </template>
 
 <script>
+window.onload = function(){
+	setTimeout(function(){
+		alert(document.body.scrollHeight);
+	}, 1000);
+}
+
 function hscrollbar() {
   var elements = ["nav", "options", "chats-top", "chats-bottom"];
   var value = window.pageXOffset;
@@ -448,10 +454,10 @@ body {
         white-space: nowrap; /* Запрещаем перенос строк */
         overflow: hidden; /* Обрезаем все, что не помещается в область */
 
-				&:hover{
-					background-color: #e1e5eb;
-					border-radius: 2px;
-				}
+        &:hover {
+          background-color: #e1e5eb;
+          border-radius: 2px;
+        }
       }
     }
   }

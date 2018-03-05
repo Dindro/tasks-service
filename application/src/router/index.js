@@ -15,7 +15,8 @@ Vue.use(Router)
 
 //Draft
 import full from '@/components/pages/DRAFT/full'
-import real from '@/components/pages/DRAFT/real'
+import chats from '@/components/pages/DRAFT/chats'
+import messages from '@/components/pages/DRAFT/messages'
 
 export default new Router({
   mode: "history",
@@ -25,8 +26,12 @@ export default new Router({
       component: full
     },
     {
-      path: "/real",
-      component: real
+      path: "/chats",
+      component: chats
+    },
+    {
+      path: "/messages",
+      component: messages
     },
     {
       path: "",
