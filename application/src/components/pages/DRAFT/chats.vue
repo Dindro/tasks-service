@@ -34,7 +34,7 @@
 									<div class="read-status">
 										<div class="photo-message">
 											<div class="photo-sender"></div>
-											<span class="message">Привет как дела</span>
+											<span class="message">Привет как дела hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdf dfdfdfd f</span>
 										</div>
 										<div class="count">4</div>
 									</div>
@@ -429,7 +429,7 @@ body {
   width: 960px;
   margin: 0 auto;
   padding: 0 15px;
-  /* min-height: 100vh; */
+  overflow: auto; // Высота такая как у дочерних
 
   & #nav {
     position: fixed;
@@ -448,10 +448,10 @@ body {
         white-space: nowrap; /* Запрещаем перенос строк */
         overflow: hidden; /* Обрезаем все, что не помещается в область */
 
-				&:hover{
-					background-color: #e1e5eb;
-					border-radius: 2px;
-				}
+        &:hover {
+          background-color: #e1e5eb;
+          border-radius: 2px;
+        }
       }
     }
   }
@@ -654,6 +654,7 @@ body {
 
     & .chat-details-bottom {
       padding: 0 17px 0 7px;
+      box-sizing: border-box;
 
       & .read-status {
         display: flex;
@@ -666,18 +667,21 @@ body {
         & .photo-message {
           display: flex;
           align-items: center;
+          min-width: 0;
 
           & .photo-sender {
             width: 25px;
             height: 25px;
             border-radius: 50%;
+            min-width: 25px;
             background-color: #4e4e4e;
           }
 
           & .message {
             padding-left: 7px;
+            padding-right: 10px;
             color: #656565;
-            max-width: 350px;
+            /* max-width: 350px; */
             white-space: nowrap;
             /* Запрещаем перенос строк */
             overflow: hidden;
@@ -688,7 +692,7 @@ body {
         }
 
         & .count {
-          padding: 1px 6px;
+          padding: 1px 4px;
           color: white;
           border-radius: 10px;
           background-color: #4a76a8;
