@@ -20,24 +20,6 @@
 						<div class="messages-top-elements"></div>
 					</div>
 					<div class="messages">
-						<!-- <div class="message">
-							<div class="message-box">
-								<div class="select"></div>
-								<div class="photo"></div>
-								<div class="message-content">
-									<div class="message-top">
-										<div class="name-time">
-											<span class="name">Семенов Сергей</span>
-											<span class="time">23:21</span>
-										</div>
-										<div class="items">
-											<span class="favorite">Важные</span>
-										</div>
-									</div>
-									<div class="message-text">Раздел сообщений нужно сверстать</div>
-								</div>
-							</div>
-						</div> -->
             <div class="message-onetime">
               <div class="photo"></div>
               <div class="message">
@@ -208,6 +190,12 @@ body {
   margin: 0 auto;
   padding: 0 15px;
   // overflow: auto; // Высота такая как у дочерних
+  &::after{
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+  }
 
   & #nav {
     position: fixed;
