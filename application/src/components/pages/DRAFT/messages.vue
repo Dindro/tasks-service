@@ -372,11 +372,11 @@ body {
   }
 }
 
-.message-onetime{
+.message-onetime {
   padding: 2.5px 5px;
   background-color: #b6b6b6;
 
-  .photo{
+  .photo {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -386,12 +386,12 @@ body {
     z-index: 9999;
   }
 
-  .message{
+  .message {
     height: 50px;
     background-color: rgba(255, 0, 0, 0.411);
     border-radius: 10px;
 
-    .message-text{
+    .message-text {
       padding-left: 50px;
     }
   }
