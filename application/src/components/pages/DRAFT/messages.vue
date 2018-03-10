@@ -20,7 +20,7 @@
 						<div class="messages-top-elements"></div>
 					</div>
 					<div class="messages">
-						<div class="message">
+						<!-- <div class="message">
 							<div class="message-box">
 								<div class="select"></div>
 								<div class="photo"></div>
@@ -37,8 +37,83 @@
 									<div class="message-text">Раздел сообщений нужно сверстать</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</div> -->
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+              <div class="message">
+                <div class="message-text">Тут будет много текста</div>
+              </div>
+            </div>
+          </div>
 					<div id="messages-bottom">
 						<div class="messages-bottom-elements"></div>
 					</div>
@@ -132,7 +207,7 @@ body {
   width: 960px;
   margin: 0 auto;
   padding: 0 15px;
-  overflow: auto; // Высота такая как у дочерних
+  // overflow: auto; // Высота такая как у дочерних
 
   & #nav {
     position: fixed;
@@ -297,137 +372,171 @@ body {
   }
 }
 
-.message {
-  padding: 5px 5px;
+.message-onetime{
+  padding: 2.5px 5px;
+  background-color: #b6b6b6;
 
-  .message-box {
-    display: flex;
-		align-items: center;
-
-
-    .select {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background-color: #4a76a8;
-			margin-left: 10px;
-    }
-
-    .photo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: rgb(197, 197, 197);
-      border: 1px solid rgb(165, 165, 165);
-			margin-left: 15px;
-    }
-
-		.message-content{
-			flex: 1;
-
-			.message-top{
-				display: flex;
-				justify-content: space-between;
-
-				.name {
-					font-weight: 500;
-				}
-			}
-
-			.message-text{
-				padding: 5px 0;
-			}
-		}
+  .photo{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: green;
+    position: sticky;
+    top: 117px;
+    z-index: 9999;
   }
 
-  & .chat-details {
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    flex: 1;
-    width: 0; // Что бы в содержимое работало троеточие
-    justify-content: space-around;
+  .message{
+    height: 50px;
+    background-color: rgba(255, 0, 0, 0.411);
+    border-radius: 10px;
 
-    & .chat-details-top {
-      box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 20px 0 10px;
-
-      & .name-task {
-        display: flex;
-        flex: 1;
-        min-width: 0;
-
-        & .name {
-          display: block;
-          color: $color-black;
-          font-size: 14px;
-          font-weight: 500;
-          white-space: nowrap; /* Запрещаем перенос строк */
-          overflow: hidden; /* Обрезаем все, что не помещается в область */
-          text-overflow: ellipsis; /* Добавляем многоточие */
-        }
-
-        & .task {
-          white-space: nowrap; /* Запрещаем перенос строк */
-          color: #7a7a7a;
-          padding: 0 15px 0 10px;
-        }
-      }
-
-      & .time {
-        color: rgb(184, 184, 184);
-      }
-    }
-
-    & .chat-details-bottom {
-      padding: 0 17px 0 7px;
-      box-sizing: border-box;
-
-      & .read-status {
-        display: flex;
-        justify-content: space-between;
-        background-color: rgb(240, 240, 240);
-        padding: 3px;
-        border-radius: 20px 2px 2px 20px;
-        align-items: center;
-
-        & .photo-message {
-          display: flex;
-          align-items: center;
-          min-width: 0;
-
-          & .photo-sender {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            min-width: 25px;
-            background-color: #4e4e4e;
-          }
-
-          & .message {
-            padding-left: 7px;
-            padding-right: 10px;
-            color: #656565;
-            /* max-width: 350px; */
-            white-space: nowrap;
-            /* Запрещаем перенос строк */
-            overflow: hidden;
-            /* Обрезаем все, что не помещается в область */
-            text-overflow: ellipsis;
-            /* Добавляем многоточие */
-          }
-        }
-
-        & .count {
-          padding: 1px 4px;
-          color: white;
-          border-radius: 10px;
-          background-color: #4a76a8;
-        }
-      }
+    .message-text{
+      padding-left: 50px;
     }
   }
 }
+
+// .message {
+//   padding: 2.5px 5px;
+
+//   .message-box {
+//     display: flex;
+//     background-color: #9cb5d1;
+//     border-radius: 2px;
+//     padding: 5px 0;
+
+//     .select {
+//       width: 20px;
+//       height: 20px;
+//       border-radius: 50%;
+//       background-color: #4a76a8;
+//       margin-left: 5px;
+//       margin-top: 11px;
+//     }
+
+//     .photo {
+//       width: 40px;
+//       height: 40px;
+//       border-radius: 50%;
+//       background-color: rgb(197, 197, 197);
+//       border: 1px solid rgb(165, 165, 165);
+//       margin-left: 10px;
+//     }
+
+//     .message-content {
+//       flex: 1;
+//       margin-left: 10px;
+
+//       .message-top {
+//         display: flex;
+//         justify-content: space-between;
+
+//         .name {
+//           font-weight: 500;
+//         }
+
+//         .favorite {
+//           margin: 0 10px;
+//         }
+//       }
+
+//       .message-text {
+//         padding: 5px 70px 5px 0;
+//         line-height: 18px;
+//         word-wrap: break-word;
+//       }
+//     }
+//   }
+
+//   & .chat-details {
+//     display: flex;
+//     box-sizing: border-box;
+//     flex-direction: column;
+//     flex: 1;
+//     width: 0; // Что бы в содержимое работало троеточие
+//     justify-content: space-around;
+
+//     & .chat-details-top {
+//       box-sizing: border-box;
+//       display: flex;
+//       justify-content: space-between;
+//       padding: 0 20px 0 10px;
+
+//       & .name-task {
+//         display: flex;
+//         flex: 1;
+//         min-width: 0;
+
+//         & .name {
+//           display: block;
+//           color: $color-black;
+//           font-size: 14px;
+//           font-weight: 500;
+//           white-space: nowrap; /* Запрещаем перенос строк */
+//           overflow: hidden; /* Обрезаем все, что не помещается в область */
+//           text-overflow: ellipsis; /* Добавляем многоточие */
+//         }
+
+//         & .task {
+//           white-space: nowrap; /* Запрещаем перенос строк */
+//           color: #7a7a7a;
+//           padding: 0 15px 0 10px;
+//         }
+//       }
+
+//       & .time {
+//         color: rgb(184, 184, 184);
+//       }
+//     }
+
+//     & .chat-details-bottom {
+//       padding: 0 17px 0 7px;
+//       box-sizing: border-box;
+
+//       & .read-status {
+//         display: flex;
+//         justify-content: space-between;
+//         background-color: rgb(240, 240, 240);
+//         padding: 3px;
+//         border-radius: 20px 2px 2px 20px;
+//         align-items: center;
+
+//         & .photo-message {
+//           display: flex;
+//           align-items: center;
+//           min-width: 0;
+
+//           & .photo-sender {
+//             width: 25px;
+//             height: 25px;
+//             border-radius: 50%;
+//             min-width: 25px;
+//             background-color: #4e4e4e;
+//           }
+
+//           & .message {
+//             padding-left: 7px;
+//             padding-right: 10px;
+//             color: #656565;
+//             /* max-width: 350px; */
+//             white-space: nowrap;
+//             /* Запрещаем перенос строк */
+//             overflow: hidden;
+//             /* Обрезаем все, что не помещается в область */
+//             text-overflow: ellipsis;
+//             /* Добавляем многоточие */
+//           }
+//         }
+
+//         & .count {
+//           padding: 1px 4px;
+//           color: white;
+//           border-radius: 10px;
+//           background-color: #4a76a8;
+//         }
+//       }
+//     }
+//   }
+// }
 </style>
