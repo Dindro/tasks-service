@@ -429,9 +429,15 @@ body {
   width: 960px;
   margin: 0 auto;
   padding: 0 15px;
-  overflow: auto; // Высота такая как у дочерних
 
-  & #nav {
+  &::after { // Нужен для того чтобы сделать размер правильным из за float
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+  }
+
+  #nav {
     position: fixed;
     min-height: 100vh;
     width: 149px;
