@@ -22,7 +22,7 @@
 					<div class="messages">
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
+              <div class="message first">
                 <div class="message-text">Тут будет много текста</div>
               </div>
               <div class="message">
@@ -37,7 +37,7 @@
             </div>
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
+              <div class="message first">
                 <div class="message-text">Тут будет много текста</div>
               </div>
               <div class="message">
@@ -52,37 +52,7 @@
             </div>
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message">
+              <div class="message first">
                 <div class="message-text">Тут будет много текста</div>
               </div>
               <div class="message">
@@ -190,7 +160,7 @@ body {
   margin: 0 auto;
   padding: 0 15px;
   // overflow: auto; // Высота такая как у дочерних
-  &::after{
+  &::after {
     content: " ";
     display: block;
     height: 0;
@@ -378,6 +348,12 @@ body {
     height: 50px;
     background-color: rgba(255, 0, 0, 0.411);
     border-radius: 10px;
+
+    &.first {
+      position: relative;
+      top: -30px;
+      margin-bottom: -30px;
+    }
 
     .message-text {
       padding-left: 50px;
