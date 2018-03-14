@@ -22,77 +22,138 @@
 					<div class="messages">
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
             </div>
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
             </div>
             <div class="message-onetime">
               <div class="photo"></div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+              </div>
+            </div>
+            <div class="message-onetime">
+              <div class="photo"></div>
+              <div class="container">
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
+                <div class="message">
+                  <div class="message-text">Тут будет много текста</div>
+                </div>
               </div>
             </div>
           </div>
@@ -190,7 +251,7 @@ body {
   margin: 0 auto;
   padding: 0 15px;
   // overflow: auto; // Высота такая как у дочерних
-  &::after{
+  &::after {
     content: " ";
     display: block;
     height: 0;
@@ -321,6 +382,7 @@ body {
     background-color: $color-background; //Нужен, за ним скрывается список диалогов
     border-top: 15px solid $color-background; //Нужен, за ним скрывается список диалогов
     margin-top: 42px;
+    z-index: 100;
 
     & .messages-top-elements {
       width: 100%;
@@ -348,6 +410,7 @@ body {
     width: 550px;
     position: fixed;
     bottom: 0;
+    z-index: 100;
 
     & .messages-bottom-elements {
       height: 100%;
@@ -371,19 +434,20 @@ body {
     background-color: green;
     position: sticky;
     top: 117px;
-    z-index: 9999;
+    z-index: 50;
+    margin: 7px 0 7px 30px;
+  }
+
+  .container{
+    margin-top: -44px;
   }
 
   .message {
-    height: 50px;
     background-color: rgba(255, 0, 0, 0.411);
     border-radius: 10px;
-    position: relative;
-    top: -30px;
-    /* margin-bottom: -20px; */
 
     .message-text {
-      padding-left: 50px;
+      padding: 20px 0 20px 50px;
     }
   }
 }
