@@ -23,68 +23,51 @@
             <div class="message-onetime">
               <div class="photo"></div>
               <div class="container">
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                <div class="message selected">
+                  <div class="message-top">
+                    <div class="name-time">
+                      <span class="name">Сергей</span>
+                      <span class="time">14:45</span>
+                    </div>
+                  </div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="message selected">
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="container">
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="container">
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="container">
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
-                </div>
-                <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,16 +75,50 @@
               <div class="photo"></div>
               <div class="container">
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="message-top">
+                    <div class="name-time">
+                      <span class="name">Сергей</span>
+                      <span class="time">14:45</span>
+                    </div>
+                  </div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста </div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,16 +126,50 @@
               <div class="photo"></div>
               <div class="container">
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="message-top">
+                    <div class="name-time">
+                      <span class="name">Сергей</span>
+                      <span class="time">14:45</span>
+                    </div>
+                  </div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -126,16 +177,50 @@
               <div class="photo"></div>
               <div class="container">
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="message-top">
+                    <div class="name-time">
+                      <span class="name">Сергей</span>
+                      <span class="time">14:45</span>
+                    </div>
+                  </div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,16 +228,50 @@
               <div class="photo"></div>
               <div class="container">
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="message-top">
+                    <div class="name-time">
+                      <span class="name">Сергей</span>
+                      <span class="time">14:45</span>
+                    </div>
+                  </div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="message">
-                  <div class="message-text">Тут будет много текста</div>
+                  <div class="select"></div>
+                  <div class="is-read">
+                    <div class="message-text">Тут будет много текста Тут будет много текста</div>
+                    <div class="items">
+                      <span class="response">Отв.</span>
+                      <span class="favorite">Важн.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,6 +345,7 @@ $color-border: #e3e4e8;
 $color-black: #444444;
 $color-active: #f0f2f5;
 
+$color-message-selected: #edf0f5;
 body {
   background-color: $color-background;
 }
@@ -423,31 +543,89 @@ body {
   }
 }
 
+$message-top: 7px;
+$message-bottom: 7px;
+
+$select-wh: 16px; // Ширина и высота селекта
+$photo-wh: 36px; // Ширина и высота фото
+
+$select-mt: $message-top + ($photo-wh/2) - ($select-wh/2);
+$photo-ml: 5 + $select-wh + 10; // margin-left фото
+
+$message-text-ml: 5 + $photo-wh + 10;
+$message-top-left: 5 + $select-wh + 10 + $photo-wh + 10;
+
+$container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top контейнера
+
 .message-onetime {
   padding: 2.5px 5px;
-  background-color: #b6b6b6;
 
   .photo {
-    width: 30px;
-    height: 30px;
+    width: $photo-wh;
+    height: $photo-wh;
     border-radius: 50%;
-    background-color: green;
+    background-color: rgb(88, 88, 88);
     position: sticky;
     top: 117px;
     z-index: 50;
-    margin: 7px 0 7px 30px;
+    margin: 7px 0 7px $photo-ml;
   }
 
-  .container{
-    margin-top: -44px;
+  .container {
+    margin-top: $container-mt;
   }
 
   .message {
-    background-color: rgba(255, 0, 0, 0.411);
-    border-radius: 10px;
+    background-color: $color-message-selected;
+    display: flex;
+    position: relative;
 
-    .message-text {
-      padding: 20px 0 20px 50px;
+    .message-top {
+      position: absolute;
+      left: $message-top-left;
+      top: 7px;
+
+      & ~ .is-read > .message-text {
+        padding: 23px 0 7px $message-text-ml;
+      }
+
+      & ~ .select {
+        margin: $select-mt 0 0 5px;
+      }
+
+      .name {
+        color: $color-black;
+        font-weight: 500;
+      }
+
+      .time {
+        color: hsla(220, 8%, 51%, 0.6);
+      }
+    }
+
+    .select {
+      width: $select-wh;
+      height: $select-wh;
+      border-radius: 50%;
+      background-color: rgb(136, 136, 136);
+      margin: 7px 0 7px 5px;
+      min-width: $select-wh;
+    }
+
+    .is-read {
+      display: flex;
+      margin: 0 25px 0 5px;
+      flex: 1;
+
+      .message-text {
+        color: black;
+        flex: 1;
+        padding: 7px 0 7px $message-text-ml;
+        line-height: 18px;
+      }
+
+      .items {
+      }
     }
   }
 }
