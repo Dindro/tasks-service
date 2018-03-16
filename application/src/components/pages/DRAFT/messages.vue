@@ -646,9 +646,6 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         padding: 7px 0 7px $message-text-ml;
         line-height: 18px;
       }
-
-      .items {
-      }
     }
   }
 }
