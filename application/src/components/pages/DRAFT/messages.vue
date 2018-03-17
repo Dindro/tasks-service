@@ -59,7 +59,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="message">
+								<div class="message selected">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста</div>
@@ -609,13 +609,25 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
     &.selected {
       background-color: $color-message-selected;
-      border-radius: 5px;
-			border-bottom-left-radius: 0;
-    	border-bottom-right-radius: 0;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &:before {
+        display: block;
+        margin-top: -8px;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        border-radius: 0 0 3px 3px;
+        background: #536a92;
+      }
 
       & + .selected {
         border-radius: 5px;
-				border-top-left-radius: 0;
+        border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
     }
