@@ -20,52 +20,262 @@
 						<div class="messages-top-elements"></div>
 					</div>
 					<div class="messages">
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message first">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message first">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-            <div class="message-onetime">
-              <div class="photo"></div>
-              <div class="message first">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-              <div class="message">
-                <div class="message-text">Тут будет много текста</div>
-              </div>
-            </div>
-          </div>
+						<div class="message-onetime">
+							<div class="photo"></div>
+							<div class="container">
+								<div class="message-top">
+									<div class="name-time">
+										<span class="name">Сергей</span>
+										<span class="time">14:45</span>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="message-onetime">
+							<div class="photo"></div>
+							<div class="container">
+								<div class="message-top">
+									<div class="name-time">
+										<span class="name">Сергей</span>
+										<span class="time">14:45</span>
+									</div>
+								</div>
+								<div class="message selected unread">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message unread">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message unread">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="message-onetime">
+							<div class="photo"></div>
+							<div class="container">
+								<div class="message-top">
+									<div class="name-time">
+										<span class="name">Сергей</span>
+										<span class="time">14:45</span>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message unread">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message unread">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="message-onetime">
+							<div class="photo"></div>
+							<div class="container">
+								<div class="message-top">
+									<div class="name-time">
+										<span class="name">Сергей</span>
+										<span class="time">14:45</span>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="message-onetime">
+							<div class="photo"></div>
+							<div class="container">
+								<div class="message-top">
+									<div class="name-time">
+										<span class="name">Сергей</span>
+										<span class="time">14:45</span>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div id="messages-bottom">
 						<div class="messages-bottom-elements"></div>
 					</div>
@@ -135,6 +345,7 @@ $color-border: #e3e4e8;
 $color-black: #444444;
 $color-active: #f0f2f5;
 
+$color-message-selected: #edf0f5;
 body {
   background-color: $color-background;
 }
@@ -291,6 +502,7 @@ body {
     background-color: $color-background; //Нужен, за ним скрывается список диалогов
     border-top: 15px solid $color-background; //Нужен, за ним скрывается список диалогов
     margin-top: 42px;
+    z-index: 100;
 
     & .messages-top-elements {
       width: 100%;
@@ -318,6 +530,7 @@ body {
     width: 550px;
     position: fixed;
     bottom: 0;
+    z-index: 100;
 
     & .messages-bottom-elements {
       height: 100%;
@@ -330,177 +543,110 @@ body {
   }
 }
 
+$message-top: 7px;
+$message-bottom: 7px;
+
+$select-wh: 16px; // Ширина и высота селекта
+$photo-wh: 36px; // Ширина и высота фото
+
+$select-mt: $message-top + ($photo-wh/2) - ($select-wh/2);
+$photo-ml: 5 + $select-wh + 10; // margin-left фото
+
+$message-minH: $message-top + $photo-wh + $message-bottom; // Когда только одно сообщение
+$message-text-ml: 5 + $photo-wh + 10;
+$message-top-left: 5 + $select-wh + 10 + $photo-wh + 10;
+
+$container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top контейнера
+
 .message-onetime {
   padding: 2.5px 5px;
-  background-color: #b6b6b6;
 
   .photo {
-    width: 30px;
-    height: 30px;
+    width: $photo-wh;
+    height: $photo-wh;
     border-radius: 50%;
-    background-color: green;
+    background-color: rgb(88, 88, 88);
     position: sticky;
     top: 117px;
-    z-index: 9999;
+    z-index: 50;
+    margin: 7px 0 7px $photo-ml;
+  }
+
+  .container {
+    margin-top: $container-mt;
+    position: relative;
+
+    .message-top {
+      position: absolute;
+      left: $message-top-left;
+      top: 7px;
+
+      & + .message {
+        min-height: $message-minH;
+
+        .message-text {
+          padding: 23px 0 7px $message-text-ml;
+        }
+
+        .select {
+          margin: $select-mt 0 0 5px;
+        }
+      }
+
+      .name {
+        color: $color-black;
+        font-weight: 500;
+      }
+
+      .time {
+        color: hsla(220, 8%, 51%, 0.6);
+      }
+    }
   }
 
   .message {
-    height: 50px;
-    background-color: rgba(255, 0, 0, 0.411);
-    border-radius: 10px;
+    display: flex;
 
-    &.first {
-      position: relative;
-      top: -30px;
-      margin-bottom: -30px;
+    &.selected {
+      background-color: $color-message-selected;
+      border-radius: 5px;
+			border-bottom-left-radius: 0;
+    	border-bottom-right-radius: 0;
+
+      & + .selected {
+        border-radius: 5px;
+				border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
     }
 
-    .message-text {
-      padding-left: 50px;
+    &.unread {
+      .is-read {
+        background-color: $color-message-selected;
+      }
+    }
+
+    .select {
+      width: $select-wh;
+      height: $select-wh;
+      border-radius: 50%;
+      background-color: #7293b6;
+      margin: 7px 0 7px 5px;
+      min-width: $select-wh;
+    }
+
+    .is-read {
+      display: flex;
+      margin: 0 25px 0 5px;
+      flex: 1;
+
+      .message-text {
+        color: black;
+        flex: 1;
+        padding: 7px 0 7px $message-text-ml;
+        line-height: 18px;
+      }
     }
   }
 }
-
-// .message {
-//   padding: 2.5px 5px;
-
-//   .message-box {
-//     display: flex;
-//     background-color: #9cb5d1;
-//     border-radius: 2px;
-//     padding: 5px 0;
-
-//     .select {
-//       width: 20px;
-//       height: 20px;
-//       border-radius: 50%;
-//       background-color: #4a76a8;
-//       margin-left: 5px;
-//       margin-top: 11px;
-//     }
-
-//     .photo {
-//       width: 40px;
-//       height: 40px;
-//       border-radius: 50%;
-//       background-color: rgb(197, 197, 197);
-//       border: 1px solid rgb(165, 165, 165);
-//       margin-left: 10px;
-//     }
-
-//     .message-content {
-//       flex: 1;
-//       margin-left: 10px;
-
-//       .message-top {
-//         display: flex;
-//         justify-content: space-between;
-
-//         .name {
-//           font-weight: 500;
-//         }
-
-//         .favorite {
-//           margin: 0 10px;
-//         }
-//       }
-
-//       .message-text {
-//         padding: 5px 70px 5px 0;
-//         line-height: 18px;
-//         word-wrap: break-word;
-//       }
-//     }
-//   }
-
-//   & .chat-details {
-//     display: flex;
-//     box-sizing: border-box;
-//     flex-direction: column;
-//     flex: 1;
-//     width: 0; // Что бы в содержимое работало троеточие
-//     justify-content: space-around;
-
-//     & .chat-details-top {
-//       box-sizing: border-box;
-//       display: flex;
-//       justify-content: space-between;
-//       padding: 0 20px 0 10px;
-
-//       & .name-task {
-//         display: flex;
-//         flex: 1;
-//         min-width: 0;
-
-//         & .name {
-//           display: block;
-//           color: $color-black;
-//           font-size: 14px;
-//           font-weight: 500;
-//           white-space: nowrap; /* Запрещаем перенос строк */
-//           overflow: hidden; /* Обрезаем все, что не помещается в область */
-//           text-overflow: ellipsis; /* Добавляем многоточие */
-//         }
-
-//         & .task {
-//           white-space: nowrap; /* Запрещаем перенос строк */
-//           color: #7a7a7a;
-//           padding: 0 15px 0 10px;
-//         }
-//       }
-
-//       & .time {
-//         color: rgb(184, 184, 184);
-//       }
-//     }
-
-//     & .chat-details-bottom {
-//       padding: 0 17px 0 7px;
-//       box-sizing: border-box;
-
-//       & .read-status {
-//         display: flex;
-//         justify-content: space-between;
-//         background-color: rgb(240, 240, 240);
-//         padding: 3px;
-//         border-radius: 20px 2px 2px 20px;
-//         align-items: center;
-
-//         & .photo-message {
-//           display: flex;
-//           align-items: center;
-//           min-width: 0;
-
-//           & .photo-sender {
-//             width: 25px;
-//             height: 25px;
-//             border-radius: 50%;
-//             min-width: 25px;
-//             background-color: #4e4e4e;
-//           }
-
-//           & .message {
-//             padding-left: 7px;
-//             padding-right: 10px;
-//             color: #656565;
-//             /* max-width: 350px; */
-//             white-space: nowrap;
-//             /* Запрещаем перенос строк */
-//             overflow: hidden;
-//             /* Обрезаем все, что не помещается в область */
-//             text-overflow: ellipsis;
-//             /* Добавляем многоточие */
-//           }
-//         }
-
-//         & .count {
-//           padding: 1px 4px;
-//           color: white;
-//           border-radius: 10px;
-//           background-color: #4a76a8;
-//         }
-//       }
-//     }
-//   }
-// }
 </style>
