@@ -426,7 +426,7 @@ $color-active: #f0f2f5;
         .name {
           display: block;
           color: $color-black;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
           white-space: nowrap; /* Запрещаем перенос строк */
           overflow: hidden; /* Обрезаем все, что не помещается в область */
