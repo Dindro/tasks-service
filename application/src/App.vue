@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: "App"
+  name: "App"
 };
 </script>
 
@@ -14,10 +14,11 @@ export default {
 $color-background: #f5f5f5;
 
 body {
-	background-color: $color-background;
-	margin: 0;
-	// font-family: 'Segoe UI';
-	font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-	font-size: 13px;
+  @import url('https://fonts.googleapis.com/css?family=Roboto:500');
+
+  background-color: $color-background;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
 }
 </style>
