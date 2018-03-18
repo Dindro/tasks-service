@@ -16,8 +16,24 @@
 					<div class="message">
 						<div class="select"></div>
 						<div class="is-read">
-							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
-								Тут будет много текста</div>
+							<div class="message-text">
+								Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст 
+								<div class="insert">
+									<div class="insert-top">
+										<div class="insert-photo"></div>
+										<div class="name-time">
+											<span class="name">Мария</span>
+											<span class="time">12:33</span>
+										</div>
+									</div>
+									<div class="insert-messages">
+										<div class="insert-message">Вложенное сообщение Вложенное сообщение Вложенное сообщение Вложенное сообщение</div>
+										<div class="insert-message">Вложенное сообщение Вложенное сообщение Вложенное сообщение Вложенное сообщение</div>
+										<div class="insert-message">Вложенное сообщение Вложенное сообщение Вложенное сообщение Вложенное сообщение</div>
+										<div class="insert-message">Вложенное сообщение Вложенное сообщение Вложенное сообщение Вложенное сообщение</div>
+									</div>
+								</div>
+							</div>
 							<div class="items">
 								<span class="response">Отв.</span>
 								<span class="favorite">Важн.</span>
@@ -320,7 +336,7 @@ $color-black: #444444;
 $color-active: #f0f2f5;
 
 $color-message-selected: #edf0f5;
-
+$color-time: rgba(120, 126, 140, 0.6);
 .dinamic-content {
   width: 550px;
   float: left;
@@ -524,6 +540,44 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         flex: 1;
         padding: 7px 0 7px $message-text-ml;
         line-height: 18px;
+
+        .insert {
+          border-left: 2px solid #dee6ee;
+          padding-left: 5px;
+          margin-top: 7px;
+
+          .insert-top {
+            display: flex;
+
+            .insert-photo {
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              background-color: rgb(196, 196, 196);
+            }
+
+            .name-time {
+							padding-left: 5px;
+							
+              span.name {
+                font-weight: 500;
+								color: $color-black;
+								display: block;
+              }
+
+							span.time{
+								color: $color-time;
+							}
+            }
+          }
+
+					.insert-messages{
+
+						.insert-message{
+							padding: 3px 0;
+						}
+					}
+        }
       }
     }
   }
