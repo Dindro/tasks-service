@@ -273,7 +273,7 @@
 										<span class="time">14:45</span>
 									</div>
 								</div>
-								<div class="message selected">
+								<div class="message unread">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
@@ -283,7 +283,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="message">
+								<div class="message unread">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста</div>
@@ -293,7 +293,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="message selected">
+								<div class="message unread">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста</div>
@@ -303,7 +303,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="message">
+								<div class="message unread">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста</div>
@@ -535,7 +535,7 @@ body {
 }
 
 .dinamic-content {
-  & #messages-top {
+  #messages-top {
     height: 50px;
     width: 550px;
     position: fixed;
@@ -544,7 +544,7 @@ body {
     margin-top: 42px;
     z-index: 100;
 
-    & .messages-top-elements {
+    .messages-top-elements {
       width: 100%;
       height: 100%;
       border: 1px solid $color-border;
@@ -554,7 +554,7 @@ body {
     }
   }
 
-  & .messages {
+  .messages {
     background-color: white;
     box-sizing: border-box;
     width: 100%;
@@ -565,14 +565,14 @@ body {
     border-right: 1px solid $color-border;
   }
 
-  & #messages-bottom {
+  #messages-bottom {
     height: 50px;
     width: 550px;
     position: fixed;
     bottom: 0;
     z-index: 100;
 
-    & .messages-bottom-elements {
+    .messages-bottom-elements {
       height: 100%;
       width: 100%;
       border: 1px solid $color-border;
@@ -620,6 +620,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       position: absolute;
       left: $message-top-left;
       top: 7px;
+			z-index: 1;
 
       & + .message {
         min-height: $message-minH;
@@ -646,52 +647,71 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
   .message {
     display: flex;
+    margin-top: 3px;
 
     &.selected {
       background-color: $color-message-selected;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border-radius: 3px 3px 0 0;
 
+      // Последний селект во всем контейнер
       &:last-child {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
+        padding-bottom: 3px;
       }
-      /* &:before {
+
+      & + .message.selected {
+        border-radius: 0;
+
+        &:before {
+          display: block;
+          margin-top: -3px;
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 3px;
+          background: $color-message-selected;
+        }
+      }
+
+      & + .message:not(.selected):before {
         display: block;
-        margin-top: -8px;
+        margin-top: -3px;
         content: "";
         position: absolute;
         width: 100%;
         height: 3px;
         border-radius: 0 0 3px 3px;
-        background: #536a92;
-      } */
+        background: $color-message-selected;
+      }
+    }
 
-      & + .selected {
-        /* border-radius: 5px; */
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+		// Непрочитанные сообщения
+    &.unread {
+      .is-read {
+        background-color: $color-message-selected;
+        border-radius: 3px 3px 0 0;
+        position: relative;
       }
 
-      & + .message:not(.selected) {
+      & + .unread .is-read {
+        border-radius: 0;
+
         &:before {
           display: block;
-          margin-top: -1px;
+          margin-top: -3px;
           content: "";
           position: absolute;
           width: 100%;
           height: 3px;
-          border-radius: 0 0 3px 3px;
-          background: $color-message-selected
+          background: $color-message-selected;
         }
       }
-    }
 
-    &.unread {
-      .is-read {
-        background-color: $color-message-selected;
+      & + .unread:last-child .is-read {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        padding-bottom: 3px;
       }
     }
 
@@ -700,7 +720,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       height: $select-wh;
       border-radius: 50%;
       background-color: #7293b6;
-      margin: 7px 0 7px 5px;
+      margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
       min-width: $select-wh;
     }
 

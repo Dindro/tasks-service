@@ -389,10 +389,8 @@ function hscrollbar() {
   var elements = ["nav", "options", "chats-top", "chats-bottom"];
   var value = window.pageXOffset;
 
-  for (let i = 0; i < elements.length; i++) {
-    document.getElementById(
-      elements[i]
-    ).style.transform = `translateX(${-value}px)`;
+  for (element in elements) {
+		document.getElementById(element).style.transform = `translateX(${-value}px)`;
   }
 }
 window.onscroll = hscrollbar;
@@ -554,7 +552,7 @@ body {
 }
 
 .dinamic-content {
-  & #chats-top {
+  #chats-top {
     height: 50px;
     width: 550px;
     position: fixed;
@@ -562,7 +560,7 @@ body {
     border-top: 15px solid $color-background; //Нужен, за ним скрывается список диалогов
     margin-top: 42px;
 
-    & .chats-top-elements {
+    .chats-top-elements {
       width: 100%;
       height: 100%;
       border: 1px solid $color-border;
@@ -572,7 +570,7 @@ body {
     }
   }
 
-  & .chats {
+  .chats {
     background-color: white;
     box-sizing: border-box;
     width: 100%;
@@ -583,13 +581,13 @@ body {
     border-right: 1px solid $color-border;
   }
 
-  & #chats-bottom {
+  #chats-bottom {
     height: 50px;
     width: 550px;
     position: fixed;
     bottom: 0;
 
-    & .chats-bottom-elements {
+    .chats-bottom-elements {
       height: 100%;
       width: 100%;
       border: 1px solid $color-border;
@@ -607,7 +605,7 @@ body {
   overflow: hidden;
   width: 100%;
 
-  & .photo {
+  .photo {
     margin-left: 20px;
     min-width: 60px; // Чтобы не сжался при flex
     width: 60px;
@@ -617,7 +615,7 @@ body {
     border: 1px solid rgb(165, 165, 165);
   }
 
-  & .chat-details {
+  .chat-details {
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
@@ -625,18 +623,18 @@ body {
     width: 0; // Что бы в содержимое работало троеточие
     justify-content: space-around;
 
-    & .chat-details-top {
+    .chat-details-top {
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       padding: 0 20px 0 10px;
 
-      & .name-task {
+      .name-task {
         display: flex;
         flex: 1;
         min-width: 0;
 
-        & .name {
+        .name {
           display: block;
           color: $color-black;
           font-size: 14px;
@@ -646,23 +644,23 @@ body {
           text-overflow: ellipsis; /* Добавляем многоточие */
         }
 
-        & .task {
+        .task {
           white-space: nowrap; /* Запрещаем перенос строк */
           color: #7a7a7a;
           padding: 0 15px 0 10px;
         }
       }
 
-      & .time {
+      .time {
         color: rgb(184, 184, 184);
       }
     }
 
-    & .chat-details-bottom {
+    .chat-details-bottom {
       padding: 0 17px 0 7px;
       box-sizing: border-box;
 
-      & .read-status {
+      .read-status {
         display: flex;
         justify-content: space-between;
         background-color: rgb(240, 240, 240);
@@ -670,12 +668,12 @@ body {
         border-radius: 20px 2px 2px 20px;
         align-items: center;
 
-        & .photo-message {
+        .photo-message {
           display: flex;
           align-items: center;
           min-width: 0;
 
-          & .photo-sender {
+          .photo-sender {
             width: 25px;
             height: 25px;
             border-radius: 50%;
@@ -683,7 +681,7 @@ body {
             background-color: #4e4e4e;
           }
 
-          & .message {
+          .message {
             padding-left: 7px;
             padding-right: 10px;
             color: #656565;
@@ -697,7 +695,7 @@ body {
           }
         }
 
-        & .count {
+        .count {
           padding: 1px 4px;
           color: white;
           border-radius: 10px;
