@@ -29,10 +29,50 @@
 										<span class="time">14:45</span>
 									</div>
 								</div>
-								<div class="message selected">
+								<div class="message">
 									<div class="select"></div>
 									<div class="is-read">
 										<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message selected">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
+										<div class="items">
+											<span class="response">Отв.</span>
+											<span class="favorite">Важн.</span>
+										</div>
+									</div>
+								</div>
+								<div class="message">
+									<div class="select"></div>
+									<div class="is-read">
+										<div class="message-text">Тут будет много текста Тут будет много текста</div>
 										<div class="items">
 											<span class="response">Отв.</span>
 											<span class="favorite">Важн.</span>
@@ -609,26 +649,43 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
     &.selected {
       background-color: $color-message-selected;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
 
-      &:before {
+      &:last-child {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+      /* &:before {
         display: block;
         margin-top: -8px;
-        content: '';
+        content: "";
         position: absolute;
         width: 100%;
         height: 3px;
         border-radius: 0 0 3px 3px;
         background: #536a92;
-      }
+      } */
 
       & + .selected {
-        border-radius: 5px;
+        /* border-radius: 5px; */
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+      }
+
+      & + .message:not(.selected) {
+        &:before {
+          display: block;
+          margin-top: -1px;
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 3px;
+          border-radius: 0 0 3px 3px;
+          background: $color-message-selected
+        }
       }
     }
 
