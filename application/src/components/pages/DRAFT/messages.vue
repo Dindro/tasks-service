@@ -366,7 +366,7 @@
 
 <script>
 function hscrollbar() {
-  var elements = ["nav", "options", "messages-top", "messages-bottom"];
+  var elements = ["nav", "options", "messages-top"/* , "messages-bottom" */];
   var value = window.pageXOffset;
 
   for (let i = 0; i < elements.length; i++) {

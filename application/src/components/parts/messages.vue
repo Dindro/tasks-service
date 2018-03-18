@@ -321,7 +321,13 @@
 			</div>
 		</div>
 		<div id="messages-bottom">
-			<div class="messages-bottom-elements"></div>
+			<div class="messages-bottom-elements">
+				<textarea name="" id="message-new" placeholder="Введите сообщение..."></textarea>
+				<div class="elements-bottom">
+					<div class="attach-item">Прикрепить вложения</div>
+					<div class="send">Отправить</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -366,17 +372,18 @@ $color-time: rgba(120, 126, 140, 0.6);
     width: 100%;
     min-height: 100vh;
     padding-top: 107px;
-    padding-bottom: 50px;
+    padding-bottom: 140px;
     border-left: 1px solid $color-border;
     border-right: 1px solid $color-border;
   }
 
   #messages-bottom {
-    height: 50px;
+    height: 125px;
     width: 550px;
     position: fixed;
     bottom: 0;
     z-index: 100;
+		background-color: #FAFBFC;
 
     .messages-bottom-elements {
       height: 100%;
@@ -384,7 +391,39 @@ $color-time: rgba(120, 126, 140, 0.6);
       border: 1px solid $color-border;
       border-bottom: none;
       box-sizing: border-box;
-      background-color: white;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      #message-new {
+        width: 100%;
+        height: 63px;
+        outline: none;
+        resize: none;
+        overflow: auto;
+        box-sizing: border-box; // Иначе ширина выше
+        padding: 5px 10px 5px 10px;
+        line-height: 17px;
+        border-radius: 2px;
+        border-color: #D3D9DE;
+      }
+
+      .elements-bottom {
+        display: flex;
+        justify-content: space-between;
+				align-items: center;
+
+        .attach-item {
+        }
+
+        .send {
+          background-color: #4a76a8;
+          padding: 8px 14px;
+          color: white;
+          border-radius: 2px;
+        }
+      }
     }
   }
 }
@@ -455,6 +494,10 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
     display: flex;
     margin-top: 3px;
 
+    &:last-child {
+      padding-bottom: 3px;
+    }
+
     &.selected {
       background-color: $color-message-selected;
       border-radius: 3px 3px 0 0;
@@ -463,7 +506,6 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       &:last-child {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
-        padding-bottom: 3px;
       }
 
       & + .message.selected {
@@ -557,26 +599,25 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
             }
 
             .name-time {
-							padding-left: 5px;
-							
+              padding-left: 5px;
+
               span.name {
                 font-weight: 500;
-								color: $color-black;
-								display: block;
+                color: $color-black;
+                display: block;
               }
 
-							span.time{
-								color: $color-time;
-							}
+              span.time {
+                color: $color-time;
+              }
             }
           }
 
-					.insert-messages{
-
-						.insert-message{
-							padding: 3px 0;
-						}
-					}
+          .insert-messages {
+            .insert-message {
+              padding: 3px 0;
+            }
+          }
         }
       }
     }
