@@ -8,6 +8,8 @@
 				<span>Моя страница</span>
 				<span>Моя страница</span>
 				<span>Моя страница</span>
+				<router-link tag="span" to="/messages">Сообщения</router-link>
+				<router-link tag="span" to="/chats">Чат</router-link>
 			</div>
 		</div>
 		<router-view></router-view>
@@ -25,8 +27,8 @@ $color-black: #444444;
   margin: 0 auto;
   padding: 0 15px;
 
+  // Нужен для того чтобы сделать размер правильным из за float
   &::after {
-    // Нужен для того чтобы сделать размер правильным из за float
     content: " ";
     display: block;
     height: 0;
