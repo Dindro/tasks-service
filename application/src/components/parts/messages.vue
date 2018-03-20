@@ -3,7 +3,7 @@
 		<div id="messages-top">
 			<div class="messages-top-elements"></div>
 		</div>
-		<div class="messages">
+		<div class="messages" v-bind:style="{'padding-bottom': messagesHeight + 'px'}">
 			<div class="message-onetime">
 				<div class="photo"></div>
 				<div class="container">
@@ -320,8 +320,31 @@
 				</div>
 			</div>
 		</div>
-		<div id="messages-bottom">
+		<div id="messages-bottom" ref="messagesBottom">
 			<div class="messages-bottom-elements">
+				<div class="attach">
+					<div class="attach-messages">
+						<div class="attach-messages-content">
+							<span class="top">Прикрепленные сообщения</span>
+							<span class="bottom">3 сообщения</span>
+						</div>
+						<div class="close">x</div>
+					</div>
+					<div class="attach-images">
+						<div class="image">
+							<div class="close">x</div>
+						</div>
+						<div class="image">
+							<div class="close">x</div>
+						</div>
+						<div class="image">
+							<div class="close">x</div>
+						</div>
+						<div class="image">
+							<div class="close">x</div>
+						</div>
+					</div>
+				</div>
 				<textarea name="" id="message-new" placeholder="Введите сообщение..."></textarea>
 				<div class="elements-bottom">
 					<div class="attach-item">Прикрепить вложения</div>
@@ -333,6 +356,18 @@
 </template>
 
 <script>
+export default {
+  data() {
+    return {
+      messagesHeight: 0
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.messagesHeight = this.$refs.messagesBottom.clientHeight;
+    }); 
+  }
+};
 </script>
 
 <style lang="scss">
@@ -343,6 +378,7 @@ $color-active: #f0f2f5;
 
 $color-message-selected: #edf0f5;
 $color-time: rgba(120, 126, 140, 0.6);
+
 .dinamic-content {
   width: 550px;
   float: left;
@@ -378,15 +414,15 @@ $color-time: rgba(120, 126, 140, 0.6);
   }
 
   #messages-bottom {
-    height: 125px;
+    // height: 125px;
     width: 550px;
     position: fixed;
     bottom: 0;
     z-index: 100;
-		background-color: #FAFBFC;
+    background-color: #fafbfc;
 
     .messages-bottom-elements {
-      height: 100%;
+      // height: 100%;
       width: 100%;
       border: 1px solid $color-border;
       border-bottom: none;
@@ -394,7 +430,66 @@ $color-time: rgba(120, 126, 140, 0.6);
       padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      // justify-content: space-between;
+
+      .attach {
+        padding-bottom: 10px;
+
+        .attach-messages {
+          border-left: 2px solid #bccde0;
+          position: relative;
+
+          .attach-messages-content {
+            padding-left: 10px;
+
+            .top {
+              font-weight: 500;
+              padding-bottom: 3px;
+            }
+
+            .bottom {
+              padding-top: 3px;
+            }
+          }
+
+          .close {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+
+          span {
+            display: block;
+          }
+        }
+
+        .attach-images {
+          padding-top: 10px;
+          display: flex;
+
+          .image {
+            width: 100px;
+            height: 50px;
+            border-radius: 3px;
+            background-color: #f0f2f5;
+            margin: 0 2.5px;
+            position: relative;
+            display: flex;
+
+            &:first-child {
+              margin-left: 0;
+            }
+
+            &:last-child {
+              margin-right: 0;
+            }
+
+            .close {
+              margin: auto; // По середине блока
+            }
+          }
+        }
+      }
 
       #message-new {
         width: 100%;
@@ -406,16 +501,14 @@ $color-time: rgba(120, 126, 140, 0.6);
         padding: 5px 10px 5px 10px;
         line-height: 17px;
         border-radius: 2px;
-        border-color: #D3D9DE;
+        border-color: #d3d9de;
       }
 
       .elements-bottom {
         display: flex;
         justify-content: space-between;
-				align-items: center;
-
-        .attach-item {
-        }
+        align-items: center;
+        padding-top: 10px;
 
         .send {
           background-color: #4a76a8;
