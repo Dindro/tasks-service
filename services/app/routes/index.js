@@ -14,4 +14,7 @@ module.exports = (app) => {
 
     app.route('/api/v1/dialogues')
         .get(dialog.Get);
+
+    app.route('/api/v1/tasks')
+        .post()
 }

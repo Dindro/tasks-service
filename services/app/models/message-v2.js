@@ -19,7 +19,7 @@ models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMes
         (
             SELECT m.* FROM 
             (
-                SELECT * FROM messages WHERE id_chat = ${id_chat} WHERE messages.created > ${GetFromChat}
+                SELECT * FROM messages WHERE id_chat = ${id_chat} WHERE messages.created > ${GetFromChat()}
             )
             AS m WHERE ${GetViewsСondition("messages.created") /* Получаем условие */}
         ) 

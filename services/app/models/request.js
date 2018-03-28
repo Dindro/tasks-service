@@ -1,23 +1,20 @@
-var config = require("../libs/config");
-var async = require('async');
-var pool = require("./../libs/db");
+const db = require("@config/db");
+let model = {};
 
-module.exports = {
-    Create: async function (id_task, id_user_want) {
-        var query = "INSERT INTO RESERVES (ID_TASK, ID_USER_WANT) VALUES (?,?);";
-        var array = [id_task, id_user_want];
-        var reserve = await pool.GetResults(query, array);
-        return reserve;
-    },
+model.Create = async (idTask, idUserWant)=>{
+    let query = `
+        INSERT INTO request SET 
+        id_task = ${idTask},
+        id_user_want = ${idUserWant};
+    `;
 
-    GetByIdTask: async function (id_task) {
-        var query = "SELECT * FROM request WHERE id_task = ?;";
-        var array = [id_task];
-        try {
-            var request = await pool.GetResults(query, array);
-            return request;
-        } catch (e) {
-            throw new Error(e);
-        }
+    try {
+        const requests = await pool.GetResults(query, array);
+        return requests[0];
+    }
+    catch (e) {
+        throw e;
     }
 };
+
+module.exports = model;
