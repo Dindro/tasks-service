@@ -578,7 +578,9 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         min-height: $message-minH;
 
         .message-text {
-          padding: 23px 0 7px $message-text-ml;
+					padding-top: 23px;
+					padding-bottom: 7px;
+					padding-left: $message-text-ml;
         }
 
         .select {
@@ -610,7 +612,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       cursor: pointer;
 
       .select {
-        background-color: #7293b6;
+        display: block;
       }
 
 			.items{
@@ -658,7 +660,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       }
 
 			.select {
-				background-color: #7293b6;
+				display: block;
 			}
     }
 
@@ -692,24 +694,30 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
     }
 
     .select {
+			position: absolute;
       width: $select-wh;
       height: $select-wh;
       border-radius: 50%;
-      background-color: transparent;
+      background-color: #7293b6;
+			display: none;
       margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
       min-width: $select-wh;
     }
 
     .is-read {
       display: flex;
-      margin: 0 25px 0 5px;
+      margin: 0 25px 0 26px;
       flex: 1;
+			position: relative;
 
       .message-text {
         color: black;
         flex: 1;
-        padding: 7px 0 7px $message-text-ml;
         line-height: 18px;
+				padding-top: 7px;
+				padding-right: 50px;
+				padding-bottom: 7px;
+				padding-left: $message-text-ml;
 
         .insert {
           border-left: 2px solid #dee6ee;
@@ -750,6 +758,9 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       }
 
       .items {
+				position: absolute;
+				right: 0;
+
         .response,
         .favorite {
 					display: inline-block;
