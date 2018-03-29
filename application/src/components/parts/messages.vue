@@ -3,7 +3,7 @@
 		<div id="messages-top">
 			<div class="messages-top-elements"></div>
 		</div>
-		<div class="messages" v-bind:style="{'padding-bottom': messagesHeight + 'px'}">
+		<div class="messages" v-bind:style="styleMessageBottom">
 			<div class="message-onetime">
 				<div class="photo"></div>
 				<div class="container">
@@ -35,8 +35,8 @@
 								</div>
 							</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -45,8 +45,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -55,8 +55,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -65,8 +65,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -75,8 +75,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -85,8 +85,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -95,8 +95,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -105,8 +105,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -127,8 +127,8 @@
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -137,8 +137,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -147,8 +147,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -157,8 +157,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -179,8 +179,8 @@
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -189,8 +189,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -199,8 +199,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -209,8 +209,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -231,8 +231,8 @@
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -241,8 +241,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -251,8 +251,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -261,8 +261,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -282,8 +282,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -292,8 +292,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -302,8 +302,8 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
@@ -312,15 +312,17 @@
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response">Отв.</span>
-								<span class="favorite">Важн.</span>
+								<span class="response"></span>
+								<span class="favorite"></span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="messages-bottom" ref="messagesBottom">
+		<div id="messages-bottom">
+			<!--iframe - хак, для того чтобы отслеживать изменения реальной высоты (а не у стиля)-->
+			<iframe name="iframeMessagesBottom" width="100%" height="100%" style="position:absolute; border: 0; z-index:-1;"></iframe>
 			<div class="messages-bottom-elements">
 				<div class="attach">
 					<div class="attach-messages">
@@ -359,13 +361,25 @@
 export default {
   data() {
     return {
-      messagesHeight: 0
+      messagesBottomHeight: 0
     };
   },
+  computed: {
+    styleMessageBottom: function() {
+      return {
+        "padding-bottom": this.messagesBottomHeight + "px"
+      };
+    }
+  },
+  methods: {
+    Change: function(e) {
+      this.messagesBottomHeight = e.currentTarget.innerHeight;
+    }
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.messagesHeight = this.$refs.messagesBottom.clientHeight;
-    }); 
+		// Вызываем в первый раз чтобы изменил соотношение
+		this.Change({currentTarget:{innerHeight: iframeMessagesBottom.innerHeight}});
+    iframeMessagesBottom.onresize = this.Change;
   }
 };
 </script>
@@ -591,11 +605,28 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       padding-bottom: 3px;
     }
 
+		// При наведении
+    &:hover {
+      cursor: pointer;
+
+      .select {
+        background-color: #7293b6;
+      }
+
+			.items{
+				.response,
+				.favorite {
+					background-color: rgb(209, 209, 209) !important;
+				}
+			}
+    }
+
+		// Выбран
     &.selected {
       background-color: $color-message-selected;
       border-radius: 3px 3px 0 0;
 
-      // Последний селект во всем контейнер
+      // Последний селект во всем контейнере
       &:last-child {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
@@ -625,6 +656,10 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         border-radius: 0 0 3px 3px;
         background: $color-message-selected;
       }
+
+			.select {
+				background-color: #7293b6;
+			}
     }
 
     // Непрочитанные сообщения
@@ -660,7 +695,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       width: $select-wh;
       height: $select-wh;
       border-radius: 50%;
-      background-color: #7293b6;
+      background-color: transparent;
       margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
       min-width: $select-wh;
     }
@@ -711,6 +746,17 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
               padding: 3px 0;
             }
           }
+        }
+      }
+
+      .items {
+        .response,
+        .favorite {
+					display: inline-block;
+          width: 15px;
+          height: 15px;
+          background-color: transparent;
+          border-radius: 50%;
         }
       }
     }
