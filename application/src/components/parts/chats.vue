@@ -1,329 +1,327 @@
 <template>
-	<div class="dinamic">
-		<div class="dinamic-content">
-			<div id="chats-top">
-				<div class="chats-top-elements"></div>
-			</div>
-			<div class="chats">
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg df ааааааааааааааааааааааааааааааааааааааааааааа g f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
+	<div class="dinamic-content">
+		<div id="chats-top">
+			<div class="chats-top-elements"></div>
+		</div>
+		<div class="chats">
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg df ааааааааааааааааааааааааааааааааааааааааааааа g f </span>
+							<span class="task"> Открыть задачу</span>
 						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdf dfdfdfd f</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
+						<span class="time">20:24</span>
 					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdf dfdfdfd f</span>
 							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="chat">
-					<div class="photo"></div>
-					<div class="chat-details">
-						<div class="chat-details-top">
-							<div class="name-task">
-								<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
-								<span class="task"> Открыть задачу</span>
-							</div>
-							<span class="time">20:24</span>
-						</div>
-						<div class="chat-details-bottom">
-							<div class="read-status">
-								<div class="photo-message">
-									<div class="photo-sender"></div>
-									<span class="message">Привет как дела</span>
-								</div>
-								<div class="count">4</div>
-							</div>
+							<div class="count">4</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="chats-bottom">
-				<div class="chats-bottom-elements"></div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
 			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="photo"></div>
+				<div class="chat-details">
+					<div class="chat-details-top">
+						<div class="name-task">
+							<span class="name">Потрясилов Дмитрий Чт dfg dfg f </span>
+							<span class="task"> Открыть задачу</span>
+						</div>
+						<span class="time">20:24</span>
+					</div>
+					<div class="chat-details-bottom">
+						<div class="read-status">
+							<div class="photo-message">
+								<div class="photo-sender"></div>
+								<span class="message">Привет как дела</span>
+							</div>
+							<div class="count">4</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="chats-bottom">
+			<div class="chats-bottom-elements"></div>
 		</div>
 	</div>
 </template>
@@ -428,13 +426,13 @@ $color-active: #f0f2f5;
           color: $color-black;
           font-size: 13px;
           font-weight: 500;
-          white-space: nowrap; /* Запрещаем перенос строк */
-          overflow: hidden; /* Обрезаем все, что не помещается в область */
-          text-overflow: ellipsis; /* Добавляем многоточие */
+          white-space: nowrap; // Запрещаем перенос строк
+          overflow: hidden; // Обрезаем все, что не помещается в область
+          text-overflow: ellipsis; // Добавляем многоточие
         }
 
         .task {
-          white-space: nowrap; /* Запрещаем перенос строк */
+          white-space: nowrap; // Запрещаем перенос строк
           color: #7a7a7a;
           padding: 0 15px 0 10px;
         }
