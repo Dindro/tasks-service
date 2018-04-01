@@ -385,16 +385,16 @@
 </template>
 
 <script>
-function hscrollbar() {
-  var elements = ["nav", "options", "chats-top", "chats-bottom"];
-  var value = window.pageXOffset;
+// function hscrollbar() {
+//   var elements = ["nav", "options", "chats-top", "chats-bottom"];
+//   var value = window.pageXOffset;
 
-  for (element in elements) {
-		document.getElementById(element).style.transform = `translateX(${-value}px)`;
-  }
-}
-window.onscroll = hscrollbar;
-window.onresize = hscrollbar;
+//   for (element in elements) {
+// 		document.getElementById(element).style.transform = `translateX(${-value}px)`;
+//   }
+// }
+// window.onscroll = hscrollbar;
+// window.onresize = hscrollbar;
 </script>
 
 <style lang="scss">

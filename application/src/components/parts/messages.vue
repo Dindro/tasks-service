@@ -322,7 +322,7 @@
 		</div>
 		<div id="messages-bottom">
 			<!--iframe - хак, для того чтобы отслеживать изменения реальной высоты (а не у стиля)-->
-			<iframe name="iframeMessagesBottom" width="100%" height="100%" style="position:absolute; border: 0; z-index:-1;"></iframe>
+			<iframe id="iframe-messages-bottom" name="iframeMessagesBottom"></iframe>
 			<div class="messages-bottom-elements">
 				<div class="attach">
 					<div class="attach-messages">
@@ -377,8 +377,10 @@ export default {
     }
   },
   mounted() {
-		// Вызываем в первый раз чтобы изменил соотношение
-		this.Change({currentTarget:{innerHeight: iframeMessagesBottom.innerHeight}});
+    // Вызываем в первый раз чтобы изменил соотношение
+    this.Change({
+      currentTarget: { innerHeight: iframeMessagesBottom.innerHeight }
+    });
     iframeMessagesBottom.onresize = this.Change;
   }
 };
@@ -427,31 +429,39 @@ $color-time: rgba(120, 126, 140, 0.6);
     border-right: 1px solid $color-border;
   }
 
+	
+
   #messages-bottom {
-    // height: 125px;
     width: 550px;
     position: fixed;
     bottom: 0;
     z-index: 100;
     background-color: #fafbfc;
+		border-bottom: 15px solid #f5f5f5;
+
+		#iframe-messages-bottom{
+			height: calc(100% + 15px);
+			width: 100%;
+			position:absolute;
+			border: 0;
+			z-index:-1;
+		}
 
     .messages-bottom-elements {
-      // height: 100%;
       width: 100%;
       border: 1px solid $color-border;
-      border-bottom: none;
+			border-radius: 0 0 2px 2px;
       box-sizing: border-box;
       padding: 10px;
       display: flex;
       flex-direction: column;
-      // justify-content: space-between;
 
       .attach {
-        padding-bottom: 10px;
 
         .attach-messages {
           border-left: 2px solid #bccde0;
           position: relative;
+					margin-bottom: 10px;
 
           .attach-messages-content {
             padding-left: 10px;
@@ -478,8 +488,8 @@ $color-time: rgba(120, 126, 140, 0.6);
         }
 
         .attach-images {
-          padding-top: 10px;
           display: flex;
+					margin-bottom: 10px;
 
           .image {
             width: 100px;
@@ -578,9 +588,9 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         min-height: $message-minH;
 
         .message-text {
-					padding-top: 23px;
-					padding-bottom: 7px;
-					padding-left: $message-text-ml;
+          padding-top: 23px;
+          padding-bottom: 7px;
+          padding-left: $message-text-ml;
         }
 
         .select {
@@ -607,7 +617,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       padding-bottom: 3px;
     }
 
-		// При наведении
+    // При наведении
     &:hover {
       cursor: pointer;
 
@@ -615,15 +625,15 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         display: block;
       }
 
-			.items{
-				.response,
-				.favorite {
-					background-color: rgb(209, 209, 209) !important;
-				}
-			}
+      .items {
+        .response,
+        .favorite {
+          background-color: rgb(209, 209, 209) !important;
+        }
+      }
     }
 
-		// Выбран
+    // Выбран
     &.selected {
       background-color: $color-message-selected;
       border-radius: 3px 3px 0 0;
@@ -659,9 +669,9 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
         background: $color-message-selected;
       }
 
-			.select {
-				display: block;
-			}
+      .select {
+        display: block;
+      }
     }
 
     // Непрочитанные сообщения
@@ -694,12 +704,12 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
     }
 
     .select {
-			position: absolute;
+      position: absolute;
       width: $select-wh;
       height: $select-wh;
       border-radius: 50%;
       background-color: #7293b6;
-			display: none;
+      display: none;
       margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
       min-width: $select-wh;
     }
@@ -708,16 +718,16 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       display: flex;
       margin: 0 25px 0 26px;
       flex: 1;
-			position: relative;
+      position: relative;
 
       .message-text {
         color: black;
         flex: 1;
         line-height: 18px;
-				padding-top: 7px;
-				padding-right: 50px;
-				padding-bottom: 7px;
-				padding-left: $message-text-ml;
+        padding-top: 7px;
+        padding-right: 50px;
+        padding-bottom: 7px;
+        padding-left: $message-text-ml;
 
         .insert {
           border-left: 2px solid #dee6ee;
@@ -758,12 +768,12 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       }
 
       .items {
-				position: absolute;
-				right: 0;
+        position: absolute;
+        right: 0;
 
         .response,
         .favorite {
-					display: inline-block;
+          display: inline-block;
           width: 15px;
           height: 15px;
           background-color: transparent;

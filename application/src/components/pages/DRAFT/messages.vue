@@ -365,18 +365,18 @@
 </template>
 
 <script>
-function hscrollbar() {
-  var elements = ["nav", "options", "messages-top"/* , "messages-bottom" */];
-  var value = window.pageXOffset;
+// function hscrollbar() {
+//   var elements = ["nav", "options", "messages-top"/* , "messages-bottom" */];
+//   var value = window.pageXOffset;
 
-  for (let i = 0; i < elements.length; i++) {
-    document.getElementById(
-      elements[i]
-    ).style.transform = `translateX(${-value}px)`;
-  }
-}
-window.onscroll = hscrollbar;
-window.onresize = hscrollbar;
+//   for (let i = 0; i < elements.length; i++) {
+//     document.getElementById(
+//       elements[i]
+//     ).style.transform = `translateX(${-value}px)`;
+//   }
+// }
+// window.onscroll = hscrollbar;
+// window.onresize = hscrollbar;
 </script>
 
 <style lang="scss">

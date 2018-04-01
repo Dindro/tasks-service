@@ -101,19 +101,16 @@ $color-black: #444444;
       overflow: auto;
       padding-bottom: 8px;
 
-      &:hover {
-        &::-webkit-scrollbar-thumb {
-          background-color: #d9dadd;
-          border-radius: 10px;
-        }
-      }
-
       &::-webkit-scrollbar {
         width: 7px;
       }
       &::-webkit-scrollbar-thumb {
         background-color: $color-border;
         border-radius: 10px;
+
+        &:hover{
+          background-color: #d9dadd;
+        }
       }
 
       span {
