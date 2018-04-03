@@ -320,7 +320,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="messages-bottom">
+		<div id="messages-bottom" ref="messagesBottom">
 			<!--iframe - хак, для того чтобы отслеживать изменения реальной высоты (а не у стиля)-->
 			<iframe id="iframe-messages-bottom" name="iframeMessagesBottom"></iframe>
 			<div class="messages-bottom-elements">
@@ -359,9 +359,11 @@
 
 <script>
 export default {
-  data() {
+  data: function() {
     return {
-      messagesBottomHeight: 0
+      messagesBottomHeight: 0,
+      timeTranslateX: 0,
+      fixedElements: ["nav", "options", "messages-top", "messages-bottom"]
     };
   },
   computed: {
@@ -372,16 +374,41 @@ export default {
     }
   },
   methods: {
-    Change: function(e) {
-      this.messagesBottomHeight = e.currentTarget.innerHeight;
+    ChangeMessagesBottomHeight: function(event) {
+      const height = event.currentTarget.innerHeight;
+      console.log(height);
+      if (this.messagesBottomHeight != height)
+        this.messagesBottomHeight = height;
+    },
+    ChangeFixedElements: function(event) {
+      const value = window.pageXOffset;
+      if (value != this.timeTranslateX) {
+        for (let item of this.fixedElements) {
+          let element = document.getElementById(item);
+          element.style.transform = `translateX(${-value}px)`;
+        }
+        this.timeTranslateX = value;
+      }
     }
   },
-  mounted() {
+  mounted: function() {
     // Вызываем в первый раз чтобы изменил соотношение
-    this.Change({
+    this.ChangeMessagesBottomHeight({
       currentTarget: { innerHeight: iframeMessagesBottom.innerHeight }
     });
-    iframeMessagesBottom.onresize = this.Change;
+    iframeMessagesBottom.addEventListener(
+      "resize",
+      this.ChangeMessagesBottomHeight
+    );
+
+    // Для изменение оси Х фиксированных элементов
+    window.addEventListener("scroll", this.ChangeFixedElements);
+    window.addEventListener("resize", this.ChangeFixedElements);
+  },
+
+  beforeDestroy: function() {
+    window.removeEventListener("scroll", this.ChangeFixedElements);
+    window.removeEventListener("resize", this.ChangeFixedElements);
   }
 };
 </script>
@@ -429,39 +456,36 @@ $color-time: rgba(120, 126, 140, 0.6);
     border-right: 1px solid $color-border;
   }
 
-	
-
   #messages-bottom {
     width: 550px;
     position: fixed;
     bottom: 0;
     z-index: 100;
     background-color: #fafbfc;
-		border-bottom: 15px solid #f5f5f5;
+    border-bottom: 15px solid #f5f5f5;
 
-		#iframe-messages-bottom{
-			height: calc(100% + 15px);
-			width: 100%;
-			position:absolute;
-			border: 0;
-			z-index:-1;
-		}
+    #iframe-messages-bottom {
+      height: calc(100% + 15px);
+      width: 100%;
+      position: absolute;
+      border: 0;
+      z-index: -1;
+    }
 
     .messages-bottom-elements {
       width: 100%;
       border: 1px solid $color-border;
-			border-radius: 0 0 2px 2px;
+      border-radius: 0 0 2px 2px;
       box-sizing: border-box;
       padding: 10px;
       display: flex;
       flex-direction: column;
 
       .attach {
-
         .attach-messages {
           border-left: 2px solid #bccde0;
           position: relative;
-					margin-bottom: 10px;
+          margin-bottom: 10px;
 
           .attach-messages-content {
             padding-left: 10px;
@@ -489,7 +513,7 @@ $color-time: rgba(120, 126, 140, 0.6);
 
         .attach-images {
           display: flex;
-					margin-bottom: 10px;
+          margin-bottom: 10px;
 
           .image {
             width: 100px;
@@ -628,7 +652,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       .items {
         .response,
         .favorite {
-          background-color: rgb(209, 209, 209) !important;
+
         }
       }
     }
