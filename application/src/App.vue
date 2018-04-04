@@ -16,7 +16,7 @@ $color-background: #f5f5f5;
 body {
   @import url('https://fonts.googleapis.com/css?family=Roboto:500');
 
-  // Иконочный класс с подключением иконочных шрифтов
+  // Подключаем иконочный класс с подключением иконочных шрифтов
   @import "./assets/fontStyle.css";
 
   background-color: $color-background;
