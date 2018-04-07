@@ -1,3 +1,63 @@
+<script>
+import MessageItem from "./MessageItem";
+
+export default {
+  data: function() {
+    return {
+      messagesBottomHeight: 0,
+      timeTranslateX: 0,
+      fixedElements: ["nav", "options", "messages-top", "messages-bottom"]
+    };
+  },
+  computed: {
+    styleMessageBottom: function() {
+      return {
+        "padding-bottom": this.messagesBottomHeight + "px"
+      };
+    }
+  },
+  components: {
+    MessageItem
+  },
+  methods: {
+    ChangeMessagesBottomHeight: function(event) {
+      const height = event.currentTarget.innerHeight;
+      if (this.messagesBottomHeight != height)
+        this.messagesBottomHeight = height;
+    },
+    ChangeFixedElements: function(event) {
+      const value = window.pageXOffset;
+      if (value != this.timeTranslateX) {
+        for (let item of this.fixedElements) {
+          let element = document.getElementById(item);
+          element.style.transform = `translateX(${-value}px)`;
+        }
+        this.timeTranslateX = value;
+      }
+    }
+  },
+  mounted: function() {
+    // Вызываем в первый раз чтобы изменил соотношение
+    this.ChangeMessagesBottomHeight({
+      currentTarget: { innerHeight: iframeMessagesBottom.innerHeight }
+    });
+    iframeMessagesBottom.addEventListener(
+      "resize",
+      this.ChangeMessagesBottomHeight
+    );
+
+    // Для изменение оси Х фиксированных элементов
+    window.addEventListener("scroll", this.ChangeFixedElements);
+    window.addEventListener("resize", this.ChangeFixedElements);
+  },
+
+  beforeDestroy: function() {
+    window.removeEventListener("scroll", this.ChangeFixedElements);
+    window.removeEventListener("resize", this.ChangeFixedElements);
+  }
+};
+</script>
+
 <template>
 	<div class="dinamic-content">
 		<div id="messages-top">
@@ -14,7 +74,7 @@
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">
 								Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст 
@@ -35,78 +95,78 @@
 								</div>
 							</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
@@ -122,43 +182,43 @@
 						</div>
 					</div>
 					<div class="message selected unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
@@ -174,43 +234,43 @@
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
@@ -226,43 +286,43 @@
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста
 								Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message selected">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
@@ -278,42 +338,42 @@
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
 					<div class="message unread">
-						<div class="select"></div>
+						<div class="select icon-select"></div>
 						<div class="is-read">
 							<div class="message-text">Тут будет много текста Тут будет много текста</div>
 							<div class="items">
-								<span class="response"></span>
-								<span class="favorite"></span>
+								<span class="response icon-reply"></span>
+								<span class="favorite icon-star"></span>
 							</div>
 						</div>
 					</div>
@@ -356,62 +416,6 @@
 		</div>
 	</div>
 </template>
-
-<script>
-export default {
-  data: function() {
-    return {
-      messagesBottomHeight: 0,
-      timeTranslateX: 0,
-      fixedElements: ["nav", "options", "messages-top", "messages-bottom"]
-    };
-  },
-  computed: {
-    styleMessageBottom: function() {
-      return {
-        "padding-bottom": this.messagesBottomHeight + "px"
-      };
-    }
-  },
-  methods: {
-    ChangeMessagesBottomHeight: function(event) {
-      const height = event.currentTarget.innerHeight;
-      console.log(height);
-      if (this.messagesBottomHeight != height)
-        this.messagesBottomHeight = height;
-    },
-    ChangeFixedElements: function(event) {
-      const value = window.pageXOffset;
-      if (value != this.timeTranslateX) {
-        for (let item of this.fixedElements) {
-          let element = document.getElementById(item);
-          element.style.transform = `translateX(${-value}px)`;
-        }
-        this.timeTranslateX = value;
-      }
-    }
-  },
-  mounted: function() {
-    // Вызываем в первый раз чтобы изменил соотношение
-    this.ChangeMessagesBottomHeight({
-      currentTarget: { innerHeight: iframeMessagesBottom.innerHeight }
-    });
-    iframeMessagesBottom.addEventListener(
-      "resize",
-      this.ChangeMessagesBottomHeight
-    );
-
-    // Для изменение оси Х фиксированных элементов
-    window.addEventListener("scroll", this.ChangeFixedElements);
-    window.addEventListener("resize", this.ChangeFixedElements);
-  },
-
-  beforeDestroy: function() {
-    window.removeEventListener("scroll", this.ChangeFixedElements);
-    window.removeEventListener("resize", this.ChangeFixedElements);
-  }
-};
-</script>
 
 <style lang="scss">
 $color-background: #f5f5f5;
@@ -572,7 +576,7 @@ $color-time: rgba(120, 126, 140, 0.6);
 $message-top: 7px;
 $message-bottom: 7px;
 
-$select-wh: 16px; // Ширина и высота селекта
+$select-wh: 18px; // Ширина и высота селекта
 $photo-wh: 36px; // Ширина и высота фото
 
 $select-mt: $message-top + ($photo-wh/2) - ($select-wh/2);
@@ -580,7 +584,7 @@ $photo-ml: 5 + $select-wh + 10; // margin-left фото
 
 $message-minH: $message-top + $photo-wh + $message-bottom; // Когда только одно сообщение
 $message-text-ml: 5 + $photo-wh + 10;
-$message-top-left: 5 + $select-wh + 10 + $photo-wh + 10;
+$message-top-left: 5 + 16 + 10 + $photo-wh + 10;
 
 $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top контейнера
 
@@ -652,7 +656,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       .items {
         .response,
         .favorite {
-
+          display: inline-block !important;
         }
       }
     }
@@ -695,6 +699,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
       .select {
         display: block;
+        color: #7293B6;
       }
     }
 
@@ -731,10 +736,10 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       position: absolute;
       width: $select-wh;
       height: $select-wh;
-      border-radius: 50%;
-      background-color: #7293b6;
+      color: #99B0C6;
+      font-size: $select-wh;
       display: none;
-      margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
+      margin: 9px 0 8px 5px; // 9px из за margin-bottom: 3px
       min-width: $select-wh;
     }
 
@@ -793,15 +798,22 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
       .items {
         position: absolute;
-        right: 0;
+        right: 5px;
+        top: 7px;
 
         .response,
         .favorite {
-          display: inline-block;
-          width: 15px;
-          height: 15px;
-          background-color: transparent;
-          border-radius: 50%;
+          display: none;
+          width: 18px;
+          height: 18px;
+          color: rgb(163, 163, 163);
+          font-size: 18px;
+        }
+
+        .favorite {
+          font-size: 16px;
+          position: relative;
+          top: -1px;
         }
       }
     }
