@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import Authentication from '@/components/pages/Authentication/Authentication'
 import ListDialog from '@/components/pages/Dialog/ListDialog'
 import ListMessage from '@/components/pages/Message/ListMessage'
+import LoginPage from '../components/LoginPage'
 
 // Parts
 import head from '@/components/parts/head'
@@ -44,11 +45,11 @@ export default new Router({
       path: "",
       component: head, // Шапка
       children: [
-        // {
-        //   path: "/signup",
-        //   name: "registration",
-        //   component: registration
-        // },
+        {
+          path: "/",
+          name: "login",
+          component: LoginPage
+        },
         {
           path: "",
           component: navigation, // Левая навигация

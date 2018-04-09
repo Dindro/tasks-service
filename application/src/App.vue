@@ -14,14 +14,14 @@ export default {
 $color-background: #f5f5f5;
 
 body {
-  @import url('https://fonts.googleapis.com/css?family=Roboto:500');
+  @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
 
   // Подключаем иконочный класс с подключением иконочных шрифтов
   @import "./assets/fontStyle.css";
 
   background-color: $color-background;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 13px;
 }
 </style>
