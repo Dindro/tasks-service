@@ -1,23 +1,23 @@
 <script>
 export default {
-  data: function() {
+  data() {
     return {};
   }
-}
+};
 </script>
 
 <template>
-  <div class="main">
-    <div class="background"></div>
-    <div class="option">
-      <div class="container login">
-        <input type="text" name="login">
-        <input type="password" name="password">
-        <button>Вход</button>
-      </div>
-      <div class="container signup"></div>
-    </div>
-  </div>
+	<div class="main">
+		<div class="background"></div>
+		<div class="option">
+			<div class="container login">
+				<input type="text" name="login">
+				<input type="password" name="password">
+				<button>Вход</button>
+			</div>
+			<div class="container signup"></div>
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>

@@ -282,6 +282,7 @@
 
 <script>
 import store from "@/store/message.js";
+
 export default {
   data: function() {
     return {
