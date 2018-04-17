@@ -64,11 +64,11 @@ export default {
           // иначе: скролл вверх
 					//const rodeUpHeight = this.downLeftPos - rodeHeight;
 					/* this.lastDownScrollPos */
-          const isRode = (() => {
+          const isRodeUp = (() => {
             return this.downLeftPos - rodeHeight > YScrollPos;
           })();
-					console.log('isRodeUP ',isRode);
-          if (isRode) {
+					console.log('isRodeUP ',isRodeUp);
+          if (isRodeUp) {
             left.classList.add("fixed");
             left.style.marginTop = "";
             this.upLeftPos = YScrollPos;
