@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// начинается все отсюда
+import LoginPage from '../components/LoginPage'
+import UserPage from '../components/UserPage'
+
+
 // Страницы
 import Authentication from '@/components/pages/Authentication/Authentication'
 import ListDialog from '@/components/pages/Dialog/ListDialog'
 import ListMessage from '@/components/pages/Message/ListMessage'
-import LoginPage from '../components/LoginPage'
+
 
 // Parts
 import head from '@/components/parts/head'
@@ -29,10 +34,6 @@ import messagesStatic from '@/components/pages/DRAFT/messages'
 export default new Router({
 	mode: "history",
 	routes: [
-		// {
-		//   path: "/full",
-		//   component: full
-		// },
 		{
 			path: "/chatsstatic",
 			component: chatsStatic
@@ -46,12 +47,12 @@ export default new Router({
 			component: head, // Шапка
 			children: [
 				{
-					path: "/",
-					name: "login",
-					component: LoginPage
+					path: '/',
+					name: 'loginPage',
+					component: LoginPage,
 				},
 				{
-					path: "",
+					path: '',
 					component: navigation, // Левая навигация
 					children: [
 						{
@@ -69,6 +70,11 @@ export default new Router({
 									component: messages
 								},
 							]
+						},
+						{
+							path: '/:id',
+							name: 'userPage',
+							component: UserPage,
 						},
 						// {
 						//   path: "/test",
