@@ -238,8 +238,7 @@ export default {
           </div>
           <div class="line"></div>
           <div class="reviews-list">
-            <template v-for="n in 10">
-              <div class="review">
+              <div class="review" v-for="(n, i) in 10" :key="i">
                 <div class="user">
                   <div class="user-photo"></div>
                   <div class="user-info">
@@ -276,7 +275,6 @@ export default {
                 </div>
                 <div class="line"></div>
               </div>
-            </template>
           </div>
         </div>
       </div>
@@ -435,20 +433,19 @@ $color-border: #e3e4e8;
   }
 
   .rewiews {
-
-    .reviews-tab{
+    .reviews-tab {
       display: flex;
       padding: 0 10px;
-      
-      .reviews-tab-item{
+
+      .reviews-tab-item {
         padding: 17px 10px;
 
-        &.active{
-          border-bottom: 2px solid #4A76A8;
+        &.active {
+          border-bottom: 2px solid #4a76a8;
           padding-bottom: 15px;
         }
 
-        &:hover{
+        &:hover {
           border-bottom: 2px solid rgba(74, 118, 168, 0.37);
           padding-bottom: 15px;
         }
