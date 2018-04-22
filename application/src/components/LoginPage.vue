@@ -1,7 +1,18 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
+    }
   }
 };
 </script>
@@ -11,9 +22,9 @@ export default {
 		<div class="background"></div>
 		<div class="option">
 			<div class="container login">
-				<input type="text" name="login">
-				<input type="password" name="password">
-				<button>Вход</button>
+				<input type="text" name="login" v-model="email">
+				<input type="password" name="password" v-model="password">
+				<button @click="login">Вход</button>
 			</div>
 			<div class="container signup"></div>
 		</div>

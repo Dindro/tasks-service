@@ -3,6 +3,32 @@ export default {
   props: [],
   data() {
     return {
+      user: {
+        name: {
+          name: "Сергей",
+          surname: "Семенов"
+        },
+        age: 21,
+        city: "Чебоксары",
+        about: "Что нибудь о себе о себе о себе о себе",
+        status: false,
+        works: [
+          {
+            id: 1,
+            name: "Доставка еды"
+          },
+          {
+            id: 2,
+            name: "Компьютерная помощь"
+          },
+          {
+            id: 3,
+            name: "Создание сайтов"
+          }
+        ],
+        rating: 4.6,
+        ratings: {}
+      },
       lastYScrollPos: 0,
       upPos: 0,
       downPos: 0
@@ -83,11 +109,15 @@ export default {
         box.style.marginTop = "";
       }
       this.lastYScrollPos = YScrollPos;
+    },
+    getUser(idUser) {
+      // получаем с сервера о пользователе
     }
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
     window.addEventListener("resize", this.scroll);
+    this.getUser(1);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.scroll);
@@ -97,9 +127,9 @@ export default {
 </script>
 
 <template>
-	<div class="dinamic">
-		<div class="main-user">
-			<div id="left-column">
+  <div class="dinamic">
+    <div class="main-user">
+      <div id="left-column">
         <div class="user-photo mini-box">
           <div class="photo"></div>
           <button class="send-message">Отправить сообщение</button>
@@ -140,49 +170,38 @@ export default {
           </div>
         </div>
       </div>
-			<div class="right-column">
+      <div class="right-column">
         <div class="info mini-box">
           <div class="name-status">
-            <span class="name">Семенов Сергей</span>
-            <span class="status">Online</span>
+            <span class="name">{{user.name.name}} {{user.name.surname}}</span>
+            <span class="status">
+              <template v-if="user.status">Online</template>
+              <template v-else>Offline</template>
+            </span>
           </div>
           <div class="line after-name-status"></div>
           <div class="profile-info">
-            <div class="profile-info-row">
+            <div class="profile-info-row" v-if="user.age">
               <div class="properties">Возраст:</div>
-              <div class="description">18</div>
+              <div class="description">{{user.age}}</div>
             </div>
-            <div class="profile-info-row">
+            <div class="profile-info-row" v-if="user.city">
               <div class="properties">Город:</div>
-              <div class="description">Чебоксары</div>
+              <div class="description">{{user.city}}</div>
             </div>
-            <div class="profile-info-row">
+            <div class="profile-info-row" v-if="user.about">
               <div class="properties">О себе:</div>
-              <div class="description">
-                Описание описание описание описание Описание описание описание описание 
-                Описание описание описание описание Описание описание описание описание
-                Описание описание описание описание Описание описание описание описание
-                Описание описание описание описание Описание описание описание описание
-                Описание описание описание описание Описание описание описание описание
-                Описание описание описание описание Описание описание описание описание
-                Описание описание описание описание Описание описание описание описание
-              </div>
+              <div class="description">{{user.about}}</div>
             </div>
-            <div class="profile-info-row">
+            <div class="profile-info-row" v-if="user.works">
               <div class="properties">Виды выполняемых работ:</div>
               <div class="description">
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
-                <div class="work">Что то то то и его описание</div>
+                <div class="work" v-for="work of user.works">{{work.name}}</div>
               </div>
             </div>
             <div class="profile-info-row">
               <div class="properties">Средний рейтинг:</div>
-              <div class="description">4.6</div>
+              <div class="description">{{user.rating}}</div>
             </div>
             <div class="profile-info-row">
               <div class="properties">Рейтинг:</div>
@@ -238,48 +257,49 @@ export default {
           </div>
           <div class="line"></div>
           <div class="reviews-list">
-              <div class="review" v-for="(n, i) in 10" :key="i">
+            <div class="review" v-for="(n, i) in 10" :key="i">
+              <div class="border">
                 <div class="user">
                   <div class="user-photo"></div>
-                  <div class="user-info">
-                    <div class="name-worker">
-                      <span class="name"></span>
-                      <span class="worker"></span>
+                  <div class="user-info-time">
+                    <div class="user-info">
+                      <div class="name-worker">
+                        <span class="name">Якимова Кристина</span>
+                        <span class="worker">Заказчик</span>
+                      </div>
+                      <div class="rating">Рейтинг:
+                        <span class="rating-count">4.6</span>
+                      </div>
+                      <div class="review-description">Отзывы:
+                        <span class="review-count">4</span>
+                      </div>
                     </div>
-                    <div class="rating">
-                      Рейтинг:
-                      <span class="rating-count">4.6</span>
-                    </div>
-                    <div class="review-description">
-                      Отзывы:
-                      <span class="review-count">4</span>
-                    </div>
+                    <div class="time">3 апреля</div>
                   </div>
-                  <div class="time"></div>
                 </div>
                 <div class="review-task">
                   Отзыв задания "
                   <span class="task-name">Нужен курьер для доставки чего чего то</span>"
                 </div>
                 <div class="review-text">
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв 
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв 
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв 
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв 
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв 
+                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут
+                  находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится
+                  отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв
+                  Тут находится отзыв Тут находится отзыв Тут находится отзыв
                 </div>
                 <div class="review-rating">
                   <div class="review-rating-item">Вежливость</div>
                   <div class="review-rating-item">Пункутальность</div>
                   <div class="review-rating-item">Адекватнось</div>
                 </div>
-                <div class="line"></div>
               </div>
+
+            </div>
           </div>
         </div>
       </div>
-		</div>
-	</div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -289,18 +309,16 @@ $color-border: #e3e4e8;
   float: right;
   width: 795px;
 }
+
 .main-user {
-  margin-top: 70px;
-  //background-color: rgb(159, 185, 185);
+  margin-top: 70px; //background-color: rgb(159, 185, 185);
 }
 
 .mini-box {
   border: 1px solid rgb(230, 230, 230);
   background-color: white;
   border-radius: 5px;
-  margin-bottom: 15px;
-  //padding: 15px;
-
+  margin-bottom: 15px; //padding: 15px;
   &:last-child {
     margin-bottom: 0;
   }
@@ -311,11 +329,8 @@ $color-border: #e3e4e8;
 }
 
 #left-column {
-  float: left;
-  //height: 900px;
-  width: 230px;
-  //background: linear-gradient(to top, #ff0000, #00ff00);
-
+  float: left; //height: 900px;
+  width: 230px; //background: linear-gradient(to top, #ff0000, #00ff00);
   // кроме position ничего добавлять
   &.fixed {
     position: fixed;
@@ -373,11 +388,8 @@ $color-border: #e3e4e8;
 }
 
 .right-column {
-  margin-left: 245px;
-  //height: 2000px;
-  width: 550px;
-  //background: linear-gradient(to top, #10f0ca, #cf0f5f);
-
+  margin-left: 245px; //height: 2000px;
+  width: 550px; //background: linear-gradient(to top, #10f0ca, #cf0f5f);
   .info {
     .name-status {
       padding: 15px 20px;
@@ -455,7 +467,62 @@ $color-border: #e3e4e8;
         }
       }
     }
+
+    .reviews-list {
+      .review {
+        padding: 15px 20px 0 20px;
+
+        &:last-child {
+          .border {
+            border: none;
+            padding-bottom: 15px;
+          }
+        }
+
+        .border {
+          padding-bottom: 14px;
+          border-bottom: 1px solid #d6d6d6;
+        }
+
+        .user {
+          display: flex;
+
+          .user-photo {
+            height: 50px;
+            width: 50px;
+            background-color: grey;
+            border-radius: 50%;
+          }
+
+          .user-info-time {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+
+            .user-info {
+              padding-left: 10px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+          }
+        }
+
+        .review-task {
+          padding: 10px 0;
+          color: #acacac;
+        }
+
+        .review-text {
+          color: #424242;
+        }
+
+        .review-rating {
+          padding-top: 10px;
+          display: flex;
+        }
+      }
+    }
   }
 }
 </style>
-
