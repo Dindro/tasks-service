@@ -3,13 +3,14 @@ import Router from 'vue-router'
 
 // начинается все отсюда
 import LoginPage from '../components/LoginPage'
+import SignupPage from '../components/SignupPage'
 import UserPage from '../components/UserPage'
 
 
 // Страницы
-import Authentication from '@/components/pages/Authentication/Authentication'
+//import Authentication from '@/components/pages/Authentication/Authentication'
 import ListDialog from '@/components/pages/Dialog/ListDialog'
-import ListMessage from '@/components/pages/Message/ListMessage'
+//import ListMessage from '@/components/pages/Message/ListMessage'
 
 
 // Parts
@@ -20,7 +21,7 @@ import chats from '@/components/parts/chats'
 import messages from '@/components/parts/messages'
 
 import Workplace from '@/components/parts/Workplace'
-import Blockoption from '@/components/parts/Blockoption'
+//import Blockoption from '@/components/parts/Blockoption'
 /* import message from '@/components/parts/Message' */
 //const message = () => import("@/components/parts/Message");
 import registration from '@/components/pages/Registration/Registration'
@@ -50,6 +51,11 @@ export default new Router({
 					path: '/',
 					name: 'loginPage',
 					component: LoginPage,
+				},
+				{
+					path: '/signup',
+					name: 'signupPage',
+					component: SignupPage,
 				},
 				{
 					path: '',

@@ -3,18 +3,18 @@ const user = require('../api/user');
 // const dialog = require('@api/dialog');
 
 module.exports = (app) => {
-    // app.route('/api/v1/signup')
-    //     .post(user.Registration);
+	app.route('/api/v1/signup')
+		.post(user.registration);
 
-    app.route('/api/v1/auth')
-        .post(user.auth);
+	app.route('/api/v1/login')
+		.post(user.auth);
 
-    // app.route('/api/v1/messages')
-    //     .get(message.Get);
+	// app.route('/api/v1/messages')
+	//     .get(message.Get);
 
-    // app.route('/api/v1/dialogues')
-    //     .get(dialog.Get);
+	// app.route('/api/v1/dialogues')
+	//     .get(dialog.Get);
 
-    // app.route('/api/v1/tasks')
-    //     .post()
+	// app.route('/api/v1/tasks')
+	//     .post()
 }

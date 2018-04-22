@@ -281,9 +281,9 @@
 </template>
 
 <script>
-import store from "@/store/message.js";
+//import store from "@/store/message.js";
 
-export default {
+/* export default {
   data: function() {
     return {
       height: 0
@@ -314,7 +314,7 @@ export default {
     store.dispatch("RouteUpdate", { query: to.query });
     next();
   }
-};
+}; */
 </script>
 
 <style lang="scss" scoped>

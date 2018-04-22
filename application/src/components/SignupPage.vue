@@ -2,22 +2,22 @@
 export default {
   data() {
     return {
-      email: "",
-      password: ""
+      email: '',
+      password: '',
+      name: '',
+      surname: '',
+      birthday: Date.now(),
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("login", {
+    signup() {
+      this.$store.dispatch("signup", {
         email: this.email,
-        password: this.password
+        password: this.password,
+        name: this.name,
+        surname: this.surname,
+        birthday: this.birthday
       });
-      //this.$router.push({path: 'messages'});
-    }
-  },
-  computed: {
-    name() {
-      return this.$store.getters.name;
     }
   }
 };
@@ -28,9 +28,12 @@ export default {
 		<div class="background"></div>
 		<div class="option">
 			<div class="container login">
-				<input type="text" name="login" v-model="email">
+				<input type="text" name="email" v-model="email">
 				<input type="password" name="password" v-model="password">
-				<button @click="login">{{name}}</button>
+        <input type="text" name="name" v-model="name">
+        <input type="text" name="surname" v-model="surname">
+        <input type="date" name="surname" v-model="birthday">
+				<button @click="signup">Регистрация</button>
 			</div>
 			<div class="container signup"></div>
 		</div>

@@ -11,24 +11,49 @@ const store = new Vuex.Store({
 		userAuth: {}
 	},
 	getters: {
-
+		name(state) {
+			return state.userAuth.name;
+		}
 	},
 	mutations: {
-
+		userAuth(state, userAuth) {
+			state.userAuth = userAuth;
+		}
 	},
 	actions: {
 		login({ commit }, { email, password }) {
-			axios.post(`${taskAPI}/auth`, {
+			axios.post(`${taskAPI}/login`, {
 				email,
 				password
 			})
 				.then((response) => {
-					console.log(response);
+					const { data } = response;
+					console.log(data);
+					commit('userAuth', data.user);
 				})
 				.catch((e) => {
-					console.log("E", e);
+					console.log(e);
 				})
 		},
+
+		signup({ commit }, { email, password, name, surname, birthday }) {
+			axios.post(`${taskAPI}/signup`, {
+				email,
+				password,
+				name,
+				surname,
+				birthday
+			})
+				.then((response) => {
+					console.log(response);
+					if (!data.success) {
+						console.log("Ошибка", data.message);
+					}
+				})
+				.catch((e) => {
+					console.log(e);
+				})
+		}
 	}
 });
 
