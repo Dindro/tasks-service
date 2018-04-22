@@ -57,7 +57,7 @@ api.Post = async (req, res) => {
 	}
 };
 
-api.GetV2 = function (req, res) {
+api.GetV2 = async function (req, res) {
 	const id_user_request = 2;
 	let {
 		id_user_interlocutor,	// Собеседник

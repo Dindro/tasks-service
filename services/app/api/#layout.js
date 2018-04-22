@@ -2,7 +2,7 @@ const ModelTask = require("@models/task");
 
 let api = {};
 
-api.FunctionName = async (req, res) => {
+api.functionName = async (req, res) => {
 
 };
 

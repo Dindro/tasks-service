@@ -3,7 +3,7 @@ module.exports = {
         host: "localhost",
         user: "root",
         password: "root",
-        database: "servicesystem",
+        database: "tasks-service",
         port: 3306,
     }
 }

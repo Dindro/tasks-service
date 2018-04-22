@@ -3,7 +3,7 @@ var db = require("@config/db");
 var ModelRight = require("@models/right");
 
 GetByEmail = async (email) => {
-    const query = `SELECT * FROM users WHERE email = ?;`;
+    const query = `SELECT * FROM users WHERE email = ${email};`;
     const array = [email];
     try {
         var result = await db.GetResults(query, array);

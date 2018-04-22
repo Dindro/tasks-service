@@ -12,13 +12,13 @@ module.exports = {
         }
     },
 
-    GetResults: async function(query){
-        try {
-            return await this.GetResults(query, [])
-        } catch (e) {
-            throw e;
-        }
-    }
+    // GetResults: async function(query){
+    //     try {
+    //         return await this.GetResults(query, [])
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
 }
 
 var pool = mysql.createPool({

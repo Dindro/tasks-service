@@ -1,5 +1,5 @@
 const crypto = require('crypto'); //Занимается шифрованием
-const ModelUser = require('@models/user.js');
+const ModelUser = require('../models/user.js');
 const ModelRight = require('@models/right.js');
 
 let api = {};
@@ -35,11 +35,11 @@ api.Registration = async (req, res) => {
 	}
 };
 
-api.Auth = async (req, res) => {
+api.auth = async (req, res) => {
 	const { email, password } = req.body;
 	try {
 		let user = await ModelUser.GetByEmail(email);
-		if (user == undefined) {
+		if (user === undefined) {
 			res.status(400).json({ success: false, message: "Не правильный логин" });
 			return;
 		}
