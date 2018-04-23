@@ -9,6 +9,8 @@ module.exports = (app) => {
 	app.route('/api/v1/login')
 		.post(user.auth);
 
+	app.route('/api/v1/getUser')
+		.get(user.get);
 	// app.route('/api/v1/messages')
 	//     .get(message.Get);
 

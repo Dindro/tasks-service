@@ -56,7 +56,7 @@ api.auth = async (req, res) => {
 		else {
 			req.session.authorized = true;
 			req.session.id_user = user.id;
-			
+
 			delete user.hashedpassword;
 			delete user.salt;
 			delete user.id_image;
@@ -68,6 +68,11 @@ api.auth = async (req, res) => {
 	catch (e) {
 		res.status(500).json({ success: false, message: e });
 	}
+};
+
+api.get = async (req, res) => {
+	const id = req.session.id_user;
+	res.send(id);
 };
 
 module.exports = api;

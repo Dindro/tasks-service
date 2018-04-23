@@ -1,19 +1,36 @@
 require("module-alias/register");
-const express = require("express"),
-	app = express(),
-	bodyParser = require("body-parser"),
-	cookieParser = require('cookie-parser'),
-	cors = require("cors"),
-	http = require("http"),
-	server = http.Server(app),
-	io = require("socket.io")(server);
+const express = require("express");
+const	app = express();
+const	bodyParser = require("body-parser");
+const	cookieParser = require('cookie-parser');
+const	cors = require("cors");
+const	http = require("http");
+const	server = http.Server(app);
+const	io = require("socket.io")(server);
+const sessionStore = require("@config/sessionoption").sessionMiddleware;
 
-app.use(bodyParser.urlencoded({ extended: false })); //Аналогично предыдущему, только 'Content-Type' равен 'application/x-www-form-urlencoded'. Параметр { extended: false } означает обработку параметров тела запроса как строки или массива.
-app.use(bodyParser.json()); //Парсит тело только тех запросов, для которых 'Content-Type' равен 'application/json'. Результат парсинга сохраняется в объекте req.body
-app.use(cookieParser()); //Парсит cookie — результат сохраняется в объект req.cookies
-app.use(cors()); //Доступность с любого домена
-app.use(require("@config/sessionoption").sessionMiddleware); //Настройки сессии
+/*
+	аналогично предыдущему, только 'Content-Type' равен 'application/x-www-form-urlencoded'.
+	параметр { extended: false } означает обработку параметров тела запроса как строки или массива.
+*/
+app.use(bodyParser.urlencoded({ extended: false }));
 
+/* 
+	парсит тело только тех запросов, для которых 'Content-Type' равен 'application/json'.
+	результат парсинга сохраняется в объекте req.body
+*/
+app.use(bodyParser.json());
+
+// парсит cookie — результат сохраняется в объект req.cookies
+app.use(cookieParser());
+
+// доступность с любого домена
+app.use(cors());
+
+// настройки сессии
+app.use(sessionStore);
+
+// роутер
 require('@routes')(app);
 
 

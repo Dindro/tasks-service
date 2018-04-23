@@ -3,36 +3,15 @@ export default {
   props: [],
   data() {
     return {
-      user: {
-        name: {
-          name: "Сергей",
-          surname: "Семенов"
-        },
-        age: 21,
-        city: "Чебоксары",
-        about: "Что нибудь о себе о себе о себе о себе",
-        status: false,
-        works: [
-          {
-            id: 1,
-            name: "Доставка еды"
-          },
-          {
-            id: 2,
-            name: "Компьютерная помощь"
-          },
-          {
-            id: 3,
-            name: "Создание сайтов"
-          }
-        ],
-        rating: 4.6,
-        ratings: {}
-      },
       lastYScrollPos: 0,
       upPos: 0,
       downPos: 0
     };
+  },
+  computed: {
+    user() {
+      return this.$store.getters.userAuth;
+    }
   },
   methods: {
     scroll(e) {
@@ -112,6 +91,7 @@ export default {
     },
     getUser(idUser) {
       // получаем с сервера о пользователе
+      this.$store.dispatch('getUser');
     }
   },
   mounted() {
@@ -173,7 +153,7 @@ export default {
       <div class="right-column">
         <div class="info mini-box">
           <div class="name-status">
-            <span class="name">{{user.name.name}} {{user.name.surname}}</span>
+            <span class="name">{{user.name}} {{user.surname}}</span>
             <span class="status">
               <template v-if="user.status">Online</template>
               <template v-else>Offline</template>
@@ -181,9 +161,9 @@ export default {
           </div>
           <div class="line after-name-status"></div>
           <div class="profile-info">
-            <div class="profile-info-row" v-if="user.age">
+            <div class="profile-info-row" v-if="user.birthday">
               <div class="properties">Возраст:</div>
-              <div class="description">{{user.age}}</div>
+              <div class="description">{{user.birthday}}</div>
             </div>
             <div class="profile-info-row" v-if="user.city">
               <div class="properties">Город:</div>
@@ -293,7 +273,6 @@ export default {
                   <div class="review-rating-item">Адекватнось</div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

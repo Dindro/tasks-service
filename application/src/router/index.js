@@ -78,7 +78,7 @@ export default new Router({
 							]
 						},
 						{
-							path: '/:id',
+							path: '/id:id',
 							name: 'userPage',
 							component: UserPage,
 						},
