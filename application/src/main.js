@@ -4,8 +4,10 @@ import router from './router'
 import normilizeCss from 'normalize.css'
 import store from './store'
 
-Vue.use(normilizeCss); // Установка сброса стилей
+// установка сброса стилей
+Vue.use(normilizeCss); 
 
+// отключить предупреждение о работе в режиме разработки
 Vue.config.productionTip = false
 
 new Vue({

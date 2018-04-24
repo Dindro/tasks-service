@@ -1,10 +1,14 @@
-const crypto = require('crypto'); //Занимается шифрованием
-const ModelUser = require('../models/user.js');
-const ModelRight = require('@models/right.js');
+// занимается шифрованием
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const config = require('../../config');
+
+
+const User = require('../models/user.js');
 
 let api = {};
 
-api.registration = async (req, res) => {
+api.signup = async (req, res) => {
 	const { email, password, surname, name, birthday } = req.body;
 
 	try {
@@ -18,7 +22,7 @@ api.registration = async (req, res) => {
 			return;
 		}
 
-		const user = await ModelUser.getByEmail(email);
+		const user = await User.getByEmail(email);
 		if (user !== undefined) {
 			res.status(200).json({ success: false, message: "Пользователь уже существует" });
 			return;
@@ -26,7 +30,7 @@ api.registration = async (req, res) => {
 
 		const salt = Math.random() + 'salt';
 		const hashedpassword = encryptPassword(password, salt)
-		const insertId = await ModelUser.registration({
+		const insertId = await User.registration({
 			email,
 			hashedpassword,
 			salt,
@@ -34,16 +38,23 @@ api.registration = async (req, res) => {
 			name,
 			birthday
 		});
-		res.status(200).json({ success: true, insertId });
+
+		const token = jwt.sign(
+			{ id: insertId },
+			config.jwt.secret,
+			{ expiresIn: config.jwt.expires }
+		)
+
+		res.status(200).json({ success: true, insertId, token });
 	} catch (e) {
 		res.status(500).json({ success: false, message: e });
 	}
 };
 
-api.auth = async (req, res) => {
+api.login = async (req, res) => {
 	const { email, password } = req.body;
 	try {
-		let user = await ModelUser.getByEmail(email);
+		let user = await User.getByEmail(email);
 		if (user === undefined) {
 			res.status(200).json({ success: false, message: "Не правильный email" });
 			return;
@@ -54,15 +65,20 @@ api.auth = async (req, res) => {
 			return;
 		}
 		else {
-			req.session.authorized = true;
-			req.session.id_user = user.id;
+
+			// FIX: исправить сессию
+			const token = jwt.sign(
+				{ id: user.id },
+				config.jwt.secret,
+				{ expiresIn: config.jwt.expires }
+			);
 
 			delete user.hashedpassword;
 			delete user.salt;
 			delete user.id_image;
 			delete user.right;
 
-			res.status(200).json({ user });
+			res.status(200).json({ user, token });
 		}
 	}
 	catch (e) {
@@ -70,10 +86,15 @@ api.auth = async (req, res) => {
 	}
 };
 
+// TODO: сделать получение данных пользователя по сессии
 api.get = async (req, res) => {
-	const id = req.session.id_user;
-	res.send(id);
+	const id = req.userId;
+	res.send('hello');
 };
+
+api.logout = async (req, res) => {
+	res.status(200).send({ success: false, token: null });
+}
 
 module.exports = api;
 

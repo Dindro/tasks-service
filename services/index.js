@@ -1,13 +1,16 @@
-require("module-alias/register");
-const express = require("express");
-const	app = express();
-const	bodyParser = require("body-parser");
-const	cookieParser = require('cookie-parser');
-const	cors = require("cors");
-const	http = require("http");
-const	server = http.Server(app);
-const	io = require("socket.io")(server);
-const sessionStore = require("@config/sessionoption").sessionMiddleware;
+require('module-alias/register');
+
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const http = require('http');
+const server = http.Server(app);
+const io = require('socket.io')(server);
+
+// FIX: пока не нужен т.к. используем токены
+// const sessionStore = require('@config/sessionoption');
 
 /*
 	аналогично предыдущему, только 'Content-Type' равен 'application/x-www-form-urlencoded'.
@@ -28,16 +31,17 @@ app.use(cookieParser());
 app.use(cors());
 
 // настройки сессии
-app.use(sessionStore);
+// FIX: пока не нужен т.к. используем токены
+// app.use(sessionStore);
 
 // роутер
 require('@routes')(app);
 
 
-io.on("connection", function (socket) {
-	socket.on("hello", function (message) {
+io.on('connection', function (socket) {
+	socket.on('hello', function (message) {
 		console.log(message);
-		socket.emit("hello", "Привет от сервера");
+		socket.emit('hello', 'Привет от сервера');
 	});
 })
 

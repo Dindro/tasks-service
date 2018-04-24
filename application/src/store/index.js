@@ -8,15 +8,17 @@ const taskAPI = `http://${window.location.hostname}:3000/api/v1`;
 const HTTP = axios.create({
 	baseURL: taskAPI,
 	headers: {
-		Authorization: 'Bearer {token}'
+		'x-access-token': localStorage.getItem('token')
 	}
+	//withCredentials: true,
 });
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	state: {
-		userAuth: {}
+		userAuth: {},
+		isLogged: false,
 	},
 	getters: {
 		name(state) {
@@ -33,15 +35,18 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		login({ commit }, { email, password }) {
-			HTTP.post('login', {
-				email,
-				password
-			})
+			HTTP.post(
+				'login',
+				{
+					email,
+					password
+				})
 				.then((response) => {
 					const { data } = response;
 					console.log(response);
+
 					commit('userAuth', data.user);
-					localStorage.setItem('id_token', data.id_user);
+					localStorage.setItem('token', data.token);
 					router.push(`/id${data.user.id}`);
 				})
 				.catch((e) => {
@@ -76,6 +81,15 @@ const store = new Vuex.Store({
 				.catch((e) => {
 
 				});
+		},
+
+		// TEST: тестовая версия jwt
+		loginJWT({ commit }) {
+			// тут показываем спиннер
+			localStorage.setItem("token", "JWT");
+		},
+		logout({ commit }) {
+			localStorage.removeItem("token");
 		}
 	}
 });

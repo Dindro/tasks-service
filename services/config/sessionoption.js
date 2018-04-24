@@ -12,11 +12,11 @@ var options = {
 };
 var sessionStore = new MySQLStore(options);
 var sessionMiddleware = session({
-    key: 'session_cookie_name',
+    // key: 'session_cookie_name',
     secret: 'my_secret_cookie', //Для шифровании сессии
     store: sessionStore, //Где хотим хранить сессию
     resave: false,
     saveUninitialized: false
 });
 
-module.exports.sessionMiddleware = sessionMiddleware;
+module.exports = sessionMiddleware;

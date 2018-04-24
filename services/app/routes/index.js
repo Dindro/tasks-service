@@ -1,22 +1,18 @@
+const verifyToken = require('../../config/verifyToken');
 const user = require('../api/user');
 // const message = require('@api/message');
 // const dialog = require('@api/dialog');
 
-module.exports = (app) => {
+module.exports = (app, passport) => {
 	app.route('/api/v1/signup')
-		.post(user.registration);
+		.post(user.signup);
 
 	app.route('/api/v1/login')
-		.post(user.auth);
+		.post(user.login);
 
 	app.route('/api/v1/getUser')
-		.get(user.get);
-	// app.route('/api/v1/messages')
-	//     .get(message.Get);
+		.get(verifyToken, user.get);
 
-	// app.route('/api/v1/dialogues')
-	//     .get(dialog.Get);
-
-	// app.route('/api/v1/tasks')
-	//     .post()
+	app.route('/api/v1/logout')
+		.get(user.logout);
 }
