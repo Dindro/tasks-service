@@ -86,11 +86,14 @@ api.login = async (req, res) => {
 	}
 };
 
-// TODO: сделать получение данных пользователя по сессии
 api.get = async (req, res) => {
-	const id = req.userId;
+	let userId = parseInt(req.params.userId);
 
-	const user = await User.getById(id);
+	// 0 - значит нужно получить аккаунт по токену
+	if (userId === 0) {
+		userId = req.userId;
+	}
+	const user = await User.getById(userId);
 
 	delete user.hashedpassword;
 	delete user.salt;

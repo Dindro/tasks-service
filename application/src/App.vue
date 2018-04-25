@@ -20,7 +20,7 @@ body {
   // подключаем иконочный класс с подключением иконочных шрифтов
   @import "./assets/iconStyle.css";
 
-  background-color: $color-background;
+  background-color: $clr-background;
   margin: 0;
   font-family: "Roboto", sans-serif;
   font-size: 13px;

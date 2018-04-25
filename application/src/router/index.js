@@ -82,9 +82,10 @@ export default new Router({
 							]
 						},
 						{
-							path: '/id:id',
+							path: '/id:userId',
 							name: 'userPage',
 							component: UserPage,
+							props: true,
 						},
 						// {
 						//   path: "/test",

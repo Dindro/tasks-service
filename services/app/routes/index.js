@@ -10,7 +10,7 @@ module.exports = (app, passport) => {
 	app.route('/api/v1/login')
 		.post(user.login);
 
-	app.route('/api/v1/getUser')
+	app.route('/api/v1/getUser/:userId')
 		.get(verifyToken, user.get);
 
 	app.route('/api/v1/logout')

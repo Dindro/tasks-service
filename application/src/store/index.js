@@ -17,7 +17,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	state: {
 		userAuth: {},
-		isLogged: !!localStorage.getItem("token")
+		isLogged: !!localStorage.getItem("token"),
+		userVisit: {}
 	},
 	getters: {
 		name(state) {
@@ -79,27 +80,21 @@ const store = new Vuex.Store({
 				})
 		},
 
-		getUser({ commit }) {
-			HTTP.get('getUser')
-				.then((response) => {
-					const { data } = response;
-					if (data.success) {
-						commit('userAuth', data.user);
-					}
-					else {
-
-					}
-				})
-				.catch((e) => {
-
-				});
+		async getUser({ commit, state }, { userId }) {
+			try {
+				/*
+					делаем запрос
+					приходит ответ
+					берем данные
+				*/
+				const { data } = await HTTP.get(`getUser/${userId}`);
+				return data.user;
+			}
+			catch (e) {
+				console.log(e);
+			}
 		},
 
-		// TEST: тестовая версия jwt
-		loginJWT({ commit }) {
-			// тут показываем спиннер
-			localStorage.setItem("token", "JWT");
-		},
 		logout({ commit }) {
 			localStorage.removeItem("token");
 			commit('isLogged', false);

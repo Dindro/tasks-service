@@ -1,23 +1,28 @@
 <script>
 export default {
-  props: [],
+  props: ["userId"],
   data() {
     return {
       lastYScrollPos: 0,
       upPos: 0,
-      downPos: 0
+      downPos: 0,
+      user: {}
     };
   },
   computed: {
-    user() {
+    /* user() {
       return this.$store.getters.userAuth;
+    } */
+    isMyPage() {
+      const { id } = this.$store.getters.userAuth;
+      return this.userId === id;
     }
   },
   methods: {
     scroll(e) {
       // условия - класс элемента не должен фиксироваться
       const boxID = "left-column";
-      const boxTop = 70;
+      const boxTop = 57;
       const boxBottom = 15;
       const YScrollPos = e.currentTarget.scrollY;
 
@@ -89,15 +94,20 @@ export default {
       }
       this.lastYScrollPos = YScrollPos;
     },
-    getUser(idUser) {
+    async getUser(userId) {
       // получаем с сервера о пользователе
-      this.$store.dispatch('getUser');
-    }
+      const user = await this.$store.dispatch("getUser", { userId });
+      this.user = user;
+    },
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
     window.addEventListener("resize", this.scroll);
-    this.getUser(1);
+    
+    // получаем авторизированного пользователя
+    
+    
+    this.getUser(this.userId);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.scroll);
@@ -112,7 +122,8 @@ export default {
       <div id="left-column">
         <div class="user-photo mini-box">
           <div class="photo"></div>
-          <button class="send-message">Отправить сообщение</button>
+          <button class="send-message" v-if="!isMyPage">Отправить сообщение</button>
+          <button class="edit-profile" v-else>Редактировать профиль</button>
         </div>
         <div class="mini-box friends">
           Избранные 43
@@ -282,7 +293,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-$color-border: #e3e4e8;
+@import "../assets/colors.scss";
 
 .dinamic {
   float: right;
@@ -290,11 +301,11 @@ $color-border: #e3e4e8;
 }
 
 .main-user {
-  margin-top: 70px; //background-color: rgb(159, 185, 185);
+  margin-top: 57px;
 }
 
 .mini-box {
-  border: 1px solid rgb(230, 230, 230);
+  border: 1px solid $clr-box-border;
   background-color: white;
   border-radius: 5px;
   margin-bottom: 15px; //padding: 15px;
@@ -304,7 +315,7 @@ $color-border: #e3e4e8;
 }
 
 .line {
-  border-top: 1px solid $color-border;
+  border-top: 1px solid $clr-border;
 }
 
 #left-column {
@@ -320,16 +331,26 @@ $color-border: #e3e4e8;
 
     .photo {
       height: 200px;
-      background-color: violet;
+      background-color: dimgrey;
     }
 
-    .send-message {
+    button {
       width: 100%;
-      background-color: slateblue;
+      color: white;
       border: none;
       margin-top: 15px;
       border-radius: 3px;
       padding: 10px;
+      cursor: pointer;
+
+      &.send-message {
+        background-color: $clr-button;
+      }
+
+      &.edit-profile {
+        background-color: $clr-button-light;
+        color: $clr-font-button-light;
+      }
     }
   }
 
