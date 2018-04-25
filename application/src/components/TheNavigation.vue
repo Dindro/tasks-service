@@ -1,0 +1,152 @@
+<script>
+export default {
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  computed: {
+    isLogged() {
+      return this.$store.getters.isLogged;
+    }
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
+    },
+    signup() {
+      this.$router.push({ path: "signup" });
+    },
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  }
+};
+</script>
+
+<template>
+	<div class="main">
+		<div id="nav">
+			<div class="nav-content">
+        <template v-if="isLogged">
+          <div class="nav-router">
+            <router-link tag="div" to="/id1">
+              <i class="icon-home"></i>
+              Моя страница
+            </router-link>
+            <router-link tag="div" to="/signup">
+              <i class="icon-check_circle"></i>
+              Регистрация
+            </router-link>
+            <router-link tag="div" to="/">Авторизация</router-link>
+            <router-link tag="div" to="/messages">Сообщения</router-link>
+            <router-link tag="div" to="/chats">Чат</router-link>
+            <div @click="logout">Выйти</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="auth">
+            <input 
+              type="text" 
+              name="email"
+              id="email"
+              placeholder="Email"
+              v-model="email"
+            >
+            <input type="password" name="password" id="password" placeholder="Пароль" v-model="password">
+            <button class="login" @click="login">Войти</button>
+            <button class="signup" @click="signup">Регистрация</button>
+          </div>
+        </template>
+			</div>
+		</div>
+		<router-view></router-view>
+	</div>
+</template>
+
+<style lang="scss">
+$color-black: #444444;
+
+.main {
+  width: 960px;
+  margin: 0 auto;
+  padding: 0 15px;
+
+  // Нужен для того чтобы сделать размер правильным из за float
+  &::after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+  }
+
+  #nav {
+    position: fixed;
+    min-height: 100vh;
+    width: 149px;
+    margin-top: 57px;
+    float: left;
+
+    > .nav-content {
+      width: 100%;
+
+      .nav-router {
+        div {
+          cursor: pointer;
+          position: relative;
+          padding: 8px 0 8px 35px;
+          margin-left: -7px;
+          color: $color-black;
+          white-space: nowrap; /* Запрещаем перенос строк */
+          overflow: hidden; /* Обрезаем все, что не помещается в область */
+
+          &:hover {
+            background-color: #e1e5eb;
+            border-radius: 2px;
+          }
+
+          i {
+            position: absolute;
+            top: 4px;
+            left: 7px;
+            font-size: 19px;
+            color: $color-black;
+          }
+        }
+      }
+
+      .auth {
+        input {
+          border: 1px solid #e1e5eb;
+          border-radius: 3px;
+          padding: 7px 10px;
+          box-sizing: border-box;
+          width: 100%;
+        }
+
+        #password {
+          margin-top: 5px;
+        }
+
+        button {
+          width: 100%;
+          border: none;
+          margin-top: 5px;
+          padding: 7px 10px;
+          border-radius: 3px;
+          background-color: #5181b8;
+          color: white;
+        }
+
+        .login {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+</style>

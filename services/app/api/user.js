@@ -89,7 +89,13 @@ api.login = async (req, res) => {
 // TODO: сделать получение данных пользователя по сессии
 api.get = async (req, res) => {
 	const id = req.userId;
-	res.send('hello');
+
+	const user = await User.getById(id);
+
+	delete user.hashedpassword;
+	delete user.salt;
+
+	res.json({ success: true, user });
 };
 
 api.logout = async (req, res) => {

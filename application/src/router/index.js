@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// начинается все отсюда
+// части
+import TheNavigation from '@/components/TheNavigation'
+import TheHeader from '@/components/TheHeader'
+
+// страницы
 import LoginPage from '../components/LoginPage'
 import SignupPage from '../components/SignupPage'
 import UserPage from '../components/UserPage'
@@ -14,8 +18,7 @@ import ListDialog from '@/components/pages/Dialog/ListDialog'
 
 
 // Parts
-import head from '@/components/parts/head'
-import navigation from '@/components/parts/navigation'
+
 import messagesNavigation from '@/components/parts/messagesNavigation'
 import chats from '@/components/parts/chats'
 import messages from '@/components/parts/messages'
@@ -25,13 +28,13 @@ import Workplace from '@/components/parts/Workplace'
 /* import message from '@/components/parts/Message' */
 //const message = () => import("@/components/parts/Message");
 import registration from '@/components/pages/Registration/Registration'
-Vue.use(Router)
 
 //Draft
 import full from '@/components/pages/DRAFT/full'
 import chatsStatic from '@/components/pages/DRAFT/chats'
 import messagesStatic from '@/components/pages/DRAFT/messages'
 
+Vue.use(Router);
 export default new Router({
 	mode: "history",
 	routes: [
@@ -45,7 +48,7 @@ export default new Router({
 		},
 		{
 			path: "",
-			component: head, // Шапка
+			component: TheHeader, // Шапка
 			children: [
 				{
 					path: '/',
@@ -59,7 +62,8 @@ export default new Router({
 				},
 				{
 					path: '',
-					component: navigation, // Левая навигация
+					// левая навигация
+					component: TheNavigation,
 					children: [
 						{
 							path: "",

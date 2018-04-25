@@ -10,7 +10,6 @@ const HTTP = axios.create({
 	headers: {
 		'x-access-token': localStorage.getItem('token')
 	}
-	//withCredentials: true,
 });
 
 Vue.use(Vuex);
@@ -18,7 +17,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	state: {
 		userAuth: {},
-		isLogged: false,
+		isLogged: !!localStorage.getItem("token")
 	},
 	getters: {
 		name(state) {
@@ -26,11 +25,17 @@ const store = new Vuex.Store({
 		},
 		userAuth(state) {
 			return state.userAuth;
+		},
+		isLogged(state) {
+			return state.isLogged;
 		}
 	},
 	mutations: {
 		userAuth(state, userAuth) {
 			state.userAuth = userAuth;
+		},
+		isLogged(state, isLogged) {
+			state.isLogged = isLogged;
 		}
 	},
 	actions: {
@@ -46,6 +51,7 @@ const store = new Vuex.Store({
 					console.log(response);
 
 					commit('userAuth', data.user);
+					commit('isLogged', true);
 					localStorage.setItem('token', data.token);
 					router.push(`/id${data.user.id}`);
 				})
@@ -76,7 +82,13 @@ const store = new Vuex.Store({
 		getUser({ commit }) {
 			HTTP.get('getUser')
 				.then((response) => {
+					const { data } = response;
+					if (data.success) {
+						commit('userAuth', data.user);
+					}
+					else {
 
+					}
 				})
 				.catch((e) => {
 
@@ -90,6 +102,8 @@ const store = new Vuex.Store({
 		},
 		logout({ commit }) {
 			localStorage.removeItem("token");
+			commit('isLogged', false);
+			commit('userAuth', {});
 		}
 	}
 });
