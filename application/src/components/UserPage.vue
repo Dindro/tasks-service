@@ -15,7 +15,7 @@ export default {
     } */
     isMyPage() {
       const { id } = this.$store.getters.userAuth;
-      return this.userId === id;
+      return parseInt(this.userId) === id;
     }
   },
   methods: {
@@ -98,15 +98,15 @@ export default {
       // получаем с сервера о пользователе
       const user = await this.$store.dispatch("getUser", { userId });
       this.user = user;
-    },
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
     window.addEventListener("resize", this.scroll);
-    
+
     // получаем авторизированного пользователя
-    
-    
+    this.$store.dispatch("getUserAuth");
+
     this.getUser(this.userId);
   },
   beforeDestroy() {
@@ -126,31 +126,12 @@ export default {
           <button class="edit-profile" v-else>Редактировать профиль</button>
         </div>
         <div class="mini-box friends">
-          Избранные 43
+          Избранные
+          <span class="friends-count">34</span>
           <div class="friends-list">
-            <div class="friend">
+            <div class="friend" v-for="n in 6">
               <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
-            </div>
-            <div class="friend">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
-            </div>
-            <div class="friend">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
-            </div>
-            <div class="friend">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
-            </div>
-            <div class="friend">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
-            </div>
-            <div class="friend">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Дмитрий</span>
+              <span class="friend-name">Александр</span>
             </div>
           </div>
         </div>
@@ -307,7 +288,7 @@ export default {
 .mini-box {
   border: 1px solid $clr-box-border;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 2px;
   margin-bottom: 15px; //padding: 15px;
   &:last-child {
     margin-bottom: 0;
@@ -342,14 +323,23 @@ export default {
       border-radius: 3px;
       padding: 10px;
       cursor: pointer;
+      transition: background-color 0.2s ease;
 
       &.send-message {
-        background-color: $clr-button;
+        background-color: $clr-btn;
+
+        &:hover {
+          background-color: $clr-btn-hover;
+        }
       }
 
       &.edit-profile {
-        background-color: $clr-button-light;
-        color: $clr-font-button-light;
+        background-color: $clr-btn-light;
+        color: $clr-btn-font-light;
+
+        &:hover {
+          background-color: $clr-btn-hover-light;
+        }
       }
     }
   }
@@ -358,8 +348,13 @@ export default {
     padding: 15px;
     padding-bottom: 5px;
 
+    .friends-count {
+      color: $clr-font-grey;
+      padding-left: 5px;
+    }
+
     .friends-list {
-      padding-top: 15px;
+      padding-top: 20px;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -382,6 +377,17 @@ export default {
         display: block;
         margin: 0 auto;
         margin-top: 5px;
+        font-size: 12.5px;
+        color: $clr-font-blue;
+
+        // запрещаем перенос строк
+        white-space: nowrap;
+
+        // обрезаем все, что не помещается в область
+        overflow: hidden;
+
+        // добавляем многоточие
+        text-overflow: ellipsis;
       }
     }
   }

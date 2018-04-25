@@ -2,14 +2,24 @@ $clr-background: #f5f5f5;
 
 // основной цвет
 $clr-blue: #4a76a8;
-$clr-border: #e3e4e8;
+$clr-border: #E3E4E8;
 
 $clr-box-border: $clr-border;
 
-$clr-button: $clr-blue;
-$clr-button-light: #E5EBF1;
+$clr-btn: $clr-blue;
+$clr-btn-hover: #5b88bd;
+
+// лайтовая кнопка
+$clr-btn-light: #E5EBF1;
+$clr-btn-hover-light: #dfe6ed;
+$clr-btn-font-light: #55677d;
 
 // цвет шрифтов
 $clr-font-black: #444444;  
 $clr-font-white: #ffffff;
-$clr-font-button-light: #55677d;
+$clr-font-blue: #285473;
+// USE: при указании количетсво
+$clr-font-grey: #939393;
+
+// цвет иконок
+$clr-icon-light: #99B0C6;

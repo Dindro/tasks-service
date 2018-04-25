@@ -95,6 +95,11 @@ const store = new Vuex.Store({
 			}
 		},
 
+		async getUserAuth({ commit, dispatch }) {
+			const userAuth = await dispatch('getUser', { userId: 0 });
+			commit('userAuth', userAuth);
+		},
+
 		logout({ commit }) {
 			localStorage.removeItem("token");
 			commit('isLogged', false);

@@ -69,7 +69,7 @@ export default {
 </template>
 
 <style lang="scss">
-$color-black: #444444;
+@import '../assets/colors.scss';
 
 .main {
   width: 960px;
@@ -91,7 +91,7 @@ $color-black: #444444;
     margin-top: 57px;
     float: left;
 
-    > .nav-content {
+    .nav-content {
       width: 100%;
 
       .nav-router {
@@ -100,12 +100,12 @@ $color-black: #444444;
           position: relative;
           padding: 8px 0 8px 35px;
           margin-left: -7px;
-          color: $color-black;
+          color: $clr-font-blue;
           white-space: nowrap; /* Запрещаем перенос строк */
           overflow: hidden; /* Обрезаем все, что не помещается в область */
 
           &:hover {
-            background-color: #e1e5eb;
+            background-color: $clr-btn-light;
             border-radius: 2px;
           }
 
@@ -114,7 +114,7 @@ $color-black: #444444;
             top: 4px;
             left: 7px;
             font-size: 19px;
-            color: $color-black;
+            color: $clr-icon-light;
           }
         }
       }
@@ -143,7 +143,7 @@ $color-black: #444444;
           color: white;
           cursor: pointer;
 
-          &:hover{
+          &:hover {
             background-color: #618ec2;
           }
         }

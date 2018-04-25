@@ -13,6 +13,7 @@ export default {
 <style lang="scss">
 // подключаем цвета
 @import "./assets/colors.scss";
+@import "./assets/restart.scss";
 
 body {
   @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
