@@ -11,17 +11,18 @@ export default {
 </script>
 
 <style lang="scss">
-$color-background: #f5f5f5;
+// подключаем цвета
+@import "./assets/colors.scss";
 
 body {
-  @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+  @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
 
-  // Подключаем иконочный класс с подключением иконочных шрифтов
-  @import "./assets/fontStyle.css";
+  // подключаем иконочный класс с подключением иконочных шрифтов
+  @import "./assets/iconStyle.css";
 
   background-color: $color-background;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 13px;
 }
 </style>
