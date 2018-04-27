@@ -132,7 +132,7 @@ export default {
             <span class="friends-count">34</span>
           </div>
           <div class="friends-list">
-            <div class="friend" v-for="n in 6">
+            <div class="friend" v-for="(friend, key) in 6" :key="key">
               <div class="friend-photo"></div>
               <span class="friend-name">Александр</span>
             </div>
@@ -144,7 +144,7 @@ export default {
             <span class="tasks-count">4</span>
           </div>
           <div class="tasks-list">
-            <div class="task" v-for="n in 10">Заменить экран на Xiaomi Redmi Note 4x</div>
+            <div class="task" v-for="(task, key) in 6" :key="key">Заменить экран на Xiaomi Redmi Note 4x</div>
           </div>
         </div>
       </div>
@@ -174,7 +174,9 @@ export default {
             <div class="profile-info-row" v-if="user.works">
               <div class="properties">Виды выполняемых работ:</div>
               <div class="description">
-                <div class="work" v-for="work of user.works">{{work.name}}</div>
+                <div class="work" v-for="(work, key) in user.works" :key="key">
+                  {{work.name}}
+                </div>
               </div>
             </div>
             <div class="profile-info-row">
@@ -241,7 +243,7 @@ export default {
           </div>
           <!-- <div class="line"></div> -->
           <div class="reviews-list">
-            <div class="review" v-for="(n, i) in 10" :key="i">
+            <div class="review" v-for="(review, key) in 10" :key="key">
               <div class="border">
                 <div class="user">
                   <div class="user-photo"></div>
