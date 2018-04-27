@@ -65,8 +65,6 @@ api.login = async (req, res) => {
 			return;
 		}
 		else {
-
-			// FIX: исправить сессию
 			const token = jwt.sign(
 				{ id: user.id },
 				config.jwt.secret,
@@ -91,7 +89,12 @@ api.get = async (req, res) => {
 
 	// 0 - значит нужно получить аккаунт по токену
 	if (userId === 0) {
-		userId = req.userId;
+		if (req.userId === undefined) {
+			return res.json({ success: false });
+		}
+		else {
+			userId = req.userId;
+		}
 	}
 	const user = await User.getById(userId);
 
