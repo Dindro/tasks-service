@@ -31,7 +31,7 @@ export default {};
         <div class="tasks-list">
           <div class="task" v-for="(task, i) in 50" :key="i">
             <div class="task-name-price">
-              <div class="task-name">Заменить экран на Xiaomi Redmi Note 4x Заменить экран на Xiaomi Redmi Note 4x</div>
+              <div class="task-name">Заменить экран на Xiaomi Redmi Note 4x</div>
               <div class="price">600 руб</div>
             </div>
             <div class="user-task-info">
@@ -230,6 +230,7 @@ $color-black: #444444;
           }
 
           .price {
+            padding-top: 1px;
             font-weight: 500;
             white-space: nowrap;
           }
@@ -285,7 +286,6 @@ $color-black: #444444;
 }
 
 #options {
-  height: 400px;
   width: 230px;
   margin: 57px 0 15px 565px;
 
