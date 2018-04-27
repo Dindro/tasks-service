@@ -9,6 +9,7 @@ import TheHeader from '@/components/TheHeader'
 import LoginPage from '../components/LoginPage'
 import SignupPage from '../components/SignupPage'
 import UserPage from '../components/UserPage'
+import TasksPage from '../components/TasksPage'
 
 
 // Страницы
@@ -26,7 +27,7 @@ import messages from '@/components/parts/messages'
 import Workplace from '@/components/parts/Workplace'
 //import Blockoption from '@/components/parts/Blockoption'
 /* import message from '@/components/parts/Message' */
-//const message = () => import("@/components/parts/Message");
+//const message = () => import('@/components/parts/Message');
 import registration from '@/components/pages/Registration/Registration'
 
 //Draft
@@ -36,18 +37,18 @@ import messagesStatic from '@/components/pages/DRAFT/messages'
 
 Vue.use(Router);
 export default new Router({
-	mode: "history",
+	mode: 'history',
 	routes: [
 		{
-			path: "/chatsstatic",
+			path: '/chatsstatic',
 			component: chatsStatic
 		},
 		{
-			path: "/messagesstatic",
+			path: '/messagesstatic',
 			component: messagesStatic
 		},
 		{
-			path: "",
+			path: '',
 			component: TheHeader, // Шапка
 			children: [
 				{
@@ -61,25 +62,32 @@ export default new Router({
 					component: SignupPage,
 				},
 				{
-					path: '',
 					// левая навигация
+					path: '',
 					component: TheNavigation,
 					children: [
 						{
-							path: "",
-							component: messagesNavigation, // Навигация по сообщениям
+							// навигация по сообщениям
+							path: '',
+							component: messagesNavigation,
 							children: [
 								{
-									path: "/chats",
-									name: "chats",
+									path: '/chats',
+									name: 'chats',
 									component: chats
 								},
 								{
-									path: "/messages",
-									name: "messages",
+									path: '/messages',
+									name: 'messages',
 									component: messages
 								},
 							]
+						},
+						{
+							// страница задач
+							name: 'tasks',
+							path: '/tasks',
+							component: TasksPage,
 						},
 						{
 							path: '/id:userId',
@@ -88,24 +96,24 @@ export default new Router({
 							props: true,
 						},
 						// {
-						//   path: "/test",
-						//   name: "message",
+						//   path: '/test',
+						//   name: 'message',
 						//   component: message
 						// },
 						// {
-						//   path: "/dialogues",
-						//   name: "Blockoption",
+						//   path: '/dialogues',
+						//   name: 'Blockoption',
 						//   component: Blockoption,
 						//   /* props: (route) => ({ id: route.query.id }, { option: route.query.unread }) */
 						//   /* children: [
 						//     {
-						//       path: "/dialogues",
-						//       name: "Dialog",
+						//       path: '/dialogues',
+						//       name: 'Dialog',
 						//       component: ListDialog,
 						//     },
 						//     {
-						//       path: "/dialogues",
-						//       name: "Message",
+						//       path: '/dialogues',
+						//       name: 'Message',
 						//       component: ListMessage,
 						//       props: (route) => ({ id: route.query.id }),
 						//     }
@@ -114,8 +122,8 @@ export default new Router({
 					]
 				},
 				// {
-				//   path: "/login",
-				//   name: "Authentication",
+				//   path: '/login',
+				//   name: 'Authentication',
 				//   component: Authentication
 				// },
 			]

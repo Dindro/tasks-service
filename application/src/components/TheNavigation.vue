@@ -29,54 +29,52 @@ export default {
 </script>
 
 <template>
-	<div class="main">
-		<div id="nav">
-			<div class="nav-content">
-        <template v-if="isLogged">
-          <div class="nav-router">
-            <router-link tag="div" to="/id1">
-              <i class="icon-home"></i>
-              Моя страница
-            </router-link>
-            <router-link tag="div" to="/signup">
-              <i class="icon-check_circle"></i>
-              Регистрация
-            </router-link>
-            <router-link tag="div" to="/">Авторизация</router-link>
-            <router-link tag="div" to="/messages">Сообщения</router-link>
-            <router-link tag="div" to="/chats">Чат</router-link>
-            <div @click="logout">Выйти</div>
+  <div class="main">
+    <div id="nav">
+      <div class="nav-content">
+        <div class="nav-router" v-if="isLogged">
+          <router-link tag="div" to="/id1">
+            <i class="icon-home"></i>
+            Моя страница
+          </router-link>
+          <router-link tag="div" to="/tasks">
+            <i class="icon-content_paste"></i>
+            Задачи
+          </router-link>
+          <router-link tag="div" to="/messages">
+            <i class="icon-markunread"></i>
+            Сообщения
+          </router-link>
+          <router-link tag="div" to="/chats">Чат</router-link>
+          <router-link tag="div" to="/signup">
+            <i class="icon-check_circle"></i>
+            Регистрация
+          </router-link>
+          <router-link tag="div" to="/">Авторизация</router-link>
+          <div @click="logout">
+            <i class="icon-exit_to_app"></i>
+            Выйти
           </div>
-        </template>
-        <template v-else>
-          <div class="auth">
-            <input 
-              type="text" 
-              name="email"
-              id="email"
-              placeholder="Email"
-              v-model="email"
-            >
-            <input type="password" name="password" id="password" placeholder="Пароль" v-model="password">
-            <button class="login" @click="login">Войти</button>
-            <button class="signup" @click="signup">Регистрация</button>
-          </div>
-        </template>
-			</div>
-		</div>
-		<router-view></router-view>
-	</div>
+        </div>
+        <div class="auth" v-else>
+          <input type="text" name="email" id="email" placeholder="Email" v-model="email">
+          <input type="password" name="password" id="password" placeholder="Пароль" v-model="password">
+          <button class="login" @click="login">Войти</button>
+          <button class="signup" @click="signup">Регистрация</button>
+        </div>
+      </div>
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style lang="scss">
-@import '../assets/colors.scss';
+@import "../assets/colors.scss";
 
 .main {
   width: 960px;
   margin: 0 auto;
-  padding: 0 15px;
-
-  // Нужен для того чтобы сделать размер правильным из за float
+  padding: 0 15px; // Нужен для того чтобы сделать размер правильным из за float
   &::after {
     content: " ";
     display: block;
@@ -101,9 +99,10 @@ export default {
           padding: 8px 0 8px 35px;
           margin-left: -7px;
           color: $clr-font-blue;
-          white-space: nowrap; /* Запрещаем перенос строк */
-          overflow: hidden; /* Обрезаем все, что не помещается в область */
-
+          white-space: nowrap;
+          /* Запрещаем перенос строк */
+          overflow: hidden;
+          /* Обрезаем все, что не помещается в область */
           &:hover {
             background-color: $clr-btn-light;
             border-radius: 2px;
@@ -111,7 +110,7 @@ export default {
 
           i {
             position: absolute;
-            top: 4px;
+            top: 5px;
             left: 7px;
             font-size: 19px;
             color: $clr-icon-light;

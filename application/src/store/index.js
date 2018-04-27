@@ -80,7 +80,7 @@ const store = new Vuex.Store({
 				})
 		},
 
-		async getUser({ commit, state }, { userId }) {
+		async getUser({ commit, state, dispatch }, { userId }) {
 			try {
 				/*
 					делаем запрос
@@ -88,6 +88,13 @@ const store = new Vuex.Store({
 					берем данные
 				*/
 				const { data } = await HTTP.get(`getUser/${userId}`);
+				console.log(data);
+				// если токен потух или его вообще нет
+				if (data.success === false) {
+					dispatch('logout');
+					return undefined;
+				}
+
 				return data.user;
 			}
 			catch (e) {

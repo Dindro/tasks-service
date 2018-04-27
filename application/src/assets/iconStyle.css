@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('fonts/icomoon.ttf?vnmc15') format('truetype'),
-    url('fonts/icomoon.woff?vnmc15') format('woff'),
-    url('fonts/icomoon.svg?vnmc15#icomoon') format('svg');
+    url('fonts/icomoon.ttf?ghk958') format('truetype'),
+    url('fonts/icomoon.woff?ghk958') format('woff'),
+    url('fonts/icomoon.svg?ghk958#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -36,6 +36,12 @@ i, .icomoon-liga {
 .icon-add:before {
   content: "\e145";
 }
+.icon-assignment:before {
+  content: "\e85d";
+}
+.icon-attach_file:before {
+  content: "\e226";
+}
 .icon-turned_in:before {
   content: "\e8e6";
 }
@@ -48,11 +54,20 @@ i, .icomoon-liga {
 .icon-comment:before {
   content: "\e0b9";
 }
-.icon-drafts:before {
-  content: "\e151";
+.icon-content_paste:before {
+  content: "\e14f";
+}
+.icon-markunread:before {
+  content: "\e159";
+}
+.icon-exit_to_app:before {
+  content: "\e879";
 }
 .icon-favorite:before {
   content: "\e87d";
+}
+.icon-question_answer:before {
+  content: "\e8af";
 }
 .icon-star:before {
   content: "\e838";

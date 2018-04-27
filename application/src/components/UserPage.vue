@@ -100,14 +100,15 @@ export default {
       this.user = user;
     }
   },
+  created() {
+    this.getUser(this.userId);
+  },
   mounted() {
     window.addEventListener("scroll", this.scroll);
     window.addEventListener("resize", this.scroll);
 
     // получаем авторизированного пользователя
-    this.$store.dispatch("getUserAuth");
-
-    this.getUser(this.userId);
+    // this.$store.dispatch("getUserAuth");
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.scroll);
