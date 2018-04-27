@@ -126,8 +126,10 @@ export default {
           <button class="edit-profile" v-else>Редактировать профиль</button>
         </div>
         <div class="mini-box friends">
-          Избранные
-          <span class="friends-count">34</span>
+          <div class="friends-top">
+            Избранные
+            <span class="friends-count">34</span>
+          </div>
           <div class="friends-list">
             <div class="friend" v-for="n in 6">
               <div class="friend-photo"></div>
@@ -136,9 +138,12 @@ export default {
           </div>
         </div>
         <div class="mini-box tasks">
-          Открытые задачи 4
+         <div class="tasks-top">
+            Открытые задачи
+            <span class="tasks-count">4</span>
+          </div>
           <div class="tasks-list">
-            <div class="task">Описание задачи описание</div>
+            <div class="task" v-for="n in 10">Заменить экран на Xiaomi Redmi Note 4x</div>
           </div>
         </div>
       </div>
@@ -188,6 +193,12 @@ export default {
           <div class="totals">
             <div class="total">
               <div class="count">
+                34
+              </div>
+              <div class="description">избранных</div>
+            </div>
+            <div class="total">
+              <div class="count">
                 35
               </div>
               <div class="description">отзывов</div>
@@ -227,7 +238,7 @@ export default {
               <span class="tab-count">35</span>
             </div>
           </div>
-          <div class="line"></div>
+          <!-- <div class="line"></div> -->
           <div class="reviews-list">
             <div class="review" v-for="(n, i) in 10" :key="i">
               <div class="border">
@@ -251,7 +262,7 @@ export default {
                 </div>
                 <div class="review-task">
                   Отзыв задания "
-                  <span class="task-name">Нужен курьер для доставки чего чего то</span>"
+                  <span class="task-name">Нужен курьер для доставки чего чего то</span> "
                 </div>
                 <div class="review-text">
                   Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут
@@ -300,9 +311,10 @@ export default {
 }
 
 #left-column {
-  float: left; //height: 900px;
-  width: 230px; //background: linear-gradient(to top, #ff0000, #00ff00);
   // кроме position ничего добавлять
+  float: left;
+  width: 230px;
+
   &.fixed {
     position: fixed;
   }
@@ -345,16 +357,21 @@ export default {
   }
 
   .friends {
-    padding: 15px;
+    padding-top: 15px;
     padding-bottom: 5px;
 
-    .friends-count {
-      color: $clr-font-grey;
-      padding-left: 5px;
+    .friends-top {
+      cursor: pointer;
+      padding: 0 15px;
+
+      .friends-count {
+        color: $clr-font-grey;
+        padding-left: 5px;
+      }
     }
 
     .friends-list {
-      padding-top: 20px;
+      padding: 20px 11px 0 11px;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -363,6 +380,7 @@ export default {
     .friend {
       width: 66px;
       padding-bottom: 10px;
+      cursor: pointer;
 
       .friend-photo {
         margin: 0 auto;
@@ -391,11 +409,34 @@ export default {
       }
     }
   }
+
+  .tasks {
+    padding: 15px 15px 8px 15px;
+
+    .tasks-top {
+      cursor: pointer;
+
+      .tasks-count {
+        color: $clr-font-grey;
+        padding-left: 5px;
+      }
+    }
+
+    .tasks-list {
+      padding-top: 15px;
+
+      .task {
+        padding-bottom: 7px;
+      }
+    }
+  }
 }
 
 .right-column {
-  margin-left: 245px; //height: 2000px;
-  width: 550px; //background: linear-gradient(to top, #10f0ca, #cf0f5f);
+  margin-left: 245px;
+  width: 550px;
+  margin-bottom: 15px;
+
   .info {
     .name-status {
       padding: 15px 20px;
@@ -404,8 +445,12 @@ export default {
       align-items: center;
 
       .name {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 400;
+      }
+
+      .status {
+        color: $clr-font-grey;
       }
     }
 
@@ -417,15 +462,23 @@ export default {
       padding: 15px 20px;
 
       .profile-info-row {
-        padding-bottom: 10px;
+        padding-bottom: 8px;
         font-size: 13px;
+        display: flex;
 
         .properties {
+          color: $clr-font-grey;
           width: 165px;
-          float: left;
+          padding-right: 5px;
+          box-sizing: border-box;
+
+          // перенос слов
+          word-wrap: break-word;
         }
         .description {
-          margin-left: 165px;
+          // перенос слов
+          word-wrap: break-word;
+          width: 343px;
         }
       }
     }
@@ -436,15 +489,27 @@ export default {
       justify-content: space-around;
 
       .total {
+        cursor: pointer;
         max-width: 100px;
 
+        &:hover {
+          .description {
+            color: $clr-font-blue;
+          }
+        }
+
         .count {
-          font-size: 20px;
+          font-size: 21px;
+          font-weight: 400;
           text-align: center;
+          color: $clr-font-blue;
         }
 
         .description {
           text-align: center;
+          color: $clr-font-grey;
+          padding-top: 3px;
+          transition: color 0.2s ease;
         }
       }
     }
@@ -453,23 +518,31 @@ export default {
   .rewiews {
     .reviews-tab {
       display: flex;
-      padding: 0 10px;
+      padding: 0 12px;
+      border-bottom: 1px solid $clr-border;
 
       .reviews-tab-item {
-        padding: 17px 10px;
+        padding: 17px 5px;
+        margin: 0 3px -1px 3px;
+        cursor: pointer;
 
         &.active {
-          border-bottom: 2px solid #4a76a8;
+          border-bottom: 2px solid $clr-blue;
           padding-bottom: 15px;
         }
 
         &:hover {
-          border-bottom: 2px solid rgba(74, 118, 168, 0.37);
+          border-bottom: 2px solid #cad2db;
           padding-bottom: 15px;
+
+          &.active {
+            border-bottom: 2px solid $clr-blue;
+          }
         }
 
         .tab-count {
-          padding-left: 5px;
+          padding-left: 3px;
+          color: $clr-font-grey;
         }
       }
     }
@@ -487,7 +560,7 @@ export default {
 
         .border {
           padding-bottom: 14px;
-          border-bottom: 1px solid #d6d6d6;
+          border-bottom: 1px solid $clr-border;
         }
 
         .user {
@@ -506,21 +579,50 @@ export default {
             justify-content: space-between;
 
             .user-info {
-              padding-left: 10px;
+              padding-left: 20px;
               display: flex;
               flex-direction: column;
               justify-content: space-between;
+
+              .name-worker {
+                .name {
+                  color: $clr-font-blue;
+                  font-weight: 500;
+                  cursor: pointer;
+                }
+
+                .worker {
+                  color: $clr-font-grey;
+                  padding-left: 5px;
+                }
+              }
+
+              .rating {
+                color: $clr-font-grey;
+              }
+
+              .review-description {
+                color: $clr-font-grey;
+              }
             }
+          }
+
+          .time {
+            color: $clr-font-grey;
           }
         }
 
         .review-task {
-          padding: 10px 0;
-          color: #acacac;
+          padding: 15px 0 10px 0;
+          color: $clr-font-grey;
+
+          .task-name {
+            cursor: pointer;
+          }
         }
 
         .review-text {
-          color: #424242;
+          line-height: 1.3;
         }
 
         .review-rating {
