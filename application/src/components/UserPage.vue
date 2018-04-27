@@ -428,6 +428,16 @@ export default {
 
       .task {
         padding-bottom: 7px;
+        border-bottom: 1px solid $clr-border;
+        margin-bottom: 7px;
+        color: $clr-font-blue;
+        cursor: pointer;
+
+        &:last-child {
+          padding-bottom: 7px;
+          border-bottom: none;
+          margin-bottom: 0;
+        }
       }
     }
   }

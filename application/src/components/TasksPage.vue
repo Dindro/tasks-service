@@ -151,7 +151,7 @@ $color-black: #444444;
           background-color: $clr-btn;
           color: white;
           border: none;
-          padding: 7px 10px;
+          padding: 7px 14px;
           border-radius: 4px;
           transition: background-color 0.2s ease;
 
