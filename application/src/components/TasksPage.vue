@@ -1,5 +1,19 @@
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      tasks: []
+    };
+  },
+  methods: {
+    async getTasks() {
+      this.tasks = await this.$store.dispatch("getTasks");
+    }
+  },
+  created() {
+    this.getTasks();
+  }
+};
 </script>
 
 <template>
@@ -11,13 +25,18 @@ export default {};
             <div class="tasks-tab-item">
               <span class="tab-name">Все задания</span>
             </div>
-            <div class="tasks-tab-item active">
+            <div class="tasks-tab-item active" v-if="$store.getters.isLogged">
               <span class="tab-name">Мои задания</span>
               <span class="tab-count">35</span>
             </div>
           </div>
           <div class="tasks-tab-buttons">
-            <button class="task-add">Добавить задание</button>
+            <router-link 
+              tag = "button"
+              :to = "{ name: 'taskAddPage' }"
+              class = "task-add">
+              Добавить задание
+            </router-link>
           </div>
         </div>
         <div class="tasks-options">
@@ -29,16 +48,16 @@ export default {};
           </div>
         </div>
         <div class="tasks-list">
-          <div class="task" v-for="(task, i) in 50" :key="i">
+          <div class="task" v-for="(task, i) in tasks" :key="i">
             <div class="task-name-price">
-              <div class="task-name">Заменить экран на Xiaomi Redmi Note 4x</div>
-              <div class="price">600 руб</div>
+              <div class="task-name">{{task.title}}</div>
+              <div class="price">{{task.priceFrom}} руб</div>
             </div>
             <div class="user-task-info">
               <div class="user">
                 <div class="photo"></div>
                 <div class="user-info">
-                  <div class="user-name">Марков Александр</div>
+                  <div class="user-name">{{task.user.surname}} {{task.user.name}}</div>
                   <div class="rating">Средний рейтинг: 4.6</div>
                   <div class="reviews">Отзывы: 35</div>
                 </div>
@@ -72,7 +91,9 @@ export default {};
           <div class="option" v-for="(option, key) in 10" :key="key">
             <div class="option-name">Сортировка</div>
             <select>
-              <option>1 Что то то</option>
+              <option>
+                <div>Hello</div>
+              </option>
               <option>2 Что то то</option>
               <option>3 Что то то</option>
               <option>4 Что то то</option>
@@ -86,9 +107,6 @@ export default {};
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
-
-$color-border: #e3e4e8;
-$color-black: #444444;
 
 .dinamic {
   float: right;
@@ -119,10 +137,12 @@ $color-black: #444444;
           padding: 17px 5px;
           margin: 0 3px -1px 3px;
           cursor: pointer;
+          color: $clr-font-grey;
 
           &.active {
             border-bottom: 2px solid $clr-blue;
             padding-bottom: 15px;
+            color: $clr-font-black;
           }
 
           &:hover {
@@ -203,7 +223,7 @@ $color-black: #444444;
 
       .task {
         border-bottom: 1px solid $clr-border;
-        padding-bottom: 14px;
+        padding-bottom: 15px;
         margin-bottom: 15px;
 
         &:last-child {
@@ -216,7 +236,7 @@ $color-black: #444444;
           justify-content: space-between;
 
           .task-name {
-            color: $clr-font-blue;
+            color: $clr-font-blue-link;
             font-size: 15px;
             font-weight: 500;
             word-wrap: break-word;
@@ -260,7 +280,7 @@ $color-black: #444444;
 
               .user-name {
                 font-weight: 500;
-                color: $clr-font-blue;
+                color: $clr-font-black;
                 cursor: pointer;
               }
 

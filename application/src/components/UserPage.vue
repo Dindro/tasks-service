@@ -399,7 +399,7 @@ export default {
         margin: 0 auto;
         margin-top: 5px;
         font-size: 12.5px;
-        color: $clr-font-blue;
+        color: $clr-font-blue-link;
 
         // запрещаем перенос строк
         white-space: nowrap;
@@ -432,7 +432,7 @@ export default {
         padding-bottom: 7px;
         border-bottom: 1px solid $clr-border;
         margin-bottom: 7px;
-        color: $clr-font-blue;
+        color: $clr-font-blue-link;
         cursor: pointer;
 
         &:last-child {
@@ -503,11 +503,11 @@ export default {
 
       .total {
         cursor: pointer;
-        max-width: 100px;
+        min-width: 100px;
 
         &:hover {
           .description {
-            color: $clr-font-blue;
+            color: $clr-font-blue-link;
           }
         }
 
@@ -515,7 +515,7 @@ export default {
           font-size: 21px;
           font-weight: 400;
           text-align: center;
-          color: $clr-font-blue;
+          color: $clr-font-blue-link;
         }
 
         .description {
@@ -538,10 +538,12 @@ export default {
         padding: 17px 5px;
         margin: 0 3px -1px 3px;
         cursor: pointer;
+        color: $clr-font-grey;
 
         &.active {
           border-bottom: 2px solid $clr-blue;
           padding-bottom: 15px;
+          color: $clr-font-black;
         }
 
         &:hover {
@@ -599,7 +601,7 @@ export default {
 
               .name-worker {
                 .name {
-                  color: $clr-font-blue;
+                  color: $clr-font-blue-link;
                   font-weight: 500;
                   cursor: pointer;
                 }

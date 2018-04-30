@@ -1,13 +1,25 @@
-var config = require("../libs/config");
-var pool = require("./../libs/db");
+const db = require("@config/db");
 
-module.exports = {
-    GetCategoryById: function (id) {
-        return new Promise(async function (resolve, reject) {
-            var query = "SELECT * FROM CATEGORIES WHERE ID = ?;";
-            var array = [id];
-            var category = await pool.GetResults(query, array);
-            return category;
-        });
-    },
+let model = {};
+
+model.getParent = async () => {
+	const query = `SELECT * FROM categories WHERE parent IS NULL;`;
+	try {
+		const result = await db.getResults(query, []);
+		return result;
+	} catch (e) {
+		throw e;
+	}
 };
+
+model.getChildren = async (parentId) => {
+	const query = `SELECT * FROM categories WHERE parent = ${parentId};`;
+	try {
+		const result = await db.getResults(query, []);
+		return result;
+	} catch (e) {
+		throw e;
+	}
+};
+
+module.exports = model;

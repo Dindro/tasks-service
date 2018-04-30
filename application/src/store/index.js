@@ -111,6 +111,39 @@ const store = new Vuex.Store({
 			localStorage.removeItem("token");
 			commit('isLogged', false);
 			commit('userAuth', {});
+		},
+
+		async getCategories({ commit }) {
+			try {
+				const { data } = await HTTP.get('getCategories');
+				console.log(data);
+				const { categories } = data;
+				return categories;
+			} catch (e) {
+
+			}
+		},
+
+		async createTask({ commit }, { categoryId, title, price }) {
+			try {
+				const { data } = await HTTP.post('task', {
+					categoryId,
+					title,
+					price,
+				});
+				console.log("taskId", data.taskId);
+			} catch (e) {
+
+			}
+		},
+
+		async getTasks({ commit }) {
+			try {
+				const { data } = await HTTP.get('tasks');
+				return data.tasks;
+			} catch (e) {
+				
+			}
 		}
 	}
 });

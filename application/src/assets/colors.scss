@@ -7,6 +7,7 @@ $clr-border: #e7e8ec;
 
 $clr-box-border: $clr-border;
 
+// обычная кнопка
 $clr-btn: $clr-blue;
 $clr-btn-hover: #5b88bd;
 
@@ -15,17 +16,25 @@ $clr-btn-light: #E5EBF1;
 $clr-btn-hover-light: #dfe6ed;
 $clr-btn-font-light: #55677d;
 
-// цвет шрифтов
+/* 
+	цвет шрифтов
+*/
 $clr-font-black: #444444;  
 $clr-font-white: #ffffff;
+
+// USE: левая навигация
 $clr-font-blue: #285473;
-// USE: при указании количетсво
+
+// USE: ссылки
+$clr-font-blue-link: #2a5885;
+
 $clr-font-grey: #939393;
 $clr-font-darkgrey: #656565;
 
 // цвет иконок
 $clr-icon-light: #99B0C6;
 
+// textbox
 $clr-tb-border: #d3d9de;
 $clr-tb-btn-background: #f0f2f5;
 $clr-tb-btn-font: #9299a6;

@@ -1,4 +1,4 @@
-const ModelTask = require("@models/task");
+const Task = require("../models/task");
 
 let api = {};
 

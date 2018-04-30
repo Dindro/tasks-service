@@ -137,13 +137,13 @@ export default {
           margin-top: 5px;
           padding: 7px 10px;
           border-radius: 3px;
-          background-color: #5181b8;
+          background-color: $clr-btn;
           transition: all 0.5s ease;
           color: white;
           cursor: pointer;
 
           &:hover {
-            background-color: #618ec2;
+            background-color: $clr-btn-hover;
           }
         }
 

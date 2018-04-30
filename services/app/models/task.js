@@ -1,53 +1,62 @@
-const db = require("@config/db");
+const db = require("../../config/db");
 let model = {};
 
-// Создать
-model.Create = async function (id_user, task) {
-    var query = "INSERT INTO TASKS (ID_USER, TITLE, DESCRIPTION, TIME, PRICE, PHONE, ADDRESS, TAGS, ID_CATEGORY) VALUES (?,?,?,?,?,?);";
-    var array = [id_user, t.id_category, t.title, t.description, t.price, t.phone, t.address, t.latitude, t.longitude, t.tags, t.comment];
-    var task = await pool.GetResults(query, array);
-    return task.insertId;
+model.create = async (task) => {
+	const query = `
+		INSERT INTO tasks SET 
+		id_user_customer = ${task.userId},
+		id_category = ${task.categoryId},
+		title = '${task.title}',
+		priceFrom = ${task.price},
+		priceBefore = ${task.price}
+	;`;
+	try {
+		const task = await db.getResults(query, []);
+		return task.insertId;
+	} catch (e) {
+		throw e;
+	}
 };
 
 // Добавить координаты в таблицу tasks_coordinates
 model.AddCoordinate = async (idCoordinate, idTask) => {
-    let query = `
-        INSERT INTO tasks_coordinates SET 
-        id_coordinate = ${idCoordinate},
-        id_task = ${idTask};
-    `;
+	let query = `
+		INSERT INTO tasks_coordinates SET 
+		id_coordinate = ${idCoordinate},
+		id_task = ${idTask}
+	;`;
 
-    try {
-        const result = await db.GetResults(query);
-        return result.insertId;
-    } catch (e) {
-        throw e;
-    }
+	try {
+		const result = await db.GetResults(query);
+		return result.insertId;
+	} catch (e) {
+		throw e;
+	}
 };
 
 model.GetTasksByUserId = async function (id_user) {
-    var query = "SELECT * FROM TASKS WHERE ID_USER = ?;";
-    var array = [id_user];
-    var tasks = await pool.GetResults(query, array);
-    return tasks;
+	var query = "SELECT * FROM TASKS WHERE ID_USER = ?;";
+	var array = [id_user];
+	var tasks = await pool.GetResults(query, array);
+	return tasks;
 };
 
 //Удалить
 model.deleteTask = function (id_task, callback) {
-    async.waterfall([
-        function (callback) {
-            pool.getConnection(function (err, connection) {
-                if (err) callback(config.error.connection);
-                connection.query("DELETE FROM TASKS WHERE ID_TASK = ?;",
-                    [id_task],
-                    function (err, results, fields) {
-                        connection.release();
-                        if (err) callback(config.error.query);
-                        callback(null);
-                    });
-            });
-        }
-    ], callback);
+	async.waterfall([
+		function (callback) {
+			pool.getConnection(function (err, connection) {
+				if (err) callback(config.error.connection);
+				connection.query("DELETE FROM TASKS WHERE ID_TASK = ?;",
+					[id_task],
+					function (err, results, fields) {
+						connection.release();
+						if (err) callback(config.error.query);
+						callback(null);
+					});
+			});
+		}
+	], callback);
 };
 
 //Обновить
@@ -55,5 +64,14 @@ model.updateTask = function (id_task, callback) {
 
 };
 
+model.getAll = async () => {
+	const query = `SELECT * FROM tasks;`;
+	try {
+		const results = await db.getResults(query, []);
+		return results;
+	} catch (e) {
+		throw e;
+	}
+}
 
 module.exports = model;
