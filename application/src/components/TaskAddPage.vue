@@ -1,4 +1,6 @@
 <script>
+import GroupBox from "./GroupBox";
+
 export default {
   data() {
     return {
@@ -7,6 +9,9 @@ export default {
       title: "",
       price: ""
     };
+  },
+  components: {
+    GroupBox
   },
   methods: {
     publish() {
@@ -54,6 +59,12 @@ export default {
                   </option>
                 </template>
               </select>
+            </div>
+          </div>
+          <div class="option">
+            <div class="option-name">Тест</div>
+            <div class="option-description">
+              <group-box></group-box>
             </div>
           </div>
           <div class="option title">

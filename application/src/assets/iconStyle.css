@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('fonts/icomoon.ttf?ghk958') format('truetype'),
-    url('fonts/icomoon.woff?ghk958') format('woff'),
-    url('fonts/icomoon.svg?ghk958#icomoon') format('svg');
+    url('fonts/icomoon.ttf?ggdli6') format('truetype'),
+    url('fonts/icomoon.woff?ggdli6') format('woff'),
+    url('fonts/icomoon.svg?ggdli6#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -62,6 +62,12 @@ i, .icomoon-liga {
 }
 .icon-exit_to_app:before {
   content: "\e879";
+}
+.icon-expand_less:before {
+  content: "\e5ce";
+}
+.icon-expand_more:before {
+  content: "\e5cf";
 }
 .icon-favorite:before {
   content: "\e87d";

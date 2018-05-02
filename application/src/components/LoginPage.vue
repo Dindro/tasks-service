@@ -31,8 +31,6 @@ export default {
 				<input type="text" name="login" v-model="email">
 				<input type="password" name="password" v-model="password">
 				<button @click="login">{{name}}</button>
-        <input type="radio" name="a" id="">
-        <input type="radio" name="a" id="">
 			</div>
 			<div class="container signup"></div>
 		</div>
@@ -40,10 +38,6 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-input[type="radio"] {
-
-}
-
 .main {
   width: 960px;
   margin: 0 auto;
