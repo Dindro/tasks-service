@@ -1,11 +1,26 @@
 <script>
+import index from "vue";
 export default {
-  props: ["options"],
+  props: [],
   data() {
     return {
       selected: "",
       isOpen: false,
-      findedOptions: []
+      findedOptions: [],
+      options: [
+        {
+          name: "Клара"
+        },
+        {
+          name: "Клараеда"
+        },
+        {
+          name: "Карл"
+        },
+        {
+          name: "Уклары"
+        }
+      ]
     };
   },
   methods: {
@@ -17,23 +32,42 @@ export default {
       this.isOpen = false;
     },
     input() {
-      const options = [];
-      for (const parent of this.options) {
-        if (parent.name.toLowerCase().constain(this.selected));
+      this.isOpen = true;
+      const findedWord = this.selected.toLowerCase();
+      this.findedOptions = [];
+
+      for (const option of this.options) {
+        const pos = option.name.toLowerCase().indexOf(findedWord);
+        console.log(pos);
+        if (pos >= 0) {
+          this.findedOptions.push(option);
+        }
       }
     },
-    isContain(name) {
-      let tempWord = "";
-      let findPosition = 0;
+    clickOther(event) {
+      if (this.isOpen) {
+        const divs = event.path;
+        const list = this.$refs.list;
+        const button = this.$refs.button;
 
-      for (const letter of this.selected.toLowerCase()) {
-        
-      }
+        // клик произошел в этих элементах
+        const isClickInElements =
+          divs.indexOf(list) === 1 || divs.indexOf(button) === 1;
 
-      for (const letter of name.toLowerCase()) {
-        // поиск похожих слов
+        if (isClickInElements === false) {
+          this.isOpen = false;
+        }
       }
     }
+  },
+  created() {
+    this.findedOptions = this.options;
+  },
+  mounted() {
+    window.addEventListener("mousedown", this.clickOther);
+  },
+  destroyed() {
+    window.removeEventListener("mousedown", this.clickOther);
   }
 };
 </script>
@@ -41,11 +75,25 @@ export default {
 <template>
   <div>
     <div class="select-el">
-      <input type="text" class="find" v-model="selected">
-      <button class="open" @click="open"><i class="icon-expand_more"></i></button>
+      <input 
+        type="text" 
+        class="find" 
+        v-model="selected"
+        @input="input">
+      <button 
+        class="open"
+        @click="open"
+        ref="button">
+        <i class="icon-expand_more"></i>
+      </button>
     </div>
-    <div class="list" :class="{open: isOpen}">
-      <div v-for="(option, key) of 50" @click="select(key)" :key="key">Что то то</div>
+    <div 
+      class="list" 
+      :class="{open: isOpen}"
+      ref="list">
+      <div v-for="(option, key) of findedOptions" @click="select(key)" :key="key">
+        {{option.name}}
+      </div>
     </div>
   </div>
 </template>
