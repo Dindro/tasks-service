@@ -1,68 +1,87 @@
 <script>
-import index from "vue";
 export default {
-  props: [],
+  props: ["options"],
   data() {
     return {
       selected: "",
+      selectedOption: {},
+
       isOpen: false,
       findedOptions: [],
-      options: [
-        {
-          name: "Клара"
-        },
-        {
-          name: "Клараеда"
-        },
-        {
-          name: "Карл"
-        },
-        {
-          name: "Уклары"
-        }
-      ]
+      isFinded: false
     };
+  },
+  computed: {
+    realOption() {
+      if (this.isFinded === false) {
+        return this.options;
+      } else {
+        return this.findedOptions;
+      }
+    }
   },
   methods: {
     open() {
-      this.isOpen = !this.isOpen;
+      this.isOpen = true;
     },
-    select(id) {
-      this.selected = id;
+    select(option) {
+      this.selected = option.name;
+
+      if (this.isFinded === true) {
+        const item = this.options.find(x => x.id === option.id);
+        this.selectedOption = item;
+        this.selected = item.name;
+      } else {
+        this.selectedOption = option;
+        this.selected = option.name;
+      }
       this.isOpen = false;
+      this.isFinded = false;
     },
     input() {
+      this.isFinded = true;
       this.isOpen = true;
-      const findedWord = this.selected.toLowerCase();
+      const findedWord = this.selected.toLowerCase().trim();
       this.findedOptions = [];
 
       for (const option of this.options) {
         const pos = option.name.toLowerCase().indexOf(findedWord);
-        console.log(pos);
         if (pos >= 0) {
-          this.findedOptions.push(option);
+          const name = option.name;
+          let array = [];
+          array[0] = name.substring(0, pos);
+          array[1] = name.substring(pos, pos + findedWord.length);
+          array[2] = name.substring(pos + findedWord.length, name.length);
+
+          // установка em
+          array[0] = array[0] + "<em>";
+          array[2] = "</em>" + array[2];
+
+          // клонируем объект
+          const findedOption = Object.assign({}, option);
+
+          // соединяем обрезки слов
+          const findedName = array.join("");
+          findedOption.name = findedName;
+          this.findedOptions.push(findedOption);
         }
       }
     },
     clickOther(event) {
       if (this.isOpen) {
         const divs = event.path;
-        const list = this.$refs.list;
-        const button = this.$refs.button;
+        const select = this.$refs.select;
 
-        // клик произошел в этих элементах
-        const isClickInElements =
-          divs.indexOf(list) === 1 || divs.indexOf(button) === 1;
+        // клик произошел в районе этого элемента
+        const isClickOnEl = divs.indexOf(select) >= 0;
 
-        if (isClickInElements === false) {
+        if (isClickOnEl === false) {
           this.isOpen = false;
         }
       }
     }
   },
-  created() {
-    this.findedOptions = this.options;
-  },
+  created() {},
   mounted() {
     window.addEventListener("mousedown", this.clickOther);
   },
@@ -73,16 +92,20 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div class="select-el">
+  <div ref="select" class="select">
+    <div 
+      class="select-el"
+      :class="{open: isOpen}">
       <input 
         type="text" 
         class="find" 
         v-model="selected"
-        @input="input">
+        @input="input"
+        @click="isOpen = true"
+        ref="input">
       <button 
         class="open"
-        @click="open"
+        @click="isOpen = !isOpen"
         ref="button">
         <i class="icon-expand_more"></i>
       </button>
@@ -91,20 +114,44 @@ export default {
       class="list" 
       :class="{open: isOpen}"
       ref="list">
-      <div v-for="(option, key) of findedOptions" @click="select(key)" :key="key">
-        {{option.name}}
+      <div v-if="realOption.length === 0" class="not-find">
+        Ничего не найдено
+      </div>
+      <div 
+        v-else
+        class="item"
+        v-for="(option, key) of realOption" 
+        @click="select(option)" 
+        :key="key"
+        :class="{
+          first: option.parent ? false : true ,
+          second: option.parent ? true : false,
+          selected: option === selectedOption
+        }"
+        >
+        <span v-html="option.name"></span>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../assets/colors.scss";
+
+.select {
+  display: inline-block;
+}
+
 .select-el {
   border-radius: 2px;
   border: 1px solid $clr-tb-border;
   width: 200px;
   display: flex;
+
+  &.open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
 
 .find {
@@ -122,6 +169,7 @@ button.open {
   background-color: transparent;
   font-size: 20px;
   color: $clr-font-grey;
+  cursor: pointer;
 }
 
 .list {
@@ -141,8 +189,33 @@ button.open {
     display: block;
   }
 
-  > div {
-    padding: 3px 14px;
+  .item {
+    padding: 7px 14px;
+    cursor: pointer;
+
+    &:hover,
+    &.selected {
+      background-color: #e7edf2;
+    }
+
+    &.first {
+      font-weight: 700;
+    }
+
+    &.second {
+      padding-left: 30px;
+    }
+
+    em {
+      font-weight: 700;
+      font-style: normal;
+      background-color: #e7edf2;
+    }
+  }
+
+  .not-find {
+    padding: 7px 14px;
+    background-color: #eee;
   }
 }
 </style>

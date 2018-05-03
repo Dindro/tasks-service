@@ -64,7 +64,7 @@ export default {
           <div class="option">
             <div class="option-name">Тест</div>
             <div class="option-description">
-              <group-box></group-box>
+              <group-box :options="categories"></group-box>
             </div>
           </div>
           <div class="option title">

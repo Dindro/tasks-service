@@ -6,15 +6,24 @@ api.getCategories = async (req, res) => {
   try {
     const parents = await Category.getParent();
     let parentsPromises = parents.map(async (parent) => {
-      const children = await Category.getChildren(parent.id);
-      parent.children = children;
+      const childrens = await Category.getChildren(parent.id);
+      parent.childrens = childrens;
     });
 
     for (const item of parentsPromises) {
       await item;
     }
 
-    res.status(200).json({ categories: parents });
+    // нормализация категорий в список
+    let categories = [];
+    for (const parent of parents) {
+      categories.push(parent);
+      for (const children of parent.childrens) {
+        categories.push(children);
+      }
+    }
+
+    res.status(200).json({ categories });
   } catch (e) {
     console.log("getCategories", e);
   }
