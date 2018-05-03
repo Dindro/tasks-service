@@ -37,6 +37,7 @@ export default {
       }
       this.isOpen = false;
       this.isFinded = false;
+      this.$emit("input", this.selectedOption);
     },
     input() {
       this.isFinded = true;

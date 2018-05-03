@@ -7,7 +7,8 @@ export default {
       categories: [],
       selectedCategoryId: "",
       title: "",
-      price: ""
+      price: "",
+      selectedCat: {}
     };
   },
   components: {
@@ -15,11 +16,12 @@ export default {
   },
   methods: {
     publish() {
-      this.$store.dispatch("createTask", {
+      console.log(this.selectedCat);
+      /* this.$store.dispatch("createTask", {
         categoryId: this.selectedCategoryId,
         title: this.title,
         price: this.price
-      });
+      }); */
     },
     async getCategory() {
       this.categories = await this.$store.dispatch("getCategories");
@@ -64,7 +66,7 @@ export default {
           <div class="option">
             <div class="option-name">Тест</div>
             <div class="option-description">
-              <group-box :options="categories"></group-box>
+              <group-box :options="categories" v-model="selectedCat"></group-box>
             </div>
           </div>
           <div class="option title">
