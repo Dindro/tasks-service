@@ -37,7 +37,7 @@ export default {
       }
       this.isOpen = false;
       this.isFinded = false;
-      this.$emit("input", this.selectedOption);
+      this.$emit("input", this.selectedOption.id);
     },
     input() {
       this.isFinded = true;
@@ -82,7 +82,6 @@ export default {
       }
     }
   },
-  created() {},
   mounted() {
     window.addEventListener("mousedown", this.clickOther);
   },

@@ -6,7 +6,8 @@ export default {
       lastYScrollPos: 0,
       upPos: 0,
       downPos: 0,
-      user: {}
+      user: {},
+      tasks: []
     };
   },
   computed: {
@@ -94,14 +95,24 @@ export default {
       }
       this.lastYScrollPos = YScrollPos;
     },
+
     async getUser(userId) {
       // получаем с сервера о пользователе
       const user = await this.$store.dispatch("getUser", { userId });
       this.user = user;
+    },
+
+    async getUserTasks() {
+      const tasks = await this.$store.dispatch("getUserTasks", {
+        userId: this.userId,
+        count: 10
+      });
+      this.tasks = tasks;
     }
   },
   created() {
     this.getUser(this.userId);
+    this.getUserTasks();
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
@@ -144,7 +155,7 @@ export default {
             <span class="tasks-count">4</span>
           </div>
           <div class="tasks-list">
-            <div class="task" v-for="(task, key) in 6" :key="key">Заменить экран на Xiaomi Redmi Note 4x</div>
+            <div class="task" v-for="task in tasks" :key="task.id">{{task.title}}</div>
           </div>
         </div>
       </div>

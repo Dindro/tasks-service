@@ -10,6 +10,7 @@ import LoginPage from '../components/LoginPage'
 import SignupPage from '../components/SignupPage'
 import UserPage from '../components/UserPage'
 import TasksPage from '../components/TasksPage'
+import TaskPage from '../components/TaskPage'
 import TaskAddPage from '../components/TaskAddPage'
 
 
@@ -89,6 +90,11 @@ export default new Router({
 							name: 'tasks',
 							path: '/tasks',
 							component: TasksPage,
+						},
+						{
+							name: 'taskPage',
+							path: '/tasks/id:taskId',
+							component: TaskPage
 						},
 						{
 							path: 'tasks/add',

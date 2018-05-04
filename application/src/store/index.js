@@ -142,7 +142,22 @@ const store = new Vuex.Store({
 				const { data } = await HTTP.get('tasks');
 				return data.tasks;
 			} catch (e) {
-				
+
+			}
+		},
+
+		async getUserTasks({ commit }, { userId, count }) {
+			console.log(userId, count)
+			try {
+				const { data } = await HTTP.get('userTasks', {
+					params: {
+						userId,
+						count
+					}
+				});
+				return data.tasks;
+			} catch (e) {
+
 			}
 		}
 	}

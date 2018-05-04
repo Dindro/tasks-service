@@ -26,4 +26,7 @@ module.exports = (app, passport) => {
 
 	app.route('/api/v1/tasks')
 		.get(task.getAll);
+
+	app.route('/api/v1/userTasks')
+		.get(task.get);
 }

@@ -57,7 +57,13 @@ export default {
               <div class="user">
                 <div class="photo"></div>
                 <div class="user-info">
-                  <div class="user-name">{{task.user.surname}} {{task.user.name}}</div>
+                  <router-link 
+                    tag="div"
+                    class="user-name" 
+                    :to="{name: 'userPage', params: { userId: task.user.id}}"
+                  >
+                    {{task.user.surname}} {{task.user.name}}
+                  </router-link>
                   <div class="rating">Средний рейтинг: 4.6</div>
                   <div class="reviews">Отзывы: 35</div>
                 </div>

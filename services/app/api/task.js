@@ -29,7 +29,7 @@ api.create = async (req, res) => {
 
 	// Добавить картинки
 	*/
-}
+};
 
 api.getAll = async (req, res) => {
 	try {
@@ -44,6 +44,17 @@ api.getAll = async (req, res) => {
 			await item;
 		}
 
+		res.status(200).json({ tasks });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+api.get = async (req, res) => {
+	const { userId, count } = req.query;
+
+	try {
+		const tasks = await Task.getByUserId(userId, count);
 		res.status(200).json({ tasks });
 	} catch (e) {
 		console.log(e);

@@ -16,12 +16,11 @@ export default {
   },
   methods: {
     publish() {
-      console.log(this.selectedCat);
-      /* this.$store.dispatch("createTask", {
+      this.$store.dispatch("createTask", {
         categoryId: this.selectedCategoryId,
         title: this.title,
         price: this.price
-      }); */
+      });
     },
     async getCategory() {
       this.categories = await this.$store.dispatch("getCategories");
@@ -44,29 +43,7 @@ export default {
           <div class="option category">
             <div class="option-name">Категория</div>
             <div class="option-description">
-              <select name="category" id="category" v-model="selectedCategoryId">
-                <template v-for="category of categories">
-                  <option 
-                    :value="category.id"
-                    :key="category.id"
-                    class="level-first">
-                    {{ category.name }}
-                  </option>
-                  <option 
-                    v-for="children of category.children"
-                    :value="children.id" 
-                    :key="children.id"
-                    class="level-second">
-                    {{ children.name }}
-                  </option>
-                </template>
-              </select>
-            </div>
-          </div>
-          <div class="option">
-            <div class="option-name">Тест</div>
-            <div class="option-description">
-              <group-box :options="categories" v-model="selectedCat"></group-box>
+              <group-box :options="categories" v-model="selectedCategoryId"></group-box>
             </div>
           </div>
           <div class="option title">
@@ -75,10 +52,18 @@ export default {
               <input type="text" id='title' v-model="title">
             </div>
           </div>
-          <div class="option">
+          <div class="option price">
             <div class="option-name">Цена</div>
             <div class="option-description">
-              <input type="text" id='price' v-model.number="price">
+              <input type="text" id='price-from' v-model.number="priceFrom" placeholder="От">
+              <span class="tire">—</span>
+              <input type="text" id='price-before' v-model.number="priceBefore" placeholder="До">
+            </div>
+          </div>
+          <div class="option description">
+            <div class="option-name">Описание</div>
+            <div class="option-description">
+              <textarea></textarea>
             </div>
           </div>
         </div>
@@ -112,9 +97,6 @@ export default {
       padding: 15px 20px;
       border-bottom: 1px solid $clr-border;
       background-color: $clr-tab-background;
-
-      .tab-name {
-      }
     }
 
     .options-list {
@@ -130,34 +112,42 @@ export default {
           }
         }
 
+        &.price {
+          input[type="text"] {
+            width: 90px;
+            box-sizing: border-box;
+          }
+
+          .tire {
+            padding: 0 5px;
+          }
+        }
+
+        &.description {
+          textarea {
+            height: 200px;
+          }
+        }
+
         .option-name {
           font-weight: 500;
           padding-bottom: 10px;
         }
 
         .option-description {
-          .level-first {
-            font-weight: 500;
+          input[type="text"],
+          textarea {
+            padding: 5px 10px;
+            border: 1px solid $clr-tb-border;
+            border-radius: 3px;
+            font-family: "Roboto";
           }
-        }
 
-        select {
-          padding: 5px;
-          border: 1px solid $clr-tb-border;
-          border-radius: 4px;
-          font-family: "Roboto";
-
-          option {
-            // нихрена не работает
-            padding: 7px 14px;
+          textarea {
+            width: 100%;
+            box-sizing: border-box;
+            resize: none;
           }
-        }
-
-        input[type="text"] {
-          padding: 5px 10px;
-          border: 1px solid $clr-tb-border;
-          border-radius: 3px;
-          font-family: "Roboto";
         }
       }
     }

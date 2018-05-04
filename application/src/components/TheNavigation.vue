@@ -9,6 +9,9 @@ export default {
   computed: {
     isLogged() {
       return this.$store.getters.isLogged;
+    },
+    getUserAuthId() {
+      return this.$store.getters.userAuth.id;
     }
   },
   methods: {
@@ -33,7 +36,7 @@ export default {
     <div id="nav">
       <div class="nav-content">
         <div class="nav-router" v-if="isLogged">
-          <router-link tag="div" to="/id1">
+          <router-link tag="div" :to="{name: 'userPage', params: { userId: getUserAuthId}}">
             <i class="icon-home"></i>
             Моя страница
           </router-link>

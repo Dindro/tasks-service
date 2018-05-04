@@ -20,7 +20,7 @@ model.create = async (task) => {
 
 // Добавить координаты в таблицу tasks_coordinates
 model.AddCoordinate = async (idCoordinate, idTask) => {
-	let query = `
+	const query = `
 		INSERT INTO tasks_coordinates SET 
 		id_coordinate = ${idCoordinate},
 		id_task = ${idTask}
@@ -34,11 +34,19 @@ model.AddCoordinate = async (idCoordinate, idTask) => {
 	}
 };
 
-model.GetTasksByUserId = async function (id_user) {
-	var query = "SELECT * FROM TASKS WHERE ID_USER = ?;";
-	var array = [id_user];
-	var tasks = await pool.GetResults(query, array);
-	return tasks;
+model.getByUserId = async function (userId, count) {
+	const query = `SELECT * FROM tasks 
+		WHERE id_user_customer = ${userId} 
+		ORDER BY created 
+		DESC LIMIT ${count}
+	;`;
+
+	try {
+		const tasks = await db.getResults(query, []);
+		return tasks;
+	} catch (e) {
+		throw e;
+	}
 };
 
 //Удалить
