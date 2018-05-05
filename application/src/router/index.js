@@ -94,7 +94,8 @@ export default new Router({
 						{
 							name: 'taskPage',
 							path: '/tasks/id:taskId',
-							component: TaskPage
+							component: TaskPage,
+							props: true,
 						},
 						{
 							path: 'tasks/add',

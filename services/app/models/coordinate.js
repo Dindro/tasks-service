@@ -1,15 +1,19 @@
-const db = require("@config/db");
+const db = require("../../config/db");
 let model = {};
 
-model.Create = async (latitude, longitube, address, priority, title) => {
-	let query = `
+model.create = async (coordinate) => {
+	const query = `
 		INSERT INTO coordinates SET 
-		latitude = ${latitude},
-		longitube = ${longitube},
-		address = ${address}
-		priority = ${priority},
-		title = ${title};
-	`;
+		address = '${coordinate.address}',
+		priority = ${coordinate.priority}
+	;`;
+
+	try {
+		const results = await db.getResults(query);
+		return results.insertId;
+	} catch (e) {
+		throw e;
+	}
 };
 
 

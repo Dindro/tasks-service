@@ -1,20 +1,22 @@
-const db = require("@config/db");
+const db = require("../../config/db");
 let model = {};
 
-model.Create = async (idTask, idUserWant)=>{
-    let query = `
-        INSERT INTO request SET 
-        id_task = ${idTask},
-        id_user_want = ${idUserWant};
-    `;
+model.create = async ({ userId, taskId, messageText, price }) => {
+	const query = `
+		INSERT INTO requests SET 
+		id_user = ${userId},
+		id_task = ${taskId},
+		text = '${messageText}',
+		price = ${price}
+	;`;
 
-    try {
-        const requests = await pool.GetResults(query, array);
-        return requests[0];
-    }
-    catch (e) {
-        throw e;
-    }
-};
+	try {
+		const result = await db.getResults(query);
+		return result.insertId;
+	}
+	catch (e) {
+		throw e;
+	}
+}
 
 module.exports = model;

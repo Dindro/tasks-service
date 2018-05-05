@@ -2,10 +2,10 @@ const mysql = require("mysql");
 const config = require("./index").db;
 
 module.exports = {
-	async getResults(query, list) {
+	async getResults(query) {
 		try {
 			var connection = await getConnection();
-			var results = await applyQuery(connection, query, list);
+			var results = await applyQuery(connection, query, []);
 			return results;
 		} catch (e) {
 			throw e;
@@ -14,7 +14,7 @@ module.exports = {
 
 	// GetResults: async function(query){
 	//     try {
-	//         return await this.GetResults(query, [])
+	//         return await this.getResults(query)
 	//     } catch (e) {
 	//         throw e;
 	//     }

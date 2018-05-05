@@ -7,7 +7,7 @@ model.create = async (id_task) => {
 	;`;
 
 	try {
-		const result = await db.getResults(query, array);
+		const result = await db.getResults(query);
 		return result[0];
 	}
 	catch (e) {

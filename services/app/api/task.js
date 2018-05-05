@@ -11,24 +11,43 @@ api.create = async (req, res) => {
 	}
 
 	const userId = req.userId;
-	const { categoryId, title, price } = req.body;
+	const {
+		categoryId,
+		title,
+		description,
+		priceFrom,
+		priceBefore,
+		addresses,
+		dateStart,
+		dateEnd,
+		phoneNumber,
+		isComment
+	} = req.body;
 
 	try {
-		const taskId = await Task.create({ userId, categoryId, title, price });
-		return res.status(200).json({ success: true, taskId });
+		const taskId = await Task.create({
+			userId,
+			categoryId,
+			title,
+			description,
+			priceFrom,
+			priceBefore,
+			dateStart,
+			dateEnd,
+			phoneNumber,
+			isComment
+		});
+
+		const addressesPrms = addresses.map(async (address, index) => {
+			address.priority = index + 1;
+			const coordinateId = await Coordinate.create(address);
+			const idCoordinateTask = await Task.addCoordinate(coordinateId, taskId);
+		});
+
+		res.status(200).json({ success: true, taskId });
 	} catch (e) {
 		console.log(e);
 	}
-
-	/*
-	// Добавить координаты в БД
-	let coordinatesPromise = coordinates.map(async (coordinate) => {
-		const idCoordinate = await Coordinate.Create(coordinate);
-		const idCoordinateTask = await Task.AddCoordinate(idCoordinate, taskId);
-	});
-
-	// Добавить картинки
-	*/
 };
 
 api.getAll = async (req, res) => {
@@ -50,12 +69,30 @@ api.getAll = async (req, res) => {
 	}
 };
 
-api.get = async (req, res) => {
+api.getByUserId = async (req, res) => {
 	const { userId, count } = req.query;
 
 	try {
 		const tasks = await Task.getByUserId(userId, count);
 		res.status(200).json({ tasks });
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+api.get = async (req, res) => {
+	const { taskId } = req.query;
+
+	try {
+		const task = await Task.getById(taskId);
+
+		// получаем заказчика
+		const userCustomer = await User.getById(task.id_user_customer);
+		task.userCustomer = userCustomer;
+
+		// TODO: получить исполнителя
+
+		res.status(200).json({ task });
 	} catch (e) {
 		console.log(e);
 	}

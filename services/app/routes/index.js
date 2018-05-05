@@ -2,6 +2,7 @@ const verifyToken = require('../../config/verifyToken');
 const user = require('../api/user');
 const category = require('../api/category');
 const task = require('../api/task');
+const request = require('../api/request');
 // const message = require('@api/message');
 // const dialog = require('@api/dialog');
 
@@ -28,5 +29,11 @@ module.exports = (app, passport) => {
 		.get(task.getAll);
 
 	app.route('/api/v1/userTasks')
+		.get(task.getByUserId);
+
+	app.route('/api/v1/task')
 		.get(task.get);
+
+	app.route('/api/v1/request')
+		.post(verifyToken, request.create)
 }

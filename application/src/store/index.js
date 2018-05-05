@@ -124,13 +124,9 @@ const store = new Vuex.Store({
 			}
 		},
 
-		async createTask({ commit }, { categoryId, title, price }) {
+		async createTask({ commit }, task) {
 			try {
-				const { data } = await HTTP.post('task', {
-					categoryId,
-					title,
-					price,
-				});
+				const { data } = await HTTP.post('task', task);
 				console.log("taskId", data.taskId);
 			} catch (e) {
 
@@ -147,7 +143,6 @@ const store = new Vuex.Store({
 		},
 
 		async getUserTasks({ commit }, { userId, count }) {
-			console.log(userId, count)
 			try {
 				const { data } = await HTTP.get('userTasks', {
 					params: {
@@ -156,6 +151,27 @@ const store = new Vuex.Store({
 					}
 				});
 				return data.tasks;
+			} catch (e) {
+
+			}
+		},
+
+		async getTask({ commit }, { taskId }) {
+			try {
+				const { data } = await HTTP.get('task', {
+					params: {
+						taskId,
+					}
+				});
+				return data.task;
+			} catch (e) {
+
+			}
+		},
+
+		async sendRequest({ commit }, request) {
+			try {
+				const { data } = await HTTP.post('request', request);
 			} catch (e) {
 
 			}

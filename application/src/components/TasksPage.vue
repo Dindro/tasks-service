@@ -50,7 +50,12 @@ export default {
         <div class="tasks-list">
           <div class="task" v-for="(task, i) in tasks" :key="i">
             <div class="task-name-price">
-              <div class="task-name">{{task.title}}</div>
+              <router-link 
+                tag="div"
+                class="task-name"
+                :to="{name: 'taskPage', params: { taskId: task.id}}">
+                {{task.title}}
+              </router-link>
               <div class="price">{{task.priceFrom}} руб</div>
             </div>
             <div class="user-task-info">

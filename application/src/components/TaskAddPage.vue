@@ -1,25 +1,72 @@
 <script>
 import GroupBox from "./GroupBox";
+import GroupBoxSimple from "./GroupBoxSimple";
+import AddressBox from "./AddressBox";
+import CheckBox from "./CheckBox";
 
 export default {
   data() {
     return {
       categories: [],
       selectedCategoryId: "",
+      categoryPlaceholder: "Выберите категорию",
+
       title: "",
-      price: "",
-      selectedCat: {}
+      priceFrom: "",
+      priceBefore: "",
+      description: "",
+
+      addresses: [
+        {
+          address: ""
+        }
+      ],
+
+      dateOption: [
+        {
+          id: 0,
+          name: "Указать период"
+        },
+        {
+          id: 1,
+          name: "Указать начало"
+        },
+        {
+          id: 2,
+          name: "Указать заверешение"
+        },
+        {
+          id: 3,
+          name: "Не указывать"
+        }
+      ],
+      selectedDateId: "",
+      dateStart: "",
+      dateEnd: "",
+
+      phoneNumber: "",
+      isComment: true
     };
   },
   components: {
-    GroupBox
+    GroupBox,
+    GroupBoxSimple,
+    AddressBox,
+    CheckBox
   },
   methods: {
     publish() {
       this.$store.dispatch("createTask", {
         categoryId: this.selectedCategoryId,
         title: this.title,
-        price: this.price
+        description: this.description,
+        priceFrom: this.priceFrom,
+        priceBefore: this.priceBefore,
+        addresses: this.addresses,
+        dateStart: this.dateStart,
+        dateEnd: this.dateEnd,
+        phoneNumber: this.phoneNumber,
+        isComment: this.isComment
       });
     },
     async getCategory() {
@@ -43,13 +90,16 @@ export default {
           <div class="option category">
             <div class="option-name">Категория</div>
             <div class="option-description">
-              <group-box :options="categories" v-model="selectedCategoryId"></group-box>
+              <group-box 
+                :options="categories" 
+                v-model="selectedCategoryId"
+                :placeholder="categoryPlaceholder"></group-box>
             </div>
           </div>
           <div class="option title">
             <div class="option-name">Название задачи</div>
             <div class="option-description">
-              <input type="text" id='title' v-model="title">
+              <input type="text" id='title' v-model="title" placeholder="Опишите то, что вам нужно">
             </div>
           </div>
           <div class="option price">
@@ -63,7 +113,54 @@ export default {
           <div class="option description">
             <div class="option-name">Описание</div>
             <div class="option-description">
-              <textarea></textarea>
+              <textarea v-model="description"></textarea>
+            </div>
+          </div>
+          <div class="option description">
+            <div class="option-name">Адрес</div>
+            <div class="option-description">
+              <address-box 
+                v-model="addresses"
+                :addresses="addresses"></address-box>
+            </div>
+          </div>
+          <div class="option date">
+            <div class="option-name">Дата и время</div>
+            <div class="option-description">
+              <group-box-simple :options="dateOption" v-model="selectedDateId"></group-box-simple>
+            </div>
+          </div>
+          <div class="option-add date-period" v-if="selectedDateId!==3">
+            <div class="option-add-item" v-if="selectedDateId===0 || selectedDateId===1">
+              <div class="option-name">Начать с</div>
+              <div class="option-description">
+                <input type="datetime-local" v-model="dateStart">
+              </div>
+            </div>
+            <div class="option-add-item" v-if="selectedDateId===0 || selectedDateId===2">
+              <div class="option-name">Завершить до</div>
+              <div class="option-description">
+                <input type="datetime-local" v-model="dateEnd">
+              </div>
+            </div>
+          </div>
+          <div class="option phone">
+            <div class="option-name">Номер телефона</div>
+            <div class="option-description">
+              <input type="text" id='phone' v-model.number="phoneNumber">
+            </div>
+          </div>
+          <div class="option settings">
+            <div class="option-name">Настройки</div>
+            <div class="option-description setting-list">
+              <div class="setting-row">
+                <div class="setting-el">
+                  <check-box :isCheck="isComment" v-model="isComment"></check-box>
+                </div>
+                <div class="setting-description">
+                  Могут ли пользователи комментировать задачу?
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -102,8 +199,34 @@ export default {
     .options-list {
       padding: 15px 20px;
 
-      .option {
+      .option,
+      .option-add {
         padding-bottom: 20px;
+
+        &:last-child {
+          padding-bottom: 0;
+        }
+
+        .option-name {
+          font-weight: 500;
+          padding-bottom: 10px;
+        }
+
+        .option-description {
+          input[type="text"],
+          textarea {
+            padding: 7px 14px;
+            border: 1px solid $clr-tb-border;
+            border-radius: 3px;
+            font-family: "Roboto";
+          }
+
+          textarea {
+            width: 100%;
+            box-sizing: border-box;
+            resize: none;
+          }
+        }
 
         &.title {
           input[type="text"] {
@@ -129,31 +252,60 @@ export default {
           }
         }
 
-        .option-name {
-          font-weight: 500;
-          padding-bottom: 10px;
-        }
+        &.settings {
+          .setting-row {
+            display: flex;
+            padding-bottom: 10px;
 
-        .option-description {
-          input[type="text"],
-          textarea {
-            padding: 5px 10px;
-            border: 1px solid $clr-tb-border;
-            border-radius: 3px;
-            font-family: "Roboto";
+            &:last-child {
+              padding-bottom: 0;
+            }
+
+            .setting-el {
+              input[type="checkbox"] {
+                height: 15px;
+                width: 15px;
+                border: 1px solid $clr-tb-border;
+                border-radius: 3px;
+              }
+            }
+
+            .setting-description {
+              flex: 1;
+              padding-top: 2px;
+              padding-left: 15px;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+
+      .option-add {
+        display: flex;
+
+        .option-add-item {
+          padding-right: 15px;
+
+          .option-name {
+            color: $clr-font-grey;
           }
 
-          textarea {
-            width: 100%;
-            box-sizing: border-box;
-            resize: none;
+          .option-description {
+            input[type="datetime-local"] {
+              padding: 5px 10px;
+              border: 1px solid $clr-tb-border;
+              border-radius: 3px;
+              font-family: "Roboto";
+              width: 150px;
+              color: $clr-font-black;
+            }
           }
         }
       }
     }
 
     .buttons {
-      padding: 15px 20px;
+      padding: 15px 20px 20px 20px;
 
       .topublish {
         cursor: pointer;

@@ -1,10 +1,30 @@
 <script>
 export default {
+  props: ["taskId"],
   data() {
-    return {};
+    return {
+      task: {},
+      messageText: "",
+      price: ""
+    };
   },
-  methods: {},
-  created() {}
+  methods: {
+    async getTask() {
+      this.task = await this.$store.dispatch("getTask", {
+        taskId: this.taskId
+      });
+    },
+    sendRequest() {
+      this.$store.dispatch("sendRequest", {
+        taskId: this.taskId,
+        messageText: this.messageText,
+        price: this.price
+      });
+    }
+  },
+  created() {
+    this.getTask();
+  }
 };
 </script>
 
@@ -12,7 +32,7 @@ export default {
   <div class="dinamic">
     <div class="dinamic-content">
       <div class="task">
-        <div class="task-name">Заменить экран телефона Xiaomi Redmi Note 4x</div>
+        <div class="task-name">{{task.title}}</div>
         <div class="task-map">
           <yandex-map
             style="width: 100%; height: 100%"
@@ -26,27 +46,28 @@ export default {
             <div class="option-description">А: Чебоксары, ул.Тукташа 5</div>
           </div>
           <div class="option-row">
-            <div class="option-name">Адрес</div>
-            <div class="option-description">А: Чебоксары, ул.Тукташа 5</div>
+            <div class="option-name">Цена</div>
+            <div class="option-description">от {{task.priceFrom}} до {{task.priceBefore}}</div>
           </div>
           <div class="option-row">
             <div class="option-name">Описание</div>
-            <div class="option-description">
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-              Тут будет много текста Тут будет много текста 
-            </div>
+            <div class="option-description">{{task.description}}</div>
           </div>
         </div>
         <div class="task-buttons">
-          <button class="request">Подать заявку</button>
+          <div class="user-photo"></div>
+          <textarea 
+            id="request-text" 
+            v-model="messageText" 
+            placeholder="Введите короткое сообщение"
+          >
+          </textarea>
+          <input 
+            type="text" 
+            v-model="price" 
+            id="price"
+          >
+          <button class="request" @click="sendRequest">Подать заявку</button>
         </div>
       </div>
       <div class="comments">
@@ -96,7 +117,7 @@ export default {
         <div class="customer-user">
           <div class="user-photo"></div>
           <div class="user-info">
-            <div class="user-name">Семенов Сергей</div>
+            <div class="user-name">{{task.userCustomer.surname}} {{task.userCustomer.name}}</div>
             <div class="user-age-city">21 лет, Чебоксары</div>
             <div class="ratings">Средний балл: 4.3</div>
             <div class="reviews">Отзывы: 45</div>
@@ -165,10 +186,30 @@ export default {
 
     .task-buttons {
       padding: 15px 20px;
+      display: flex;
+
+      .user-photo {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        background-color: #7b4545;
+      }
+
+      textarea#request-text {
+        font-style: "Roboto";
+        resize: none;
+        flex: 1;
+        margin: 0 15px;
+      }
+
+      #price {
+        margin-right: 15px;
+        width: 50px;
+        height: 15px;
+      }
 
       .request {
         cursor: pointer;
-        margin: auto;
         background-color: $clr-btn;
         color: white;
         border: none;
