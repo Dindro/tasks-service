@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ["options"],
+  props: ["options", "placeholder"],
   data() {
     return {
       selected: "",
@@ -102,7 +102,8 @@ export default {
         v-model="selected"
         @input="input"
         @click="isOpen = true"
-        ref="input">
+        ref="input"
+        :placeholder="placeholder">
       <button 
         class="open"
         @click="isOpen = !isOpen"
