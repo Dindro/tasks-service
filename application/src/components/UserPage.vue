@@ -1,4 +1,6 @@
 <script>
+import RatingBox from "./RatingBox";
+
 export default {
   props: ["userId"],
   data() {
@@ -7,8 +9,12 @@ export default {
       upPos: 0,
       downPos: 0,
       user: {},
-      tasks: []
+      tasks: [],
+      rating: 4.5
     };
+  },
+  components: {
+    RatingBox
   },
   computed: {
     /* user() {
@@ -197,9 +203,18 @@ export default {
             <div class="profile-info-row">
               <div class="properties">Рейтинг:</div>
               <div class="description">
-                <div class="rating">Вежливость</div>
-                <div class="rating">Пункутальность</div>
-                <div class="rating">Адекватнось</div>
+                <div class="rating">
+                  Вежливость
+                  <rating-box :ratingCount="rating"></rating-box>
+                </div>
+                <div class="rating">
+                  Пункутальность
+                  <rating-box :ratingCount="rating"></rating-box>
+                </div>
+                <div class="rating">
+                  Адекватнось
+                  <rating-box :ratingCount="rating"></rating-box>
+                </div>
               </div>
             </div>
           </div>
