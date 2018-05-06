@@ -155,7 +155,7 @@ export default {
             <div class="option-description setting-list">
               <div class="setting-row">
                 <div class="setting-el">
-                  <check-box :isCheck="isComment" v-model="isComment"></check-box>
+                  <check-box :check="isComment" v-model="isComment"></check-box>
                 </div>
                 <div class="setting-description">
                   Могут ли пользователи комментировать задачу?

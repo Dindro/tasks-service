@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ['addresses'],
+  props: ["addresses"],
   data() {
     return {
       rusSymbolStart: 1040,
@@ -50,6 +50,7 @@ export default {
         class="add-address" 
         :class="{ 'not-address': addresses.length === 0 }"
         @click="addAddress">
+        <i class="icon-add"></i>
         <template v-if="addresses.length === 0">Добавить адрес</template>
         <template v-else>Добавить еще один адрес</template>
       </span>
@@ -90,11 +91,19 @@ export default {
 }
 
 .buttons {
+  i {
+    font-size: 20px;
+    margin-right: 10px;
+    margin-left: -3px;
+  }
+
   .add-address {
     margin-left: 26px;
     cursor: pointer;
     color: $clr-font-blue;
     font-weight: 500;
+    display: flex;
+    align-items: center;
 
     &.not-address {
       margin-left: 0;

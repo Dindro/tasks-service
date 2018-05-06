@@ -1,6 +1,11 @@
 <script>
 export default {
-  props: ["isCheck"],
+  props: ["check"],
+  data() {
+    return {
+      isCheck: this.check
+    };
+  },
   methods: {
     click() {
       this.isCheck = !this.isCheck;
