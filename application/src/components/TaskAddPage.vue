@@ -75,6 +75,24 @@ export default {
   },
   created() {
     this.getCategory();
+
+    // загружаем google msp api
+    let ckeditor = document.createElement("script");
+    ckeditor.setAttribute(
+      "src",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyCFN33oqD_m6-imVCS1gKLorYDLXNwY0zY"
+    );
+    document.head.appendChild(ckeditor);
+  },
+
+  mounted() {
+    const element = document.getElementById("google-map");
+    console.log(element);
+    const options = {
+      zoom: 14,
+      center: new google.maps.LatLng(59.93, 30.32)
+    };
+    this.map = new google.maps.Map(element, options);
   }
 };
 </script>
@@ -86,6 +104,7 @@ export default {
         <div class="tasks-tab">
           <span class="tab-name">Добавление задания</span>
         </div>
+        <div style="height: 200px" id="google-map"></div>
         <div class="options-list">
           <div class="option category">
             <div class="option-name">Категория</div>
