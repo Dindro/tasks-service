@@ -1,4 +1,6 @@
 <script>
+import { gmapApi } from "vue2-google-maps";
+
 export default {
   props: ["addresses"],
   data() {
@@ -6,6 +8,9 @@ export default {
       rusSymbolStart: 1040,
       rusSymbolCount: 31
     };
+  },
+  computed: {
+    google: gmapApi
   },
   methods: {
     getSymbol(index) {
@@ -26,6 +31,12 @@ export default {
     emitChange() {
       this.$emit("input", this.addresses);
     }
+  },
+  mounted() {
+    /* const autocomplete = new this.google.maps.places.Autocomplete(
+      document.getElementById("autocomplete"),
+      { types: ["geocode"] }
+    ); */
   }
 };
 </script>
@@ -33,6 +44,7 @@ export default {
 
 <template>
   <div class="address-el">
+    <!-- <input type="text" id="autocomplete"> -->
     <div class="address-list">
       <div class="address-item" v-for="(item, i) of addresses" :key="i">
         <div class="symbol">{{ getSymbol(i) }}</div>
