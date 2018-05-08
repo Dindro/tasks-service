@@ -5,22 +5,54 @@ export default {
   props: ["address"],
   data() {
     return {
-      inputAddress: this.address
+      inputAddress: this.address,
+      autocomplete: null,
+      lat: null,
+      lon: null
     };
   },
   computed: {
     google: gmapApi
   },
+  watch: {
+    // после того как объект не будет null, то регистрируем
+    google() {
+      this.registrationAutocomplete();
+    }
+  },
   methods: {
+    // при изменении, данные отправляем вверх
     emitChange() {
       this.$emit("input", this.inputAddress);
+    },
+
+    // автозаполнение
+    registrationAutocomplete() {
+      const el = this.$refs.address;
+      this.autocomplete = new this.google.maps.places.Autocomplete(el, {
+        types: ["geocode"]
+      });
+
+      this.autocomplete.addListener("place_changed", this.onPlaceChanged);
+    },
+
+    // при выборе места
+    onPlaceChanged() {
+      let place = this.autocomplete.getPlace();
+      let ac = place.address_components;
+      this.lat = place.geometry.location.lat();
+      this.lon = place.geometry.location.lng();
+      let city = ac[0]["short_name"];
+
+      this.inputAddress = this.$refs.address.value;
+      this.emitChange();
     }
   },
   mounted() {
-    const el = this.$refs.address;
-    const autocomplete = new this.google.maps.places.Autocomplete(el, {
-      types: ["geocode"]
-    });
+    // если объект есть то добавляем автозаполнение
+    if (this.google !== null) {
+      this.registrationAutocomplete();
+    }
   }
 };
 </script>
@@ -30,7 +62,7 @@ export default {
   <input 
     type="text" 
     class="address" 
-    placeholder="Введите адрес"
+    placeholder="Введите полный адрес"
     v-model="inputAddress"
     @input="emitChange"
     ref="address">

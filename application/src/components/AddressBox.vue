@@ -1,11 +1,12 @@
 <script>
+// импорт функции которая возвращает объект
 import { gmapApi } from "vue2-google-maps";
 import AddressItem from "./AddressItem";
 
 export default {
   props: ["addresses"],
   components: {
-    AddressItem
+    AddressItem,
   },
   data() {
     return {
@@ -13,9 +14,8 @@ export default {
       rusSymbolCount: 31
     };
   },
-  computed: {
-    google: gmapApi
-  },
+  computed: {},
+  mounted() {},
   methods: {
     getSymbol(index) {
       const code = this.rusSymbolStart + index;
@@ -43,8 +43,7 @@ export default {
     emitChange() {
       this.$emit("input", this.addresses);
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 
@@ -64,6 +63,7 @@ export default {
           v-model="item.address"
           @input="emitChange"
           ref="address"> -->
+          
         <div class="delete" @click="deleteAddress(i)">Удалить</div>
       </div>
     </div>
