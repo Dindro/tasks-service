@@ -11,9 +11,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./assets/restart.scss";
+
 // подключаем цвета
 @import "./assets/colors.scss";
-@import "./assets/restart.scss";
+
+// сброс стилей подсказок адрессов от google place
+@import "./assets/googlePlace.scss";
 
 body {
   @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
