@@ -14,8 +14,6 @@ export default {
       rusSymbolCount: 31
     };
   },
-  computed: {},
-  mounted() {},
   methods: {
     getSymbol(index) {
       const code = this.rusSymbolStart + index;
