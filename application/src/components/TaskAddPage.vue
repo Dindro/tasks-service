@@ -18,6 +18,7 @@ export default {
 
       addresses: [
         {
+          id: 0,
           address: ""
         }
       ],
@@ -56,7 +57,8 @@ export default {
   },
   methods: {
     publish() {
-      this.$store.dispatch("createTask", {
+      console.log(this.$data);
+      /* this.$store.dispatch("createTask", {
         categoryId: this.selectedCategoryId,
         title: this.title,
         description: this.description,
@@ -67,7 +69,7 @@ export default {
         dateEnd: this.dateEnd,
         phoneNumber: this.phoneNumber,
         isComment: this.isComment
-      });
+      }); */
     },
     async getCategory() {
       this.categories = await this.$store.dispatch("getCategories");
@@ -77,9 +79,7 @@ export default {
     this.getCategory();
   },
 
-  mounted() {
-
-  }
+  mounted() {}
 };
 </script>
 

@@ -1,8 +1,12 @@
 <script>
 import { gmapApi } from "vue2-google-maps";
+import AddressItem from "./AddressItem";
 
 export default {
   props: ["addresses"],
+  components: {
+    AddressItem
+  },
   data() {
     return {
       rusSymbolStart: 1040,
@@ -19,7 +23,15 @@ export default {
     },
 
     addAddress() {
-      this.addresses.push({ address: "" });
+      const id =
+        this.addresses.length === 0
+          ? 0
+          : this.addresses[this.addresses.length - 1].id + 1;
+
+      this.addresses.push({
+        address: "",
+        id
+      });
       this.emitChange();
     },
 
@@ -32,28 +44,26 @@ export default {
       this.$emit("input", this.addresses);
     }
   },
-  mounted() {
-    /* const autocomplete = new this.google.maps.places.Autocomplete(
-      document.getElementById("autocomplete"),
-      { types: ["geocode"] }
-    ); */
-  }
+  mounted() {}
 };
 </script>
 
 
 <template>
   <div class="address-el">
-    <!-- <input type="text" id="autocomplete"> -->
     <div class="address-list">
-      <div class="address-item" v-for="(item, i) of addresses" :key="i">
+      <div class="address-item" v-for="(item, i) of addresses" :key="item.id">
         <div class="symbol">{{ getSymbol(i) }}</div>
-        <input 
+        <address-item
+          :address="item.address" v-model="item.address" :key="item.id">
+        </address-item>
+        <!-- <input 
           type="text" 
           class="address" 
           placeholder="Введите адрес"
           v-model="item.address"
-          @input="emitChange">
+          @input="emitChange"
+          ref="address"> -->
         <div class="delete" @click="deleteAddress(i)">Удалить</div>
       </div>
     </div>
