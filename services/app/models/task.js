@@ -2,6 +2,15 @@ const db = require("../../config/db");
 let model = {};
 
 model.create = async (task) => {
+
+	if (task.dateStart === "") {
+		task.dateStart = null;
+	}
+
+	if (task.dateEnd === "") {
+		task.dateEnd = null;
+	}
+
 	const query = `
 		INSERT INTO tasks SET 
 		id_user_customer = ${task.userId},
@@ -10,8 +19,8 @@ model.create = async (task) => {
 		description = '${task.description}',
 		priceFrom = ${task.priceFrom},
 		priceBefore = ${task.priceBefore},
-		doFrom = '${task.dateStart}',
-		doBefore = '${task.dateEnd}',
+		doFrom = ${task.dateStart},
+		doBefore = ${task.dateEnd},
 		phone = '${task.phoneNumber}',
 		isComment = ${task.isComment}
 	;`;

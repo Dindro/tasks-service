@@ -28,8 +28,7 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
-  store,
-  gmapApi: VueGoogleMaps.gmapApi()
+  store
 })
 
 // получаем авторизированного пользователя

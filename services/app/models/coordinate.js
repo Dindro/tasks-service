@@ -4,8 +4,10 @@ let model = {};
 model.create = async (coordinate) => {
 	const query = `
 		INSERT INTO coordinates SET 
-		address = '${coordinate.address}',
-		priority = ${coordinate.priority}
+		name = '${coordinate.name}',
+		priority = ${coordinate.priority},
+		lon = ${coordinate.lon},
+		lat = ${coordinate.lat}
 	;`;
 
 	try {

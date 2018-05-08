@@ -19,11 +19,15 @@ export default {
       addresses: [
         {
           id: 0,
-          address: ""
+          name: "",
+          lat: null,
+          lon: null
         },
         {
           id: 1,
-          address: ""
+          name: "",
+          lat: null,
+          lon: null
         }
       ],
 
@@ -61,8 +65,7 @@ export default {
   },
   methods: {
     publish() {
-      console.log(this.$data);
-      /* this.$store.dispatch("createTask", {
+      this.$store.dispatch("createTask", {
         categoryId: this.selectedCategoryId,
         title: this.title,
         description: this.description,
@@ -73,7 +76,7 @@ export default {
         dateEnd: this.dateEnd,
         phoneNumber: this.phoneNumber,
         isComment: this.isComment
-      }); */
+      });
     },
     async getCategory() {
       this.categories = await this.$store.dispatch("getCategories");
@@ -128,7 +131,6 @@ export default {
             <div class="option-name">Адрес</div>
             <div class="option-description">
               <address-box 
-                v-model="addresses"
                 :addresses="addresses"></address-box>
             </div>
           </div>
@@ -304,7 +306,7 @@ export default {
               border: 1px solid $clr-tb-border;
               border-radius: 3px;
               font-family: "Roboto";
-              width: 150px;
+              width: 180px;
               color: $clr-font-black;
             }
           }

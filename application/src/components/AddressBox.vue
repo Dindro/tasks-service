@@ -6,7 +6,7 @@ import AddressItem from "./AddressItem";
 export default {
   props: ["addresses"],
   components: {
-    AddressItem,
+    AddressItem
   },
   data() {
     return {
@@ -27,19 +27,15 @@ export default {
           : this.addresses[this.addresses.length - 1].id + 1;
 
       this.addresses.push({
-        address: "",
-        id
+        name: "",
+        id,
+        lat: null,
+        lon: null
       });
-      this.emitChange();
     },
 
     deleteAddress(index) {
       this.addresses.splice(index, 1);
-      this.emitChange();
-    },
-
-    emitChange() {
-      this.$emit("input", this.addresses);
     }
   }
 };
@@ -52,16 +48,8 @@ export default {
       <div class="address-item" v-for="(item, i) of addresses" :key="item.id">
         <div class="symbol">{{ getSymbol(i) }}</div>
         <address-item
-          :address="item.address" v-model="item.address" :key="item.id">
+          :address="item">
         </address-item>
-        <!-- <input 
-          type="text" 
-          class="address" 
-          placeholder="Введите адрес"
-          v-model="item.address"
-          @input="emitChange"
-          ref="address"> -->
-          
         <div class="delete" @click="deleteAddress(i)">Удалить</div>
       </div>
     </div>
