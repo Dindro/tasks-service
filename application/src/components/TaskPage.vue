@@ -8,22 +8,82 @@ export default {
       price: ""
     };
   },
+  computed: {
+    taskPrice() {
+      let price = "";
+      const pFrom = this.task.priceFrom;
+      const pBefore = this.task.priceBefore;
+
+      if (pFrom === pBefore) {
+        price = `${pFrom}руб`;
+      } else {
+        price = `от ${pFrom} руб до ${pBefore} руб`;
+      }
+      return price;
+    },
+
+    timeOptionTitle() {
+      let title = "";
+      const timeStart = this.task.doFrom;
+      const timeEnd = this.task.doBefore;
+
+      if (timeStart !== undefined && timeEnd !== undefined) {
+        title = "Начать и завершить";
+      } else if (timeStart !== undefined && timeEnd === undefined) {
+        title = "Начать с";
+      } else if (timeStart === undefined && timeEnd !== undefined) {
+        title = "Завершить до";
+      }
+      return title;
+    },
+
+    time() {
+      let time = "";
+      const timeStart = this.task.doFrom;
+      const timeEnd = this.task.doBefore;
+      const mask = "mmm dd yyyy HH:MM";
+
+      if (timeStart !== undefined && timeEnd !== undefined) {
+        time = `
+          c <em>
+            ${new Date(timeStart).format(mask)}</em> до <em>
+            ${new Date(timeEnd).format(mask)}
+          </em>
+        `;
+      } else if (timeStart !== undefined && timeEnd === undefined) {
+        time = new Date(timeStart).format(mask);
+      } else if (timeStart === undefined && timeEnd !== undefined) {
+        time = new Date(timeEnd).format(mask);
+      }
+      return time;
+    }
+  },
+  created() {
+    this.getTask();
+  },
+  mounted() {},
   methods: {
     async getTask() {
       this.task = await this.$store.dispatch("getTask", {
         taskId: this.taskId
       });
     },
+
     sendRequest() {
       this.$store.dispatch("sendRequest", {
         taskId: this.taskId,
         messageText: this.messageText,
         price: this.price
       });
-    }
-  },
-  created() {
-    this.getTask();
+    },
+
+    getSymbol(index) {
+      const rusSymbolStart = 1040;
+      const code = rusSymbolStart + index;
+      return String.fromCharCode(code);
+    },
+
+    getDate(date) {}
   }
 };
 </script>
@@ -34,20 +94,41 @@ export default {
       <div class="task">
         <div class="task-name">{{task.title}}</div>
         <div class="task-map">
-          <yandex-map
+          <gmap-map
             style="width: 100%; height: 100%"
-            :coords="[54.82896654088406, 39.831893822753904]"
-          >
-          </yandex-map>
+            :center="{lat: task.addresses[0].lat, lng: task.addresses[0].lon}"
+            :zoom="7">
+            <gmap-marker
+              :key="index"
+              v-for="(address, index) in task.addresses"
+              :position="{lat: address.lat, lng: address.lon}"
+            ></gmap-marker>
+          </gmap-map>
         </div>
         <div class="task-options">
-          <div class="option-row">
+          <div class="option-row addresses">
             <div class="option-name">Адрес</div>
-            <div class="option-description">А: Чебоксары, ул.Тукташа 5</div>
+            <div class="option-description">
+              <div 
+                class="address-row"
+                v-for="(address, index) in task.addresses"
+                :key="index">
+                <div class="symbol">{{getSymbol(index)}}</div>
+                <div class="address">{{address.name}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="option-row time">
+            <div class="option-name">{{timeOptionTitle}}</div>
+            <div class="option-description">
+              <span v-html="time"></span>
+            </div>
           </div>
           <div class="option-row">
-            <div class="option-name">Цена</div>
-            <div class="option-description">от {{task.priceFrom}} до {{task.priceBefore}}</div>
+            <div class="option-name">Бюджет</div>
+            <div class="option-description">
+              {{taskPrice}}
+            </div>
           </div>
           <div class="option-row">
             <div class="option-name">Описание</div>
@@ -136,6 +217,13 @@ export default {
   width: 795px;
 }
 
+/* .time /deep/ em {
+  font-style: normal;
+  background-color: #f3f3f3;
+  padding: 3px 5px;
+  border-radius: 3px;
+} */
+
 .dinamic-content {
   width: 550px;
   float: left;
@@ -161,13 +249,13 @@ export default {
       padding: 15px 20px;
 
       .option-row {
-        padding-bottom: 8px;
+        padding-bottom: 10px;
         font-size: 13px;
         display: flex;
         line-height: 1.3;
 
         .option-name {
-          color: $clr-font-grey;
+          color: $clr-font-black;
           width: 100px;
           padding-right: 5px;
           box-sizing: border-box;
@@ -180,6 +268,36 @@ export default {
           // перенос слов
           word-wrap: break-word;
           width: 408px;
+        }
+
+        &.addresses {
+          .address-row {
+            display: flex;
+            padding-bottom: 5px;
+
+            &:last-child {
+              padding-bottom: 0;
+            }
+
+            .symbol {
+              width: 20px;
+              color: $clr-font-grey;
+              font-weight: 500;
+            }
+
+            .address {
+              flex: 1;
+            }
+          }
+        }
+
+        &.time {
+          /deep/ em {
+            font-style: normal;
+            background-color: #f3f3f3;
+            padding: 3px 5px;
+            border-radius: 3px;
+          }
         }
       }
     }
