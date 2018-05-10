@@ -136,7 +136,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../assets/colors.scss";
 
 .select {
@@ -184,7 +184,7 @@ button.open {
   border-top: none;
   max-height: 200px;
   overflow-y: auto;
-  box-shadow: 0px 8px 20px 0px rgba(138, 138, 138, 0.529);
+  box-shadow: 0px 3px 11px 0px rgba(132, 132, 132, 0.19);
 
   &.open {
     display: block;
@@ -207,7 +207,7 @@ button.open {
       padding-left: 30px;
     }
 
-    em {
+    /deep/ em {
       font-weight: 700;
       font-style: normal;
       background-color: #e7edf2;
