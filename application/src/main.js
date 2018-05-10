@@ -1,9 +1,13 @@
-import Vue from 'vue'
-import App from './App'
+import Vue from 'vue';
+import App from './App';
 import YandexMap from 'vue-yandex-maps';
-import router from './router'
-import store from './store'
-import * as VueGoogleMaps from 'vue2-google-maps'
+import router from './router';
+import store from './store';
+import * as VueGoogleMaps from 'vue2-google-maps';
+
+// подключаем собсвтенный форматировщик даты
+import "./libs/dateFormater";
+
 // import normilizeCss from 'normalize.css'
 
 // установка сброса стилей
