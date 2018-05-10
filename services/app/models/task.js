@@ -93,4 +93,20 @@ model.addCoordinate = async (coordinateId, taskId) => {
 	}
 };
 
+model.getCoordinates = async (taskId) => {
+	const query = `
+		SELECT c.* FROM tasks_coordinates as t_c INNER JOIN coordinates as c 
+		WHERE t_c.id_coordinate = c.id AND 
+		t_c.id_task = ${taskId} 
+		ORDER BY c.priority ASC;
+	;`;
+
+	try {
+		const results = await db.getResults(query);
+		return results;
+	} catch (e) {
+		throw e;
+	}
+}
+
 module.exports = model;

@@ -86,11 +86,18 @@ api.get = async (req, res) => {
 	try {
 		const task = await Task.getById(taskId);
 
+		// получаем адреса
+		const addressesPrm = Task.getCoordinates(task.id);
+
 		// получаем заказчика
-		const userCustomer = await User.getById(task.id_user_customer);
-		task.userCustomer = userCustomer;
+		const userCustomerPrm = User.getById(task.id_user_customer);
 
 		// TODO: получить исполнителя
+		// TODO: получить количество новых заявок
+
+		// ждем ответов
+		task.userCustomer = await userCustomerPrm;
+		task.addresses = await addressesPrm;
 
 		res.status(200).json({ task });
 	} catch (e) {
