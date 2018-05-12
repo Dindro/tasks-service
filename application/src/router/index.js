@@ -1,17 +1,17 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
 // части
-import TheNavigation from '@/components/TheNavigation'
-import TheHeader from '@/components/TheHeader'
+import TheNavigation from '@/components/TheNavigation';
+import TheHeader from '@/components/TheHeader';
 
 // страницы
-import LoginPage from '../components/LoginPage'
-import SignupPage from '../components/SignupPage'
-import UserPage from '../components/UserPage'
-import TasksPage from '../components/TasksPage'
-import TaskPage from '../components/TaskPage'
-import TaskAddPage from '../components/TaskAddPage'
+import LoginPage from '../components/LoginPage';
+import SignupPage from '../components/SignupPage';
+import UserPage from '../components/UserPage';
+import TasksPage from '../components/TasksPage';
+import TaskPage from '../components/TaskPage';
+import TaskAddPage from '../components/TaskAddPage';
 
 
 // Страницы
@@ -95,7 +95,7 @@ export default new Router({
 							name: 'taskPage',
 							path: '/tasks/id:taskId',
 							component: TaskPage,
-							props: true,
+							props: (route) => ({ tab: route.query.tab, taskId: route.params.taskId }),
 						},
 						{
 							path: 'tasks/add',

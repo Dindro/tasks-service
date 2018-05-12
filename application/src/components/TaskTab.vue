@@ -1,21 +1,14 @@
 <script>
 import { mapGetters } from "vuex";
-import TaskRequestsTab from "../components/TaskRequestsTab";
-import TaskTab from "../components/TaskTab";
 
 export default {
-  props: ["taskId", "tab"],
+  props: ["task"],
   data() {
     return {
-      task: {},
+      tab: "",
       message: "",
-      price: "",
-      test: this.$store.getters['task/doubleCount']
+      price: ""
     };
-  },
-  components: {
-    TaskRequestsTab,
-    TaskTab
   },
   computed: {
     ...mapGetters(["userAuth", "isLogged"]),
@@ -114,7 +107,7 @@ export default {
     }
   },
   created() {
-    this.getTask();
+    
   },
   mounted() {},
   methods: {
@@ -138,79 +131,83 @@ export default {
       const code = rusSymbolStart + index;
       return String.fromCharCode(code);
     },
-
-    showTab(tabName) {
-      if (this.tab === tabName) {
-        return;
-      }
-
-      this.$router.push({
-        name: "taskPage",
-        params: { taskId: this.taskId },
-        query: { tab: tabName }
-      });
-    }
   }
 };
 </script>
 
 <template>
-  <div class="dinamic">
-    
-    <div class="dinamic-content">
-      <task-requests-tab></task-requests-tab>
-      <task-tab :task='task'></task-tab>
+  <div>
+    <div class="task">
+      <div class="task-name">{{task.title}}</div>
+      <div class="task-map">
+        <gmap-map style="width: 100%; height: 100%" :center="{lat: task.addresses[0].lat, lng: task.addresses[0].lon}" :zoom="7">
+          <gmap-marker :key="index" v-for="(address, index) in task.addresses" :position="{lat: address.lat, lng: address.lon}"></gmap-marker>
+        </gmap-map>
+      </div>
+      <div class="task-options">
+        <div class="option-row addresses">
+          <div class="option-name">Адрес</div>
+          <div class="option-description">
+            <div class="address-row" v-for="(address, index) in task.addresses" :key="index">
+              <div class="symbol">{{getSymbol(index)}}</div>
+              <div class="address">{{address.name}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="option-row time" v-if="isTime===false">
+          <div class="option-name">{{timeOptionTitle}}</div>
+          <div class="option-description">
+            <span v-html="time"></span>
+          </div>
+        </div>
+        <div class="option-row">
+          <div class="option-name">Бюджет</div>
+          <div class="option-description">
+            {{taskPrice}}
+          </div>
+        </div>
+        <div class="option-row">
+          <div class="option-name">Описание</div>
+          <div class="option-description">{{task.description}}</div>
+        </div>
+      </div>
     </div>
-    <div id="options">
-      <div class="tab">
-        <div class="tab-item active" @click="showTab('task')">
-          Задача
-        </div>
-        <div class="tab-item" @click="showTab('requests')">
-          Заявки
-          <span v-if="task.requestNotViewCount !== 0" class="count">
-            {{requestCount}}
-          </span>
-        </div>
-        <div class="tab-item" @click="showTab('chats')">
-          Диалоги с этой задачей
-        </div>
-      </div>
-
-      <div class="details">
-        <div class="details-top">
-          Детали
-        </div>
-        <div class="detail-list">
-          <div class="detail status" :class="status.class">{{status.title}}</div>
-          <div class="detail category">{{task.categoryName}}</div>
-          <div class="detail">Просмотров: {{task.views}}</div>
-          <div class="detail">Создано: {{new Date(task.created).format("mmm dd yyyy")}}</div>
-          <div class="detail">Номер задания: #{{task.id}}</div>
-        </div>
-        <div class="detail-buttons">
-          <div>
-            <span class="go-comments">Перейти к комментариям</span>
+    <div class="request" v-if="isMyPage===false && isLogged === true">
+      <div class="request-top">Оформление заявки</div>
+      <div class="request-form">
+        <div class="form-option price">
+          <div class="form-option-name">
+            Ваша цена
           </div>
-          <template v-if="isMyPage === true">
-            <button class="edit-task">Редактировать задачу</button>
-            <button class="delete-task">Удалить задачу</button>
-          </template>
+          <div class="form-option-el">
+            <input type="text" v-model.number="price" :min="task.priceFrom" :max="task.priceBefore" required>
+            <span class="suggest">
+              от {{task.priceFrom}} ... до {{task.priceBefore}}
+            </span>
+          </div>
         </div>
-      </div>
-
-      <div class="customer">
-        <div class="customer-top">Заказчик</div>
-        <div class="customer-user">
-          <div class="user-photo"></div>
-          <div class="user-info">
-            <div class="user-name">{{task.userCustomer.surname}} {{task.userCustomer.name}}</div>
-            <div class="user-age-city">21 лет, Чебоксары</div>
-            <div class="ratings">Средний балл: 4.3</div>
-            <div class="reviews">Отзывы: 45</div>
+        <div class="form-option message">
+          <div class="form-option-name">
+            Сообщение
+            <span class="suggest">(необязательно)</span>
+          </div>
+          <div class="form-option-el">
+            <textarea v-model.trim="message"></textarea>
+          </div>
+        </div>
+        <div class="form-option send-button">
+          <div class="form-option-el">
+            <button @click="sendRequest">Отправить заявку</button>
           </div>
         </div>
       </div>
+    </div>
+    <div class="comments">
+      <div class="comments-top">
+        Комментария
+      </div>
+      <div class="comments-list"></div>
+      <div class="write-comment"></div>
     </div>
   </div>
 </template>

@@ -25,7 +25,7 @@ model.create = async (task) => {
 		isComment = ${task.isComment}
 	;`;
 	try {
-		const task = await db.getResults(query);
+		const task = await db.getResult(query);
 		return task.insertId;
 	} catch (e) {
 		throw e;
@@ -40,7 +40,7 @@ model.getByUserId = async (userId, count) => {
 	;`;
 
 	try {
-		const tasks = await db.getResults(query);
+		const tasks = await db.getResult(query);
 		return tasks;
 	} catch (e) {
 		throw e;
@@ -50,7 +50,7 @@ model.getByUserId = async (userId, count) => {
 model.getById = async (taskId) => {
 	const query = `SELECT * FROM tasks WHERE id = ${taskId};`;
 	try {
-		const results = await db.getResults(query);
+		const results = await db.getResult(query);
 		return results[0];
 	} catch (e) {
 		throw e;
@@ -60,7 +60,7 @@ model.getById = async (taskId) => {
 model.getAll = async () => {
 	const query = `SELECT * FROM tasks;`;
 	try {
-		const results = await db.getResults(query);
+		const results = await db.getResult(query);
 		return results;
 	} catch (e) {
 		throw e;
@@ -86,7 +86,7 @@ model.addCoordinate = async (coordinateId, taskId) => {
 	;`;
 
 	try {
-		const result = await db.getResults(query);
+		const result = await db.getResult(query);
 		return result.insertId;
 	} catch (e) {
 		throw e;
@@ -102,7 +102,7 @@ model.getCoordinates = async (taskId) => {
 	;`;
 
 	try {
-		const results = await db.getResults(query);
+		const results = await db.getResult(query);
 		return results;
 	} catch (e) {
 		throw e;

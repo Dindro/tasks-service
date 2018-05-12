@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const config = require("./index").db;
 
 module.exports = {
-	async getResults(query) {
+	async getResult(query) {
 		try {
 			var connection = await getConnection();
 			var results = await applyQuery(connection, query, []);

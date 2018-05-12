@@ -1,6 +1,8 @@
-const Task = require("../models/task");
-const Coordinate = require("../models/coordinate");
-const User = require("../models/user");
+const Task = require('../models/task');
+const Coordinate = require('../models/coordinate');
+const User = require('../models/user');
+const Request = require('../models/request');
+const Category = require('../models/category');
 
 let api = {};
 
@@ -93,9 +95,18 @@ api.get = async (req, res) => {
 		const userCustomerPrm = User.getById(task.id_user_customer);
 
 		// TODO: получить исполнителя
-		// TODO: получить количество новых заявок
+
+		// получаем количество новых заявок
+		const requestNotViewCountPrm = Request.getNotViewCount(task.id);
+
+		// получаем название категории
+		const categoryPrm = Category.getById(task.id_category);
+
 
 		// ждем ответов
+		const category = await categoryPrm;
+		task.categoryName = category.name;
+		task.requestNotViewCount = await requestNotViewCountPrm;
 		task.userCustomer = await userCustomerPrm;
 		task.addresses = await addressesPrm;
 

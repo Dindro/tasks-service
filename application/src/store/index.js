@@ -1,24 +1,30 @@
-import Vuex from "vuex"
-import Vue from 'vue'
-import axios from 'axios'
-import io from 'socket.io-client'
-import router from '../router'
+import Vuex from 'vuex';
+import Vue from 'vue';
+import axios from 'axios';
+import io from 'socket.io-client';
+import router from '../router';
+
+// модули
+import task from './modules/task';
 
 const taskAPI = `http://${window.location.hostname}:3000/api/v1`;
 const HTTP = axios.create({
 	baseURL: taskAPI,
 	headers: {
-		'x-access-token': localStorage.getItem('token')
+		'x-access-token': localStorage.getItem('token'),
 	}
 });
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+	strict: true,
+	modules: {
+		task,
+	},
 	state: {
 		userAuth: {},
 		isLogged: !!localStorage.getItem("token"),
-		userVisit: {}
 	},
 	getters: {
 		name(state) {
@@ -50,7 +56,6 @@ const store = new Vuex.Store({
 				.then((response) => {
 					const { data } = response;
 					console.log(response);
-
 					commit('userAuth', data.user);
 					commit('isLogged', true);
 					localStorage.setItem('token', data.token);
@@ -172,6 +177,7 @@ const store = new Vuex.Store({
 		async sendRequest({ commit }, request) {
 			try {
 				const { data } = await HTTP.post('request', request);
+				console.log("Store заявки", data);
 			} catch (e) {
 
 			}

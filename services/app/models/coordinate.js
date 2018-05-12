@@ -11,7 +11,7 @@ model.create = async (coordinate) => {
 	;`;
 
 	try {
-		const results = await db.getResults(query);
+		const results = await db.getResult(query);
 		return results.insertId;
 	} catch (e) {
 		throw e;
