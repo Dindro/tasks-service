@@ -12,7 +12,7 @@ const HTTP = axios.create({
 	baseURL: taskAPI,
 	headers: {
 		'x-access-token': localStorage.getItem('token'),
-	}
+	},
 });
 
 Vue.use(Vuex);
