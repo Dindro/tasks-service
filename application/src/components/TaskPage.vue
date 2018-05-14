@@ -1,5 +1,6 @@
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
+
 import TaskRequestsTab from "../components/TaskRequestsTab";
 import TaskTab from "../components/TaskTab";
 
@@ -7,10 +8,9 @@ export default {
   props: ["taskId", "tab"],
   data() {
     return {
-      task: {},
       message: "",
       price: "",
-      test: this.$store.getters['task/doubleCount']
+      test: this.$store.getters["task/doubleCount"]
     };
   },
   components: {
@@ -18,7 +18,9 @@ export default {
     TaskTab
   },
   computed: {
-    ...mapGetters(["userAuth", "isLogged"]),
+    ...mapState("task", {
+      task: state => state.task
+    }),
 
     isMyPage() {
       const isLogged = this.isLogged;
@@ -26,7 +28,8 @@ export default {
         return false;
       }
 
-      const userAuth = this.userAuth;
+      // FIX
+      const userAuth = { id: 1 }; //this.userAuth;
       return userAuth.id === this.task.id_user_customer;
     },
 
@@ -114,16 +117,17 @@ export default {
     }
   },
   created() {
-    this.getTask();
+    this.getTask({ taskId: this.taskId });
   },
   mounted() {},
   methods: {
-    async getTask() {
-      this.task = await this.$store.dispatch("getTask", {
-        taskId: this.taskId
-      });
-      this.price = this.task.priceFrom;
-    },
+    ...mapActions("task", ["getTask"]),
+    // async getTask() {
+    //   this.task = await this.$store.dispatch("getTask", {
+    //     taskId: this.taskId
+    //   });
+    //   this.price = this.task.priceFrom;
+    // },
 
     sendRequest() {
       this.$store.dispatch("sendRequest", {
@@ -158,8 +162,8 @@ export default {
   <div class="dinamic">
     
     <div class="dinamic-content">
-      <task-requests-tab></task-requests-tab>
-      <task-tab :task='task'></task-tab>
+      <task-requests-tab v-if="tab === 'requests'"></task-requests-tab>
+      <task-tab v-else-if="tab === 'task' || tab === undefined " :task='task'></task-tab>
     </div>
     <div id="options">
       <div class="tab">

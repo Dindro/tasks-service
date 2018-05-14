@@ -1,6 +1,6 @@
 <template>
   <div class="blocks">
-    <div class="head">
+    <!-- <div class="head">
       <div class="head-content">
         Tasks service
         <div class="head-profile">
@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <router-view></router-view>
   </div>
 </template>

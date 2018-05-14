@@ -6,13 +6,14 @@ import router from '../router';
 
 // модули
 import task from './modules/task';
+import request from './modules/request';
 
 const taskAPI = `http://${window.location.hostname}:3000/api/v1`;
 const HTTP = axios.create({
 	baseURL: taskAPI,
 	headers: {
 		'x-access-token': localStorage.getItem('token'),
-	},
+	}
 });
 
 Vue.use(Vuex);
@@ -21,6 +22,7 @@ const store = new Vuex.Store({
 	strict: true,
 	modules: {
 		task,
+		request
 	},
 	state: {
 		userAuth: {},

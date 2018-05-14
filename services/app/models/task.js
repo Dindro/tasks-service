@@ -32,11 +32,19 @@ model.create = async (task) => {
 	}
 };
 
-model.getByUserId = async (userId, count) => {
-	const query = `SELECT * FROM tasks 
+model.getByUserId = async ({userId, count}) => {
+	let param = '';
+
+	// если количество указано
+	if (count !== undefined) {
+		param = `LIMIT ${count}`;
+	}
+
+	const query = `
+		SELECT * FROM tasks 
 		WHERE id_user_customer = ${userId} 
 		ORDER BY created 
-		DESC LIMIT ${count}
+		DESC ${param}
 	;`;
 
 	try {

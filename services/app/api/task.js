@@ -72,10 +72,19 @@ api.getAll = async (req, res) => {
 };
 
 api.getByUserId = async (req, res) => {
-	const { userId, count } = req.query;
+	const { count } = req.query;
+	let { userId } = req.query;
+
+	if (userId === undefined) {
+		userId = req.userId;
+
+		if (userId === undefined) {
+			return res.status(200).json({ success: false, message: 'id not found' });
+		}
+	}
 
 	try {
-		const tasks = await Task.getByUserId(userId, count);
+		const tasks = await Task.getByUserId({ userId, count });
 		res.status(200).json({ tasks });
 	} catch (e) {
 		console.log(e);

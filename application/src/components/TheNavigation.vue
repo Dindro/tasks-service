@@ -34,6 +34,9 @@ export default {
 <template>
   <div class="main">
     <div id="nav">
+      <div class="logo">
+        <div class="logo-text">Tasks service</div>
+      </div>
       <div class="nav-content">
         <div class="nav-router" v-if="isLogged">
           <router-link tag="div" :to="{name: 'userPage', params: { userId: getUserAuthId}}">
@@ -43,6 +46,10 @@ export default {
           <router-link tag="div" to="/tasks">
             <i class="icon-content_paste"></i>
             Задачи
+          </router-link>
+          <router-link tag="div" to="/requests">
+            <i class="icon-content_paste"></i>
+            Заявки
           </router-link>
           <router-link tag="div" to="/messages">
             <i class="icon-markunread"></i>
@@ -77,7 +84,9 @@ export default {
 .main {
   width: 960px;
   margin: 0 auto;
-  padding: 0 15px; // Нужен для того чтобы сделать размер правильным из за float
+  padding: 0 15px;
+
+  // Нужен для того чтобы сделать размер правильным из за float
   &::after {
     content: " ";
     display: block;
@@ -89,8 +98,15 @@ export default {
     position: fixed;
     min-height: 100vh;
     width: 149px;
-    margin-top: 57px;
     float: left;
+
+    .logo {
+      height: 57px;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 200;
+    }
 
     .nav-content {
       width: 100%;
@@ -102,10 +118,13 @@ export default {
           padding: 8px 0 8px 35px;
           margin-left: -7px;
           color: $clr-font-blue;
+
+          // Запрещаем перенос строк
           white-space: nowrap;
-          /* Запрещаем перенос строк */
+
+          // Обрезаем все, что не помещается в область
           overflow: hidden;
-          /* Обрезаем все, что не помещается в область */
+
           &:hover {
             background-color: $clr-btn-light;
             border-radius: 2px;

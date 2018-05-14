@@ -6,10 +6,16 @@ export default {
 
 <template>
 	<div>
-		HELLO
+		<div class="requests"></div>
 	</div>
 </template>
 
 <style lang="scss" scoped>
+@import "../assets/elements.scss";
 
+.requests {
+  @extend %box;
+  height: 300px;
+  margin-top: 57px;
+}
 </style>

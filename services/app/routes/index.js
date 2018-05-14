@@ -1,10 +1,10 @@
 const verifyToken = require('../../config/verifyToken');
+
+// api
 const user = require('../api/user');
 const category = require('../api/category');
 const task = require('../api/task');
 const request = require('../api/request');
-// const message = require('@api/message');
-// const dialog = require('@api/dialog');
 
 module.exports = (app, passport) => {
 	app.route('/api/v1/signup')
@@ -23,16 +23,14 @@ module.exports = (app, passport) => {
 		.get(category.getCategories);
 
 	app.route('/api/v1/task')
-		.post(verifyToken, task.create);
+		.post(verifyToken, task.create)
+		.get(task.get);
 
 	app.route('/api/v1/tasks')
 		.get(task.getAll);
 
 	app.route('/api/v1/userTasks')
-		.get(task.getByUserId);
-
-	app.route('/api/v1/task')
-		.get(task.get);
+		.get(verifyToken, task.getByUserId);
 
 	app.route('/api/v1/request')
 		.post(verifyToken, request.create)
