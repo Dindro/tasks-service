@@ -119,20 +119,41 @@ export default {
           </div>
 				</div>
 				<div class="request-list">
-					<template>
-						<div class="task" v-for="(task, i) in tasks" :key="i">
-							<div class="task-name-price">
-								<router-link 
-									tag="div"
-									class="task-name"
-									:to="{name: 'taskPage', params: { taskId: task.id}}"
-								>
-									{{task.title}}
-									<span class="request-status">Отклонен</span>
-								</router-link>
-								<div class="price">{{task.priceFrom}} руб</div>
+
+					<!-- описание задачи -->
+          <template>
+						<div class="request" v-for="(task, i) in 10" :key="i">
+							<div class="task-name-status">
+								<div class="name">Заменить экран на Xiaomi Redmi Note 4x</div>
+								<div class="status">Обработка</div>
 							</div>
-							<div class="user-task-info">
+							<div class="request-info">
+                <div class="user-customer">
+                  <div class="customer-photo"></div>
+                  <div class="customer-name-messages">
+                    <div class="name">Семенов Сергей</div>
+                    <div class="message">
+                      <strong>Бюджет</strong> от 3000 до 3500
+                    </div>
+                  </div>  
+                </div>
+                <div class="user-executor">
+                  <div class="messages">
+                    <div class="message">
+                      <strong>Цена</strong> 3000руб
+                    </div>
+                    <div class="message">
+                      Тектс текст текст Тектс текст текст Тектс текст текст 
+                      Тектс текст текст Тектс текст текст Тектс текст текст 
+                      Тектс текст текст Тектс текст текст Тектс текст текст 
+                      Тектс текст текст Тектс текст текст Тектс текст текст 
+                    </div>
+                    <button class="request-cancel">Отменить заявку</button>
+                  </div>
+                  <div class="executor-photo"></div>
+                </div>
+
+
 								<div class="user">
 									<div class="photo"></div>
 									<div class="user-info">
@@ -176,7 +197,8 @@ export default {
 						v-for="task in tasks"
 						@click="selectItem(task.id)"
 						:class="{ active: task.id === selectedItem }"
-						:key="task.id">
+						:key="task.id"
+					>
 						{{ task.title }}
 					</div>
 				</div>
@@ -278,11 +300,11 @@ export default {
           .request-status {
             padding: 2px 5px;
             background-color: #eccfcf;
-						color:#7b4545;
-						font-weight: 400;
-						font-size: 13px;
-						border-radius: 3px;
-						margin-left: 5px;
+            color: #7b4545;
+            font-weight: 400;
+            font-size: 13px;
+            border-radius: 3px;
+            margin-left: 5px;
           }
         }
 
