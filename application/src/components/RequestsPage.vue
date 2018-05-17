@@ -131,7 +131,10 @@ export default {
                 <div class="user-customer">
                   <div class="customer-photo"></div>
                   <div class="customer-name-messages">
-                    <div class="name">Семенов Сергей</div>
+                    <div class="name">
+                      Семенов Сергей
+                      <span class="type">Заказчик</span>
+                    </div>
                     <div class="message">
                       <strong>Бюджет</strong> от 3000 до 3500
                     </div>
@@ -272,12 +275,13 @@ export default {
 
         .name {
           font-size: 15px;
+          font-weight: 500;
           flex: 1;
         }
 
         .status {
           padding: 2px 5px;
-          background-color: #f5d8b6;
+          background-color: #f5e5d3;
           color: #794d1b;
           border-radius: 3px;
         }
@@ -301,6 +305,12 @@ export default {
 
             .name {
               font-weight: 500;
+
+              .type {
+                color: $clr-font-grey;
+                margin-left: 5px;
+                font-weight: 400;
+              }
             }
           }
         }
@@ -309,7 +319,7 @@ export default {
           display: flex;
           justify-content: flex-end;
           align-items: flex-end;
-          
+
           .messages {
             display: flex;
             flex-direction: column;
@@ -323,6 +333,8 @@ export default {
 
             button {
               margin-top: 5px;
+
+              @extend %button-red;
             }
           }
 
@@ -337,8 +349,8 @@ export default {
 
       .message {
         background-color: #f5f5f5;
-        padding: 6px 10px;
-        border-radius: 3px;
+        padding: 8px 12px;
+        border-radius: 2px;
         margin-top: 5px;
 
         strong {

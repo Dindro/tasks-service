@@ -18,12 +18,19 @@
   border-radius: 2px;
   color: #55677d;
   cursor: pointer;
-  width: 100%;
-  -webkit-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
-  margin-top: 15px;
+
+	&:hover {
+		background-color: #dfe6ed;
+	}
 }
 
 %button-red {
-	
+	@extend %button;
+	background-color: #f1e5e5;
+	color: #7d5555;
+
+	&:hover {
+		background-color: #eddfdf;
+	}
 }
