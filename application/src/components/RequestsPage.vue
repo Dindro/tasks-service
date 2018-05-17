@@ -152,20 +152,6 @@ export default {
                   </div>
                   <div class="executor-photo"></div>
                 </div>
-
-
-								<div class="user">
-									<div class="photo"></div>
-									<div class="user-info">
-										<div class="user-name">Семенов Сергей</div>
-										<div class="rating">Средний рейтинг: 4.6</div>
-										<div class="reviews">Отзывы: 35</div>
-									</div>
-								</div>
-								<div class="task-info">
-									<div class="time">до 28 июня</div>
-									<div class="address">улица Тукташа 5, Чебоксары</div>
-								</div>
 							</div>
 						</div>
 					</template>
@@ -270,7 +256,98 @@ export default {
   .request-list {
     padding: 15px 20px 15px 20px;
 
-    .task {
+    .request {
+      border-bottom: 1px solid $clr-border;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .task-name-status {
+        display: flex;
+        align-items: center;
+
+        .name {
+          font-size: 15px;
+          flex: 1;
+        }
+
+        .status {
+          padding: 2px 5px;
+          background-color: #f5d8b6;
+          color: #794d1b;
+          border-radius: 3px;
+        }
+      }
+
+      .request-info {
+        padding-top: 10px;
+
+        .user-customer {
+          display: flex;
+
+          .customer-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: grey;
+          }
+
+          .customer-name-messages {
+            margin-left: 10px;
+
+            .name {
+              font-weight: 500;
+            }
+          }
+        }
+
+        .user-executor {
+          display: flex;
+          justify-content: flex-end;
+          align-items: flex-end;
+          
+          .messages {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex: 1;
+            margin-right: 10px;
+
+            .message {
+              max-width: 70%;
+            }
+
+            button {
+              margin-top: 5px;
+            }
+          }
+
+          .executor-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: grey;
+          }
+        }
+      }
+
+      .message {
+        background-color: #f5f5f5;
+        padding: 6px 10px;
+        border-radius: 3px;
+        margin-top: 5px;
+
+        strong {
+          font-weight: 500;
+        }
+      }
+    }
+
+    /* .task {
       border-bottom: 1px solid $clr-border;
       padding-bottom: 15px;
       margin-bottom: 15px;
@@ -359,7 +436,7 @@ export default {
           align-items: flex-end;
         }
       }
-    }
+    } */
   }
 }
 

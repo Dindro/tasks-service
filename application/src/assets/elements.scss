@@ -10,3 +10,20 @@
 	border-top: 1px solid $clr-border;
 	margin: 7px 15px;
 }
+
+%button {
+	background-color: #E5EBF1;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 2px;
+  color: #55677d;
+  cursor: pointer;
+  width: 100%;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  margin-top: 15px;
+}
+
+%button-red {
+	
+}
