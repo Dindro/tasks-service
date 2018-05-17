@@ -1,5 +1,6 @@
 <script>
 import { mapActions, mapState } from "vuex";
+import CheckBox from "./CheckBox";
 
 export default {
   props: ["tabOption", "tabTop"],
@@ -11,49 +12,110 @@ export default {
     };
   },
   computed: {
-    ...mapState("request", ["tasks"])
+    ...mapState("request", [
+      "tasks",
+      "requests",
+      "requestsCount",
+      "taskRequests",
+      "taskRequestsCount"
+    ])
   },
+  components: {
+    CheckBox
+  },
+
   created() {
+    // получаем свои задачи для бокового меню
     this.getTasks();
-
-    let tabOption = this.tabOption;
-    let tabTop = this.tabTop;
-
-    if (tabOption === undefined) {
-      tabOption = "my";
-    }
-
-    if (tabTop === undefined) {
-      tabTop = "all";
-    }
-
-    this.selectItem(tabOption);
-    this.selectTab(tabTop);
+    this.select({
+      tabTop: this.tabTop,
+      tabOption: this.tabOption
+    });
   },
+
+  // компонет загружен, и ссылка меняется
+  beforeRouteUpdate(to, from, next) {
+    this.select({
+      tabOption: to.query.tabOption,
+      tabTop: to.query.tabTop
+    });
+    next();
+  },
+
   methods: {
-    ...mapActions("request", ["getTasks"]),
-    selectItem(index) {
-      this.selectedItem = index;
-      if (index === "my") {
-        this.selectTab("all");
-      } else {
-        this.selectTab("loading");
+    ...mapActions("request", [
+      "getTasks",
+      "getMyRequests",
+      "getRequestsCount",
+      "getByTaskId",
+      "getRequestsCountByTaskId"
+    ]),
+
+    select({ tabTop, tabOption }) {
+      // валидация параметров
+      if (tabOption === undefined) {
+        tabOption = "my";
+
+        if (tabTop === undefined) {
+          tabTop = "all";
+        }
+      } else if (tabOption === "my") {
+        if (tabTop === undefined) {
+          tabTop = "all";
+        }
+      } else if (tabOption !== "my") {
+        if (tabTop === undefined) {
+          tabTop = "loading";
+        }
       }
+
+      this.selectItem(tabOption);
+      this.selectTab(tabTop);
+    },
+
+    selectItem(index) {
+      if (index === "my") {
+        // получаем количество моих заявок
+        this.getRequestsCount();
+      } else {
+        this.getRequestsCountByTaskId({ taskId: index });
+      }
+
+      this.selectedItem = index;
     },
 
     // при выборе таба
     selectTab(tabName) {
       this.selectedTab = tabName;
-      switch (tabName) {
-        case "all":
-          break;
-        case "successful":
-          break;
-        case "loading":
-          break;
-        case "canceled":
-          break;
+      if (this.selectedItem === "my") {
+        switch (tabName) {
+          case "all":
+            this.getMyRequests({ type: "all" });
+            break;
+          case "successful":
+            this.getMyRequests({ type: "successful" });
+            break;
+          case "loading":
+            this.getMyRequests({ type: "loading" });
+            break;
+          case "canceled":
+            this.getMyRequests({ type: "canceled" });
+            break;
+        }
+      } else {
+        switch (tabName) {
+          case "loading":
+            this.getByTaskId({ taskId: this.selectedItem, type: "loading" });
+            break;
+          case "canceled":
+            this.getByTaskId({ taskId: this.selectedItem, type: "canceled" });
+            break;
+        }
       }
+    },
+
+    selectCheckBox(value, requestId) {
+      this.$store.commit("request/selectCheckBox", { value, requestId });
     }
   }
 };
@@ -72,21 +134,21 @@ export default {
 						>
               <span class="tab-name">Все заявки</span>
             </div>
-            <div 
-							class="requests-tab-item" 
-							@click="selectTab('successful')"
-							:class="{active: selectedTab === 'successful'}"
-						>
-              <span class="tab-name">Успешные</span>
-              <span class="tab-count">2</span>
-            </div>
 						<div 
 							class="requests-tab-item" 
 							@click="selectTab('loading')"
 							:class="{active: selectedTab === 'loading'}"
 						>
               <span class="tab-name">В обработке</span>
-              <span class="tab-count">4</span>
+              <span class="tab-count">{{requestsCount.loading}}</span>
+            </div>
+            <div 
+							class="requests-tab-item" 
+							@click="selectTab('successful')"
+							:class="{active: selectedTab === 'successful'}"
+						>
+              <span class="tab-name">Успешные</span>
+              <span class="tab-count">{{requestsCount.successful}}</span>
             </div>
 						<div 
 							class="requests-tab-item" 
@@ -94,7 +156,7 @@ export default {
 							:class="{active: selectedTab === 'canceled'}"
 						>
               <span class="tab-name">Отклоненные</span>
-              <span class="tab-count">12</span>
+              <span class="tab-count">{{requestsCount.canceled}}</span>
             </div>
           </div>
 					
@@ -106,7 +168,7 @@ export default {
 							:class="{active: selectedTab === 'loading'}"
 						>
               <span class="tab-name">В обработке</span>
-							<span class="tab-count">3</span>
+							<span class="tab-count">{{taskRequestsCount.loading}}</span>
             </div>
 						<div 
 							class="requests-tab-item" 
@@ -114,42 +176,55 @@ export default {
 							:class="{active: selectedTab === 'canceled'}"
 						>
               <span class="tab-name">Отклоненные</span>
-              <span class="tab-count">43</span>
+              <span class="tab-count">{{taskRequestsCount.canceled}}</span>
             </div>
           </div>
 				</div>
 				<div class="request-list">
 
-					<!-- описание задачи -->
-          <template>
-						<div class="request" v-for="(task, i) in 10" :key="i">
+					<!-- мои заявки -->
+          <template v-if="selectedItem==='my'">
+            <div v-if="requests.length === 0">Нет заявок</div>
+						<div class="request" v-for="request in requests" :key="request.id">
 							<div class="task-name-status">
-								<div class="name">Заменить экран на Xiaomi Redmi Note 4x</div>
-								<div class="status">Обработка</div>
+                <router-link 
+                  class="name"
+                  :to="{ name: 'taskPage', params: { taskId: request.task.id }}"
+                >
+                  {{request.task.title}}
+                </router-link>
+								<div v-if="request.isReject === 0" class="status loading">Обработка</div>
+                <div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
+                <div v-else-if="request.task.id_user_executor !== null" class="status canceled">Успешно</div>
 							</div>
 							<div class="request-info">
                 <div class="user-customer">
                   <div class="customer-photo"></div>
                   <div class="customer-name-messages">
-                    <div class="name">
-                      Семенов Сергей
+                    <div class="name-type">
+                      <router-link
+                        class="name"
+                        :to="{name: 'userPage', params: { userId: request.userCustomer.id }}"
+                      >
+                        {{request.userCustomer.surname}} {{request.userCustomer.name}} 
+                      </router-link>
                       <span class="type">Заказчик</span>
                     </div>
                     <div class="message">
-                      <strong>Бюджет</strong> от 3000 до 3500
+                      <strong>Бюджет</strong> от {{request.task.priceFrom}}руб до {{request.task.priceBefore}}руб
                     </div>
                   </div>  
                 </div>
                 <div class="user-executor">
                   <div class="messages">
-                    <div class="message">
-                      <strong>Цена</strong> 3000руб
+                    <div class="date-message">
+                      <span class="date">{{new Date(request.created).format('dd mmm yyyy')}}г</span>
+                      <div class="message">
+                        <strong>Цена</strong> {{request.price}}руб
+                      </div>
                     </div>
                     <div class="message">
-                      Тектс текст текст Тектс текст текст Тектс текст текст 
-                      Тектс текст текст Тектс текст текст Тектс текст текст 
-                      Тектс текст текст Тектс текст текст Тектс текст текст 
-                      Тектс текст текст Тектс текст текст Тектс текст текст 
+                      {{request.text}}
                     </div>
                     <button class="request-cancel">Отменить заявку</button>
                   </div>
@@ -158,6 +233,35 @@ export default {
 							</div>
 						</div>
 					</template>
+          
+          <template v-else>
+            <div 
+              class="req"
+              v-for="request in taskRequests"
+              :key="request.id"
+            >
+              <div class="select">
+                <check-box :check="request.selected" @input="(val)=>selectCheckBox(val, request.id)"></check-box>
+              </div>
+              <div class="user">
+                <div class="photo"></div>
+                <div class="user-info">
+                  <div class="name">
+                    <router-link
+                      :to="{ name:'userPage', params:{ userId: request.user.id}}"
+                    >
+                      {{request.user.surname}} {{request.user.name}}
+                    </router-link>
+                  </div>
+                  <div class="rating">Рейтинг: 3.5</div>
+                  <div class="reviews">Отзывы: 34</div>
+                </div>
+              </div>
+              <div class="message">
+                {{request.text}}
+              </div>
+            </div>
+          </template>
 				</div>
 			</div>
     </div>
@@ -167,13 +271,13 @@ export default {
 				class="tab"
 				:class="{ close: !visibleTasks }"
 			>
-        <div 
-					class="tab-item"
-					@click="selectItem('my')"
-					:class="{active: selectedItem === 'my'}"
-				>
+        <router-link
+          class="tab-item"
+          :class="{active: selectedItem === 'my'}"
+          :to= "{ name: 'requestsPage', query: { tabOption: 'my' }}"
+        >
           Мои заявки
-        </div>
+        </router-link>
 				<div class="line"></div>
         <div class="tab-item" @click="visibleTasks = !visibleTasks">
           Заявки моих заданий
@@ -181,15 +285,16 @@ export default {
 					<i class="open icon-expand_more" v-else></i>
         </div>
 				<div class="tasks" v-if="visibleTasks">
-					<div 
-						class="tab-item"
-						v-for="task in tasks"
-						@click="selectItem(task.id)"
-						:class="{ active: task.id === selectedItem }"
-						:key="task.id"
-					>
-						{{ task.title }}
-					</div>
+          <template v-for="task in tasks">
+            <router-link 
+              class="tab-item"
+              :to="{ name: 'requestsPage', query: { tabOption: task.id }}"
+              :class="{ active: selectedItem == task.id }"
+              :key="task.id"
+            >
+              {{task.title}}
+            </router-link>
+          </template>
 				</div>
       </div>
     </div>
@@ -271,12 +376,14 @@ export default {
 
       .task-name-status {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
 
         .name {
+          margin-top: 1px;
           font-size: 15px;
           font-weight: 500;
           flex: 1;
+          color: $clr-font-black;
         }
 
         .status {
@@ -284,6 +391,18 @@ export default {
           background-color: #f5e5d3;
           color: #794d1b;
           border-radius: 3px;
+
+          &.loading {
+            @extend %request-status-loading;
+          }
+
+          &.canceled {
+            @extend %request-status-canceled;
+          }
+
+          &.successfully {
+            @extend %request-status-successfully;
+          }
         }
       }
 
@@ -303,8 +422,11 @@ export default {
           .customer-name-messages {
             margin-left: 10px;
 
-            .name {
-              font-weight: 500;
+            .name-type {
+              .name {
+                font-weight: 500;
+                color: $clr-font-black;
+              }
 
               .type {
                 color: $clr-font-grey;
@@ -327,14 +449,25 @@ export default {
             flex: 1;
             margin-right: 10px;
 
+            .date-message {
+              display: flex;
+              align-items: flex-end;
+
+              .date {
+                color: $clr-font-grey;
+                margin-right: 10px;
+                font-size: 11px;
+                font-style: italic;
+              }
+            }
+
             .message {
               max-width: 70%;
             }
 
             button {
-              margin-top: 5px;
-
               @extend %button-red;
+              margin-top: 5px;
             }
           }
 
@@ -359,7 +492,9 @@ export default {
       }
     }
 
-    /* .task {
+    .req {
+      display: flex;
+      align-items: flex-start;
       border-bottom: 1px solid $clr-border;
       padding-bottom: 15px;
       margin-bottom: 15px;
@@ -367,88 +502,60 @@ export default {
       &:last-child {
         border-bottom: none;
         margin-bottom: 0;
+        padding-bottom: 0;
       }
 
-      .task-name-price {
-        display: flex;
-        justify-content: space-between;
-
-        .task-name {
-          color: $clr-font-blue-link;
-          font-size: 15px;
-          font-weight: 500;
-          word-wrap: break-word;
-          padding-right: 10px;
-          box-sizing: border-box;
-          cursor: pointer;
-
-          &:hover {
-            text-decoration: underline;
-          }
-
-          .request-status {
-            padding: 2px 5px;
-            background-color: #eccfcf;
-            color: #7b4545;
-            font-weight: 400;
-            font-size: 13px;
-            border-radius: 3px;
-            margin-left: 5px;
-          }
-        }
-
-        .price {
-          padding-top: 1px;
-          font-weight: 500;
-          white-space: nowrap;
+      &:hover {
+        .select i {
+          color: #5181b8;
         }
       }
 
-      .user-task-info {
-        padding-top: 10px;
+      .select {
+        margin-top: 13px;
+
+        i {
+          color: #9ab7db;
+          transition: color 0.2s ease;
+        }
+      }
+
+      .user {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
+        margin-left: 10px;
 
-        .user {
-          display: flex;
-
-          .photo {
-            height: 50px;
-            width: 50px;
-            background-color: grey;
-            border-radius: 50%;
-          }
-
-          .user-info {
-            padding-left: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            .user-name {
-              font-weight: 500;
-              color: $clr-font-black;
-              cursor: pointer;
-            }
-
-            .rating {
-              color: $clr-font-grey;
-            }
-
-            .reviews {
-              color: $clr-font-grey;
-            }
-          }
+        .photo {
+          height: 50px;
+          width: 50px;
+          background-color: #7a7a7a;
+          border-radius: 50%;
         }
 
-        .task-info {
+        .user-info {
+          margin-left: 10px;
           display: flex;
           flex-direction: column;
-          align-items: flex-end;
+          justify-content: space-between;
+
+          .name {
+            a {
+              color: $clr-font-black;
+              font-weight: 500;
+            }
+          }
+
+          .rating,
+          .reviews {
+            color: $clr-font-grey;
+          }
         }
       }
-    } */
+
+      .message {
+        margin-left: 10px;
+        flex: 1;
+      }
+    }
   }
 }
 
@@ -481,6 +588,9 @@ export default {
       border-left: 2px solid transparent;
       cursor: pointer;
       position: relative;
+      display: block;
+      color: $clr-font-blue;
+      text-decoration: none;
 
       &.active {
         background-color: #f0f2f5;

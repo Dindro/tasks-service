@@ -19,8 +19,28 @@ model.create = async ({ userId, taskId, message, price }) => {
 	}
 };
 
-model.getByTaskId = async (taskId) => {
-	const query = `SELECT * FROM requests WHERE id_task = ${taskId};`;
+model.getByTaskId = async ({ taskId, type }) => {
+	let query = '';
+
+	switch (type) {
+		case 'canceled':
+			query = `
+				SELECT * FROM requests WHERE 
+				id_task = ${taskId} AND 
+				isReject = true 
+				ORDER BY created ASC
+			;`;
+			break;
+
+		default:
+			query = `
+				SELECT * FROM requests WHERE 
+				id_task = ${taskId} AND 
+				isReject = false 
+				ORDER BY created ASC
+			;`;
+			break;
+	}
 
 	try {
 		const results = await db.getResult(query);
@@ -53,6 +73,112 @@ model.getNotViewCount = async (taskId) => {
 		SELECT COUNT(*) as count FROM requests WHERE 
 		id_task = ${taskId} AND
 		isView = false
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result[0].count;
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
+// получить заявки 4 типов
+model.getByUserId = async ({ userId, type }) => {
+	let query = '';
+
+	switch (type) {
+		case 'canceled':
+			query = `
+				SELECT * FROM requests WHERE 
+				id_user = ${userId} AND 
+				isReject = true 
+				ORDER BY created ASC
+			;`;
+			break;
+
+		case 'loading':
+			query = `
+				SELECT * FROM requests WHERE 
+				id_user = ${userId} AND 
+				isReject = false 
+				ORDER BY created ASC
+			;`;
+			break;
+
+		case 'successful':
+			query = `
+				SELECT r.* FROM 
+				(
+					SELECT * FROM requests WHERE 
+					id_user = ${userId} AND
+					isReject = false
+				) AS r
+				INNER JOIN tasks 
+				ON r.id_task = tasks.id
+				WHERE tasks.id_user_executor = ${userId} 
+				ORDER BY r.created ASC
+			;`
+			break;
+
+		default:
+			query = `
+				SELECT * FROM requests WHERE 
+				id_user = ${userId} 
+				ORDER BY created ASC
+			;`;
+			break;
+	}
+
+	try {
+		const requests = await db.getResult(query);
+		return requests;
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
+model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
+	let query = '';
+
+	if (taskId === undefined) {
+		query = `
+			SELECT COUNT(*) as count FROM requests WHERE 
+			id_user = ${userId} AND
+			isReject = ${isReject}
+		;`;
+	}
+	else {
+		query = `
+			SELECT COUNT(*) as count FROM requests WHERE 
+			id_task = ${taskId} AND
+			isReject = ${isReject}
+		;`;
+	}
+
+	try {
+		const result = await db.getResult(query);
+		return result[0].count;
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
+// получить количество успешных заявок
+model.getRequestsSuccessfulCount = async ({ userId }) => {
+	const query = `
+		SELECT COUNT(*) as count FROM 
+		(
+			SELECT * FROM requests WHERE 
+			id_user = ${userId} AND
+			isReject = false
+		) AS r
+		INNER JOIN tasks 
+		ON r.id_task = tasks.id 
+		WHERE tasks.id_user_executor = ${userId}
 	;`;
 
 	try {

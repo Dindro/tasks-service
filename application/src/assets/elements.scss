@@ -11,6 +11,8 @@
 	margin: 7px 15px;
 }
 
+// #region КНОПКИ
+
 %button {
 	background-color: #E5EBF1;
   border: none;
@@ -34,3 +36,34 @@
 		background-color: #eddfdf;
 	}
 }
+
+// #endregion
+
+// #region СТАТУСЫ ЗАЯВОК
+
+%request-status {
+	font-weight: 400;
+}
+
+%request-status-canceled {
+	@extend %request-status;
+
+	background-color: #f1e5e5;
+	color: #7d5555;
+}
+
+%request-status-loading {
+	@extend %request-status;
+
+	background-color: #f1ebe5;
+	color: #7d6855;
+}
+
+%request-status-successfully {
+	@extend %request-status;
+
+	background-color: #e5f1e5;
+	color: #557d57;
+}
+
+// #endregion

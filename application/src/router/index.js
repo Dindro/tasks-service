@@ -107,7 +107,7 @@ export default new Router({
 							path: 'requests',
 							name: 'requestsPage',
 							component: RequestsPage,
-							props: true,
+							props: (route) => ({ tabOption: route.query.tabOption, tabTop: route.query.tabTop }),
 						},
 						{
 							path: '/id:userId',

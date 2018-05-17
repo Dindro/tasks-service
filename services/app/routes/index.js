@@ -32,6 +32,20 @@ module.exports = (app, passport) => {
 	app.route('/api/v1/userTasks')
 		.get(verifyToken, task.getByUserId);
 
+	// #region ЗАЯВКИ
+
+	app.route('/api/v1/requestsByTaskId')
+		.get(verifyToken, request.get);
+
 	app.route('/api/v1/request')
 		.post(verifyToken, request.create)
+		.get(verifyToken, request.getMyRequests);
+
+	app.route('/api/v1/requestsCount')
+		.get(verifyToken, request.getRequestsCount)
+
+	app.route('/api/v1/requestsCountByTaskId')
+		.get(verifyToken, request.getRequestsCountByTaskId)
+
+	// #endregion
 }
