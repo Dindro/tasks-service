@@ -1,6 +1,5 @@
 const crypto = require('crypto'); //Занимается шифрованием
 const db = require("../../config/db");
-const ModelRight = require("@models/right");
 let model = {};
 
 model.getByEmail = async (email) => {

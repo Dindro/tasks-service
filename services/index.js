@@ -1,5 +1,3 @@
-require('module-alias/register');
-
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -35,7 +33,7 @@ app.use(cors());
 // app.use(sessionStore);
 
 // роутер
-require('@routes')(app);
+require('./app/routes')(app);
 
 
 io.on('connection', function (socket) {
