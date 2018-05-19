@@ -7,9 +7,6 @@ const http = require('http');
 const server = http.Server(app);
 const io = require('socket.io')(server);
 
-// FIX: пока не нужен т.к. используем токены
-// const sessionStore = require('@config/sessionoption');
-
 /*
 	аналогично предыдущему, только 'Content-Type' равен 'application/x-www-form-urlencoded'.
 	параметр { extended: false } означает обработку параметров тела запроса как строки или массива.
@@ -27,10 +24,6 @@ app.use(cookieParser());
 
 // доступность с любого домена
 app.use(cors());
-
-// настройки сессии
-// FIX: пока не нужен т.к. используем токены
-// app.use(sessionStore);
 
 // роутер
 require('./app/routes')(app);

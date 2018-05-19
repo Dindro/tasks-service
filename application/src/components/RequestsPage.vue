@@ -1,18 +1,19 @@
 <script>
 import { mapActions, mapState } from "vuex";
-import CheckBox from "./CheckBox";
+import RequestsMyTab from "./RequestsMyTab";
+import RequestsTaskTab from "./RequestsTaskTab";
 
 export default {
   props: ["tabOption", "tabTop"],
   data() {
     return {
-      visibleTasks: false,
-      selectedItem: "",
-      selectedTab: ""
+      visibleTasks: false
     };
   },
   computed: {
     ...mapState("request", [
+      "selectedItem",
+      "selectedTab",
       "tasks",
       "requests",
       "requestsCount",
@@ -21,11 +22,12 @@ export default {
     ])
   },
   components: {
-    CheckBox
+    RequestsMyTab,
+    RequestsTaskTab,
   },
 
   created() {
-    // получаем свои задачи для бокового меню
+    // получаем свои задачи (правая навигация)
     this.getTasks();
     this.select({
       tabTop: this.tabTop,
@@ -51,6 +53,7 @@ export default {
       "getRequestsCountByTaskId"
     ]),
 
+    // вызывается каждый раз при изменения таба
     select({ tabTop, tabOption }) {
       // валидация параметров
       if (tabOption === undefined) {
@@ -73,6 +76,7 @@ export default {
       this.selectTab(tabTop);
     },
 
+    // при выборе в правом навигация
     selectItem(index) {
       if (index === "my") {
         // получаем количество моих заявок
@@ -81,12 +85,16 @@ export default {
         this.getRequestsCountByTaskId({ taskId: index });
       }
 
-      this.selectedItem = index;
+      this.$store.commit("request/mut", { type: "selectedItem", value: index });
     },
 
     // при выборе таба
     selectTab(tabName) {
-      this.selectedTab = tabName;
+      this.$store.commit("request/mut", {
+        type: "selectedTab",
+        value: tabName
+      });
+
       if (this.selectedItem === "my") {
         switch (tabName) {
           case "all":
@@ -124,146 +132,8 @@ export default {
 <template>
 	<div class="dinamic">
     <div class="dinamic-content">
-      <div class="requests">
-				<div class="requests-tab">
-					<div class="requests-tab-items" v-if="selectedItem === 'my'">
-            <div 
-							class="requests-tab-item" 
-							@click="selectTab('all')"
-							:class="{active: selectedTab === 'all'}"
-						>
-              <span class="tab-name">Все заявки</span>
-            </div>
-						<div 
-							class="requests-tab-item" 
-							@click="selectTab('loading')"
-							:class="{active: selectedTab === 'loading'}"
-						>
-              <span class="tab-name">В обработке</span>
-              <span class="tab-count">{{requestsCount.loading}}</span>
-            </div>
-            <div 
-							class="requests-tab-item" 
-							@click="selectTab('successful')"
-							:class="{active: selectedTab === 'successful'}"
-						>
-              <span class="tab-name">Успешные</span>
-              <span class="tab-count">{{requestsCount.successful}}</span>
-            </div>
-						<div 
-							class="requests-tab-item" 
-							@click="selectTab('canceled')"
-							:class="{active: selectedTab === 'canceled'}"
-						>
-              <span class="tab-name">Отклоненные</span>
-              <span class="tab-count">{{requestsCount.canceled}}</span>
-            </div>
-          </div>
-					
-					<!-- при выборе задачи -->
-					<div class="requests-tab-items" v-else>
-            <div 
-							class="requests-tab-item" 
-							@click="selectTab('loading')"
-							:class="{active: selectedTab === 'loading'}"
-						>
-              <span class="tab-name">В обработке</span>
-							<span class="tab-count">{{taskRequestsCount.loading}}</span>
-            </div>
-						<div 
-							class="requests-tab-item" 
-							@click="selectTab('canceled')"
-							:class="{active: selectedTab === 'canceled'}"
-						>
-              <span class="tab-name">Отклоненные</span>
-              <span class="tab-count">{{taskRequestsCount.canceled}}</span>
-            </div>
-          </div>
-				</div>
-				<div class="request-list">
-
-					<!-- мои заявки -->
-          <template v-if="selectedItem==='my'">
-            <div v-if="requests.length === 0">Нет заявок</div>
-						<div class="request" v-for="request in requests" :key="request.id">
-							<div class="task-name-status">
-                <router-link 
-                  class="name"
-                  :to="{ name: 'taskPage', params: { taskId: request.task.id }}"
-                >
-                  {{request.task.title}}
-                </router-link>
-								<div v-if="request.isReject === 0" class="status loading">Обработка</div>
-                <div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
-                <div v-else-if="request.task.id_user_executor !== null" class="status canceled">Успешно</div>
-							</div>
-							<div class="request-info">
-                <div class="user-customer">
-                  <div class="customer-photo"></div>
-                  <div class="customer-name-messages">
-                    <div class="name-type">
-                      <router-link
-                        class="name"
-                        :to="{name: 'userPage', params: { userId: request.userCustomer.id }}"
-                      >
-                        {{request.userCustomer.surname}} {{request.userCustomer.name}} 
-                      </router-link>
-                      <span class="type">Заказчик</span>
-                    </div>
-                    <div class="message">
-                      <strong>Бюджет</strong> от {{request.task.priceFrom}}руб до {{request.task.priceBefore}}руб
-                    </div>
-                  </div>  
-                </div>
-                <div class="user-executor">
-                  <div class="messages">
-                    <div class="date-message">
-                      <span class="date">{{new Date(request.created).format('dd mmm yyyy')}}г</span>
-                      <div class="message">
-                        <strong>Цена</strong> {{request.price}}руб
-                      </div>
-                    </div>
-                    <div class="message">
-                      {{request.text}}
-                    </div>
-                    <button class="request-cancel">Отменить заявку</button>
-                  </div>
-                  <div class="executor-photo"></div>
-                </div>
-							</div>
-						</div>
-					</template>
-          
-          <template v-else>
-            <div 
-              class="req"
-              v-for="request in taskRequests"
-              :key="request.id"
-            >
-              <div class="select">
-                <check-box :check="request.selected" @input="(val)=>selectCheckBox(val, request.id)"></check-box>
-              </div>
-              <div class="user">
-                <div class="photo"></div>
-                <div class="user-info">
-                  <div class="name">
-                    <router-link
-                      :to="{ name:'userPage', params:{ userId: request.user.id}}"
-                    >
-                      {{request.user.surname}} {{request.user.name}}
-                    </router-link>
-                  </div>
-                  <div class="rating">Рейтинг: 3.5</div>
-                  <div class="reviews">Отзывы: 34</div>
-                </div>
-              </div>
-              <div class="message">
-                {{request.text}}
-              </div>
-            </div>
-          </template>
-				</div>
-			</div>
+      <requests-my-tab v-if="selectedItem === 'my'"></requests-my-tab>
+      <requests-task-tab v-else></requests-task-tab>
     </div>
 
     <div id="options">
