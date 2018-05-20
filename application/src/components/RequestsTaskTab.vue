@@ -28,6 +28,7 @@ export default {
 
   methods: {
     ...mapActions("request", [
+      "selectAllRequests",
       "getTasks",
       "getMyRequests",
       "getRequestsCount",
@@ -73,11 +74,14 @@ export default {
           <span class="tab-count">{{taskRequestsCount.canceled}}</span>
         </div>
       </div>
+      <div class="tab-options">
+        <span class="select-all" @click="selectAllRequests()" >Выделить всех</span>
+      </div>
 		</div>
 		<div class="request-list">
 			<div v-if="taskRequests.length === 0">Нет заявок</div>
 			<div 
-        class="req"
+        class="request"
         v-for="request in taskRequests"
         :key="request.id"
       >
@@ -98,8 +102,18 @@ export default {
             <div class="reviews">Отзывы: 34</div>
           </div>
         </div>
-        <div class="message">
+        <div 
+          class="message"
+          v-if="request.selected===false"
+        >
           {{request.text}}
+        </div>
+        <div 
+          class="buttons"
+          v-else
+        >
+          <button class="todo-executor">Сделать исполнителем</button>
+          <button class="cancel">Отклонить заявку</button>
         </div>
       </div>
 		</div>
@@ -164,12 +178,24 @@ export default {
         }
       }
     }
+
+    .tab-options {
+      display: flex;
+      margin: auto 0;
+
+      .select-all {
+        font-weight: 500;
+        cursor: pointer;
+        margin-right: 10px;
+        color: $clr-font-darkgrey;
+      }
+    }
   }
 
   .request-list {
     padding: 15px 20px 15px 20px;
 
-    .req {
+    .request {
       display: flex;
       align-items: flex-start;
       border-bottom: 1px solid $clr-border;
@@ -231,6 +257,29 @@ export default {
       .message {
         margin-left: 10px;
         flex: 1;
+      }
+
+      .buttons {
+        flex: 1;
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        justify-content: space-between;
+
+        button {
+          width: 170px;
+        }
+
+        .todo-executor {
+          @extend %button-green;
+          padding: 4px 0;
+        }
+
+        .cancel {
+          @extend %button-red;
+          padding: 4px 0;
+          margin-top: 4px;
+        }
       }
     }
   }

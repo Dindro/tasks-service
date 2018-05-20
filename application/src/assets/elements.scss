@@ -37,6 +37,15 @@
 	}
 }
 
+%button-green {
+	@extend %button;
+	background-color: #e5f1e5;
+	color: #557d57;
+
+	&:hover {
+		background-color: #dbefdb;
+	}
+}
 // #endregion
 
 // #region СТАТУСЫ ЗАЯВОК
