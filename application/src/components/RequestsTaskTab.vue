@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import CheckBox from "./CheckBox";
 
 export default {
@@ -28,13 +28,14 @@ export default {
 
   methods: {
     ...mapActions("request", [
-      "selectAllRequests",
       "getTasks",
       "getMyRequests",
       "getRequestsCount",
       "getByTaskId",
       "getRequestsCountByTaskId"
     ]),
+
+    ...mapMutations("request", ["selectAllRequests"]),
 
     selectTab(tabName) {
       this.$router.push({
@@ -48,7 +49,7 @@ export default {
 
     selectCheckBox(value, requestId) {
       this.$store.commit("request/selectCheckBox", { value, requestId });
-    }
+    },
   }
 };
 </script>

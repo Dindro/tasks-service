@@ -38,10 +38,6 @@ export default {
 
 	},
 	actions: {
-		selectAllRequests({ commit }) {
-			commit('selectAllRequests');
-		},
-
 		async getTasks({ commit, dispatch, rootState }) {
 			try {
 				const data = await Task.getByUserId({ userId: rootState.userAuth.id });
