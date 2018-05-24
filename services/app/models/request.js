@@ -19,6 +19,21 @@ model.create = async ({ userId, taskId, message, price }) => {
 	}
 };
 
+model.getById = async ({ requestId }) => {
+	const query = `
+		SELECT * FROM requests WHERE 
+		id = ${requestId}
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result[0];
+	}
+	catch (e) {
+		throw e;
+	}
+}
+
 model.getByTaskId = async ({ taskId, type }) => {
 	let query = '';
 
@@ -144,11 +159,24 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 	let query = '';
 
 	if (taskId === undefined) {
-		query = `
-			SELECT COUNT(*) as count FROM requests WHERE 
-			id_user = ${userId} AND
-			isReject = ${isReject}
-		;`;
+		if (isReject === false) {
+			query = `
+				SELECT COUNT(*) as count FROM 
+				(
+					SELECT * FROM requests WHERE 
+					id_user = ${userId} AND
+					isReject = ${isReject}
+				) as r
+				INNER JOIN tasks ON r.id_user = tasks.id_user_executor 
+				WHERE tasks.id_user_executor IS NULL
+			;`;
+		} else {
+			query = `
+				SELECT COUNT(*) as count FROM requests WHERE 
+				id_user = ${userId} AND
+				isReject = ${isReject}
+			;`;
+		}
 	}
 	else {
 		query = `
@@ -205,5 +233,21 @@ model.updateView = async (taskId) => {
 		throw e;
 	}
 };
+
+model.cancel = async ({ requestId }) => {
+	const query = `
+		UPDATE requests SET 
+		isReject = true
+		WHERE id = ${requestId}
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result[0];
+	}
+	catch (e) {
+		throw e;
+	}
+}
 
 module.exports = model;

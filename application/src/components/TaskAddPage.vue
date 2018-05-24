@@ -104,7 +104,8 @@ export default {
               <group-box 
                 :options="categories" 
                 v-model="selectedCategoryId"
-                :placeholder="categoryPlaceholder"></group-box>
+                placeholder="Выберите категорию">
+              </group-box>
             </div>
           </div>
           <div class="option title">

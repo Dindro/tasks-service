@@ -1,26 +1,19 @@
 <script>
 export default {
   props: ["check"],
-  data() {
-    return {
-      isCheck: this.check
-    };
-  },
   methods: {
     click() {
-      this.isCheck = !this.isCheck;
-      this.$emit("input", this.isCheck);
+      this.$emit("input", !this.check);
     }
   }
 };
 </script>
 
-
 <template>
   <i 
     :class="{
-      'icon-check_box': isCheck === true,
-      'icon-check_box_outline_blank': isCheck === false
+      'icon-check_box': check === true,
+      'icon-check_box_outline_blank': check === false
     }"
     @click="click">
   </i>

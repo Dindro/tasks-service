@@ -32,7 +32,7 @@ model.create = async (task) => {
 	}
 };
 
-model.getByUserId = async ({userId, count}) => {
+model.getByUserId = async ({ userId, count }) => {
 	let param = '';
 
 	// если количество указано
@@ -75,15 +75,22 @@ model.getAll = async () => {
 	}
 }
 
-//Удалить
-model.deleteTask = function (id_task, callback) {
+model.makePerformer = async ({ userExecutorId, taskId }) => {
+	const query = `
+		UPDATE tasks SET 
+		id_user_executor = ${userExecutorId},
+		started = now()
+		WHERE id = ${taskId}
+	;`;
 
-};
-
-//Обновить
-model.updateTask = function (id_task, callback) {
-
-};
+	try {
+		const result = await db.getResult(query);
+		return result[0];
+	}
+	catch (e) {
+		throw e;
+	}
+}
 
 // Добавить координаты в таблицу tasks_coordinates
 model.addCoordinate = async (coordinateId, taskId) => {

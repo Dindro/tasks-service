@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 import CheckBox from "./CheckBox";
 
 export default {
@@ -18,7 +18,9 @@ export default {
       "requestsCount",
       "taskRequests",
       "taskRequestsCount"
-    ])
+    ]),
+
+    ...mapGetters("request", ["isSelectedRequests", "isShowRequestDetails"])
   },
   components: {
     CheckBox
@@ -32,7 +34,9 @@ export default {
       "getMyRequests",
       "getRequestsCount",
       "getByTaskId",
-      "getRequestsCountByTaskId"
+      "getRequestsCountByTaskId",
+      "cancelRequest",
+      "makePerformer"
     ]),
 
     ...mapMutations("request", ["selectAllRequests"]),
@@ -49,7 +53,7 @@ export default {
 
     selectCheckBox(value, requestId) {
       this.$store.commit("request/selectCheckBox", { value, requestId });
-    },
+    }
   }
 };
 </script>
@@ -57,7 +61,7 @@ export default {
 <template>
 	<div class="requests">
 		<div class="requests-tab">
-			<div class="requests-tab-items">
+			<div class="requests-tab-items" v-if="isSelectedRequests === false">
         <div 
 					class="requests-tab-item" 
 					@click="selectTab('loading')"
@@ -75,8 +79,19 @@ export default {
           <span class="tab-count">{{taskRequestsCount.canceled}}</span>
         </div>
       </div>
+      <div class="requests-tab-items" v-else>
+        <button class="add-chat">Добавить в беседу</button>
+        <button class="cancel">Отклонить заявки</button>
+      </div>
       <div class="tab-options">
-        <span class="select-all" @click="selectAllRequests()" >Выделить всех</span>
+        <span class="select-all" @click="selectAllRequests(!isSelectedRequests)">
+          <template 
+            v-if="isSelectedRequests === false"
+          >
+            Выделить всех
+          </template>
+          <template v-else>Убрать всех</template>
+        </span>
       </div>
 		</div>
 		<div class="request-list">
@@ -104,17 +119,17 @@ export default {
           </div>
         </div>
         <div 
-          class="message"
-          v-if="request.selected===false"
+          class="buttons"
+          v-if="request.selected === true && isShowRequestDetails === true"
         >
-          {{request.text}}
+          <button @click="makePerformer({ requestId: request.id})" class="todo-executor">Сделать исполнителем</button>
+          <button @click="cancelRequest({ requestId: request.id})" class="cancel">Отклонить заявку</button>
         </div>
         <div 
-          class="buttons"
+          class="message"
           v-else
         >
-          <button class="todo-executor">Сделать исполнителем</button>
-          <button class="cancel">Отклонить заявку</button>
+          {{request.text}}
         </div>
       </div>
 		</div>
@@ -177,6 +192,18 @@ export default {
           padding-left: 3px;
           color: $clr-font-grey;
         }
+      }
+
+      button.add-chat {
+        @extend %button;
+        margin: 9px 0 8px 10px;
+        padding: 8px 10px;
+      }
+
+      button.cancel {
+        @extend %button-red;
+        margin: 9px 0 8px 10px;
+        padding: 8px 10px;
       }
     }
 

@@ -70,9 +70,9 @@ export default {
 					<router-link class="name" :to="{ name: 'taskPage', params: { taskId: request.task.id }}">
 						{{request.task.title}}
 					</router-link>
-					<div v-if="request.isReject === 0" class="status loading">Обработка</div>
+          <div v-if="request.task.id_user_executor !== null" class="status successfully">Успешно</div>
+					<div v-else-if="request.isReject === 0" class="status loading">Обработка</div>
 					<div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
-					<div v-else-if="request.task.id_user_executor !== null" class="status canceled">Успешно</div>
 				</div>
 				<div class="request-info">
 					<div class="user-customer">

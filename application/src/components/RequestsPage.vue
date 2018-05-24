@@ -23,7 +23,7 @@ export default {
   },
   components: {
     RequestsMyTab,
-    RequestsTaskTab,
+    RequestsTaskTab
   },
 
   created() {

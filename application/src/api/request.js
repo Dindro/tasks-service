@@ -50,6 +50,28 @@ api.getRequestsCountByTaskId = async ({ taskId }) => {
 	} catch (e) {
 		throw e;
 	}
+};
+
+api.cancelRequest = async ({ requestId }) => {
+	try {
+		const { data } = await HTTP().post('cancelRequest', {
+			requestId
+		});
+		return data;
+	} catch (e) {
+		throw e;
+	}
+};
+
+api.makePerformer = async ({ requestId }) => {
+	try {
+		const { data } = await HTTP().post('makePerformer', {
+			requestId
+		});
+		return data;
+	} catch (e) {
+		throw e;
+	}
 }
 
 export default api;

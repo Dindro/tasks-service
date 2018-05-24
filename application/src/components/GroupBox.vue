@@ -146,7 +146,7 @@ export default {
 .select-el {
   border-radius: 2px;
   border: 1px solid $clr-tb-border;
-  width: 200px;
+  width: 250px;
   display: flex;
 
   &.open {
@@ -180,9 +180,9 @@ button.open {
   border: 1px solid $clr-tb-border;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  width: 200px;
+  width: 250px;
   border-top: none;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
   box-shadow: 0px 3px 11px 0px rgba(132, 132, 132, 0.19);
 

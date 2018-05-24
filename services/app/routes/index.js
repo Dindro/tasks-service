@@ -47,5 +47,11 @@ module.exports = (app, passport) => {
 	app.route('/api/v1/requestsCountByTaskId')
 		.get(verifyToken, request.getRequestsCountByTaskId)
 
+	app.route('/api/v1/cancelRequest')
+		.post(verifyToken, request.cancel)
+
+	app.route('/api/v1/makePerformer')
+		.post(verifyToken, request.makePerformer)
+
 	// #endregion
 }

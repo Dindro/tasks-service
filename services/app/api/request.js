@@ -168,6 +168,70 @@ api.getRequestsCountByTaskId = async (req, res) => {
 	} catch (e) {
 		console.log(e);
 	}
-}
+};
+
+// отмена заявки
+api.cancel = async (req, res) => {
+	const { userId } = req;
+	const { requestId } = req.body;
+
+	// проверка сессии
+	if (userId === undefined) {
+		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+	}
+
+	try {
+		const request = await Request.getById({ requestId });
+		const task = await Task.getById(request.id_task);
+
+		if (task.id_user_customer !== userId) {
+			return res.status(200).json({ success: false, message: "Доступ к задаче запрещен" });
+		}
+
+		await Request.cancel({ requestId });
+		res.status(200).json({ success: true, message: "Заявка отклонена" });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// отмена заявки
+api.makePerformer = async (req, res) => {
+	const { userId } = req;
+	const { requestId } = req.body;
+
+	// проверка сессии
+	if (userId === undefined) {
+		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+	}
+
+	try {
+		const request = await Request.getById({ requestId });
+		const task = await Task.getById(request.id_task);
+
+		// проверка что это задача пользователя
+		if (task.id_user_customer !== userId) {
+			return res.status(200).json({ success: false, message: "Доступ к задаче запрещен" });
+		}
+
+		// проверка что уже есть исполнитель
+		if (task.id_user_executor === null) {
+			return res.status(200).json({ success: false, message: "У задачи есть исполнитель" });
+		}
+
+		// назначаем исполнителя
+		await Task.makePerformer({
+			userExecutorId: request.id_user,
+			taskId: task.id
+		});
+
+		// TODO: отклонить заявки остальные
+		// TODO: оповестить всех
+
+		res.status(200).json({ success: true, message: "Исполнитель назначен" });
+	} catch (e) {
+		console.log(e);
+	}
+};
 
 module.exports = api;

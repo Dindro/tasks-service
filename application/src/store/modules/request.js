@@ -8,34 +8,50 @@ export default {
 		selectedItem: "",
 		selectedTab: "",
 
-		tasks: {},
-		requests: {},
+		tasks: [],
+		requests: [],
 		requestsCount: {},
 
-		taskRequests: {},
-		taskRequestsCount: {}
+		taskRequests: [],
+		taskRequestsCount: {},
 	},
 	mutations: {
 		selectCheckBox(state, { value, requestId }) {
-			for (const item of state.taskRequests) {
-				if (item.id === requestId) {
-					item.selected = value;
-				}
-			}
+			state.taskRequests.find(x => x.id === requestId).selected = value;
 		},
+
 		mut(state, { type, value }) {
 			state[type] = value;
 		},
 
-		selectAllRequests(state) {
+		selectAllRequests(state, value) {
 			for (const item of state.taskRequests) {
-				item.selected = true;
+				item.selected = value;
 			}
 		}
 	},
 
 	getters: {
+		isSelectedRequests(state) {
+			const items = state.taskRequests.find(x => x.selected === true);
+			if (items === undefined) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		},
 
+		isShowRequestDetails(state) {
+			const items = state.taskRequests.filter(x => x.selected === true);
+
+			if (items.length === 1) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	},
 	actions: {
 		async getTasks({ commit, dispatch, rootState }) {
@@ -82,6 +98,24 @@ export default {
 					item.selected = false;
 				}
 				commit('mut', { type: 'taskRequests', value: requests });
+			} catch (e) {
+				console.log(e);
+			}
+		},
+
+		async cancelRequest({ commit }, { requestId }) {
+			try {
+				const data = await Request.cancelRequest({ requestId });
+				console.log(data);
+			} catch (e) {
+				console.log(e);
+			}
+		},
+
+		async makePerformer({ commit }, { requestId }) {
+			try {
+				const data = await Request.makePerformer({ requestId });
+				console.log(data);
 			} catch (e) {
 				console.log(e);
 			}
