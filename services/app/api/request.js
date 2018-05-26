@@ -1,6 +1,6 @@
-const Task = require("../models/task");
-const Request = require("../models/request");
-const User = require("../models/user");
+const Task = require('../models/task');
+const Request = require('../models/request');
+const User = require('../models/user');
 
 let api = {};
 
@@ -12,14 +12,14 @@ api.create = async (req, res) => {
 		// проверка на то что сам себе отправляю заявку
 		const task = await Task.getById(taskId);
 		if (userId === task.id_user_customer) {
-			return res.status(200).json({ success: false, message: "Нельзя отправлять заявки себе" });
+			return res.status(200).json({ success: false, message: 'Нельзя отправлять заявки себе' });
 		}
 
 		// проверка заявку можно отправлять только один раз
 		const request = await Request.getByTaskAndUserId(taskId, userId);
 		const isRepeat = request === undefined;
 		if (isRepeat === false) {
-			return res.status(200).json({ success: false, message: "Заявку можно отправить только один раз" });
+			return res.status(200).json({ success: false, message: 'Заявку можно отправить только один раз' });
 		}
 
 		// создаем заявку
@@ -86,7 +86,7 @@ api.getMyRequests = async (req, res) => {
 
 	// проверка сессии
 	if (userId === undefined) {
-		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
 	}
 
 	try {
@@ -119,7 +119,7 @@ api.getRequestsCount = async (req, res) => {
 
 	// проверка сессии
 	if (userId === undefined) {
-		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
 	}
 
 	try {
@@ -146,7 +146,7 @@ api.getRequestsCountByTaskId = async (req, res) => {
 
 	// проверка сессии
 	if (userId === undefined) {
-		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
 	}
 
 	// проверка задачи на создателя
@@ -177,7 +177,7 @@ api.cancel = async (req, res) => {
 
 	// проверка сессии
 	if (userId === undefined) {
-		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
 	}
 
 	try {
@@ -185,11 +185,11 @@ api.cancel = async (req, res) => {
 		const task = await Task.getById(request.id_task);
 
 		if (task.id_user_customer !== userId) {
-			return res.status(200).json({ success: false, message: "Доступ к задаче запрещен" });
+			return res.status(200).json({ success: false, message: 'Доступ к задаче запрещен' });
 		}
 
 		await Request.cancel({ requestId });
-		res.status(200).json({ success: true, message: "Заявка отклонена" });
+		res.status(200).json({ success: true, message: 'Заявка отклонена' });
 	} catch (e) {
 		console.log(e);
 	}
@@ -202,7 +202,7 @@ api.makePerformer = async (req, res) => {
 
 	// проверка сессии
 	if (userId === undefined) {
-		return res.status(200).json({ success: false, message: "id пользователя не идентифицирован" });
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
 	}
 
 	try {
@@ -211,12 +211,12 @@ api.makePerformer = async (req, res) => {
 
 		// проверка что это задача пользователя
 		if (task.id_user_customer !== userId) {
-			return res.status(200).json({ success: false, message: "Доступ к задаче запрещен" });
+			return res.status(200).json({ success: false, message: 'Доступ к задаче запрещен' });
 		}
 
 		// проверка что уже есть исполнитель
-		if (task.id_user_executor === null) {
-			return res.status(200).json({ success: false, message: "У задачи есть исполнитель" });
+		if (task.id_user_executor !== null) {
+			return res.status(200).json({ success: false, message: 'У задачи есть исполнитель' });
 		}
 
 		// назначаем исполнителя
@@ -228,7 +228,45 @@ api.makePerformer = async (req, res) => {
 		// TODO: отклонить заявки остальные
 		// TODO: оповестить всех
 
-		res.status(200).json({ success: true, message: "Исполнитель назначен" });
+		res.status(200).json({ success: true, message: 'Исполнитель назначен' });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// отмена заявки
+api.delete = async (req, res) => {
+	const { userId } = req;
+	const { requestId } = req.query;
+
+	// проверка сессии
+	if (userId === undefined) {
+		return res.status(200).json({ success: false, message: 'id пользователя не идентифицирован' });
+	}
+
+	try {
+		const request = await Request.getById({ requestId });
+
+		// проверка на существование заявки
+		if (request === undefined) {
+			return res.status(200).json({ success: false, message: 'Заявки не существует' });
+		}
+
+		// проверка на то что заявка является моей
+		if (request.id_user !== userId) {
+			return res.status(200).json({ success: false, message: 'Заявка не принадлежит вам' });
+		}
+
+		const task = await Task.getById(request.id_task);
+
+		// если заявка отклонена или успешна то удалять нельзя
+		if (request.isReject == true || (request.isReject == false && task.id_user_executor !== null)) {
+			return res.status(200).json({ success: false, message: 'Отмененную или принятую заявку удалить нельзя' });
+		}
+
+		await Request.delete({ requestId });
+
+		res.status(200).json({ success: true, message: 'Заявка удалена' });
 	} catch (e) {
 		console.log(e);
 	}

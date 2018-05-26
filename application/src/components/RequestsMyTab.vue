@@ -26,7 +26,8 @@ export default {
       "getMyRequests",
       "getRequestsCount",
       "getByTaskId",
-      "getRequestsCountByTaskId"
+      "getRequestsCountByTaskId",
+      "deleteRequest"
     ]),
 
     selectTab(tabName) {
@@ -66,45 +67,72 @@ export default {
 		<div class="request-list">
 			<div v-if="requests.length === 0">Нет заявок</div>
 			<div class="request" v-for="request in requests" :key="request.id">
-				<div class="task-name-status">
-					<router-link class="name" :to="{ name: 'taskPage', params: { taskId: request.task.id }}">
-						{{request.task.title}}
-					</router-link>
-          <div v-if="request.task.id_user_executor !== null" class="status successfully">Успешно</div>
-					<div v-else-if="request.isReject === 0" class="status loading">Обработка</div>
-					<div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
-				</div>
-				<div class="request-info">
-					<div class="user-customer">
-						<div class="customer-photo"></div>
-						<div class="customer-name-messages">
-							<div class="name-type">
-								<router-link class="name" :to="{name: 'userPage', params: { userId: request.userCustomer.id }}">
-									{{request.userCustomer.surname}} {{request.userCustomer.name}}
-								</router-link>
-								<span class="type">Заказчик</span>
-							</div>
-							<div class="message">
-								<strong>Бюджет</strong> от {{request.task.priceFrom}}руб до {{request.task.priceBefore}}руб
-							</div>
-						</div>
-					</div>
-					<div class="user-executor">
-						<div class="messages">
-							<div class="date-message">
-								<span class="date">{{new Date(request.created).format('dd mmm yyyy')}}г</span>
-								<div class="message">
-									<strong>Цена</strong> {{request.price}}руб
-								</div>
-							</div>
-							<div class="message">
-								{{request.text}}
-							</div>
-							<button class="request-cancel">Отменить заявку</button>
-						</div>
-						<div class="executor-photo"></div>
-					</div>
-				</div>
+        <div class="deleted" v-if="request.deleted === true">
+          <div class="content">
+            Ваша заявка удалена
+          </div>
+        </div>
+        <template v-else>
+          <div class="task-name-status">
+            <router-link class="name" :to="{ name: 'taskPage', params: { taskId: request.task.id }}">
+              {{request.task.title}}
+            </router-link>
+            <div v-if="request.task.id_user_executor !== null" class="status successfully">Успешно</div>
+            <div v-else-if="request.isReject === 0" class="status loading">Обработка</div>
+            <div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
+          </div>
+          <div class="request-info">
+            <div class="user-customer">
+              <div class="customer-photo"></div>
+              <div class="customer-name-messages">
+                <div class="name-type">
+                  <router-link class="name" :to="{name: 'userPage', params: { userId: request.userCustomer.id }}">
+                    {{request.userCustomer.surname}} {{request.userCustomer.name}}
+                  </router-link>
+                  <span class="type">Заказчик</span>
+                </div>
+                <div class="message">
+                  <strong>Бюджет</strong> от {{request.task.priceFrom}}руб до {{request.task.priceBefore}}руб
+                </div>
+              </div>
+            </div>
+            <div class="user-executor">
+              <div class="messages">
+                <div class="date-message">
+                  <span class="date">{{new Date(request.created).format('dd mmm yyyy')}}г</span>
+                  <div class="message">
+                    <strong>Цена</strong> {{request.price}}руб
+                  </div>
+                </div>
+                <div class="message">
+                  {{request.text}}
+                </div>
+                <button v-if="request.isReject === 0 && request.task.started === null" @click="deleteRequest( {requestId: request.id })" class="request-cancel">Удалить заявку</button>
+              </div>
+              <div class="executor-photo"></div>
+            </div>
+            <div class="user-customer" v-if="(request.isReject === 0 && request.task.started !== null) || request.isReject > 0 ">
+              <div class="customer-photo"></div>
+              <div class="customer-name-messages">
+                <div class="name-type">
+                  <router-link class="name" :to="{name: 'userPage', params: { userId: request.userCustomer.id }}">
+                    {{request.userCustomer.surname}} {{request.userCustomer.name}}
+                  </router-link>
+                  <span class="type">Заказчик</span>
+                </div>
+                <div class="date-message" v-if="request.isReject === 0 && request.task.started !== null">
+                  <div class="message green">
+                    Вы стали исполнителем
+                  </div>
+                  <span class="date">{{new Date(request.task.started).format('dd mmm yyyy')}}г</span>
+                </div>
+                <div class="message red" v-else-if="request.isReject > 0">
+                  Ваша заявка отклонена
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
 			</div>
 		</div>
 	</div>
@@ -183,6 +211,15 @@ export default {
         margin-bottom: 0;
       }
 
+      .deleted {
+        display: flex;
+        padding: 20px 0;
+
+        .content {
+          margin: auto;
+        }
+      }
+
       .task-name-status {
         display: flex;
         align-items: flex-start;
@@ -216,10 +253,9 @@ export default {
       }
 
       .request-info {
-        padding-top: 10px;
-
         .user-customer {
           display: flex;
+          margin-top: 10px;
 
           .customer-photo {
             width: 40px;
@@ -243,13 +279,26 @@ export default {
                 font-weight: 400;
               }
             }
+
+            .date-message {
+              display: flex;
+              align-items: flex-end;
+
+              .date {
+                color: $clr-font-grey;
+                margin-left: 10px;
+                font-size: 11px;
+                font-style: italic;
+              }
+            }
           }
         }
 
         .user-executor {
           display: flex;
           justify-content: flex-end;
-          align-items: flex-end;
+          align-items: flex-start;
+          margin-top: 5px;
 
           .messages {
             display: flex;
@@ -297,6 +346,16 @@ export default {
 
         strong {
           font-weight: 500;
+        }
+
+        &.green {
+          background-color: #e5f1e5;
+          color: #557d57;
+        }
+
+        &.red {
+          background-color: #f1e5e5;
+          color: #7d5555;
         }
       }
     }

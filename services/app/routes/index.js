@@ -39,7 +39,8 @@ module.exports = (app, passport) => {
 
 	app.route('/api/v1/request')
 		.post(verifyToken, request.create)
-		.get(verifyToken, request.getMyRequests);
+		.get(verifyToken, request.getMyRequests)
+		.delete(verifyToken, request.delete)
 
 	app.route('/api/v1/requestsCount')
 		.get(verifyToken, request.getRequestsCount)

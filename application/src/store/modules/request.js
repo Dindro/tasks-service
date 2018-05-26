@@ -28,6 +28,14 @@ export default {
 			for (const item of state.taskRequests) {
 				item.selected = value;
 			}
+		},
+
+		pushAboutDelete(state, { requestId }) {
+			state.requests.forEach((request, index) => {
+				if (request.id === requestId) {
+					Vue.set(state.requests, index, { ...request, deleted: true });
+				}
+			});
 		}
 	},
 
@@ -119,6 +127,17 @@ export default {
 			} catch (e) {
 				console.log(e);
 			}
-		}
+		},
+
+		async deleteRequest({ commit }, { requestId }) {
+			try {
+				const data = await Request.deleteRequest({ requestId });
+				if (data.success === true) {
+					commit('pushAboutDelete', { requestId });
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		},
 	}
 }

@@ -160,6 +160,7 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 
 	if (taskId === undefined) {
 		if (isReject === false) {
+			// заявки в обработке
 			query = `
 				SELECT COUNT(*) as count FROM 
 				(
@@ -167,7 +168,7 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 					id_user = ${userId} AND
 					isReject = ${isReject}
 				) as r
-				INNER JOIN tasks ON r.id_user = tasks.id_user_executor 
+				LEFT JOIN tasks ON r.id_user = tasks.id_user_executor 
 				WHERE tasks.id_user_executor IS NULL
 			;`;
 		} else {
@@ -244,6 +245,21 @@ model.cancel = async ({ requestId }) => {
 	try {
 		const result = await db.getResult(query);
 		return result[0];
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
+model.delete = async ({ requestId }) => {
+	const query = `
+		DELETE FROM requests 
+		WHERE id = ${requestId}
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result;
 	}
 	catch (e) {
 		throw e;

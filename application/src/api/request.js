@@ -63,6 +63,19 @@ api.cancelRequest = async ({ requestId }) => {
 	}
 };
 
+api.deleteRequest = async ({requestId}) => {
+	try {
+		const { data } = await HTTP().delete('request', {
+			params: {
+				requestId
+			}
+		});
+		return data;
+	} catch (e) {
+		throw e;
+	}
+}
+
 api.makePerformer = async ({ requestId }) => {
 	try {
 		const { data } = await HTTP().post('makePerformer', {
