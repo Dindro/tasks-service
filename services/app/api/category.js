@@ -6,7 +6,7 @@ api.getCategories = async (req, res) => {
   try {
     const parents = await Category.getParent();
     let parentsPromises = parents.map(async (parent) => {
-      const childrens = await Category.getChildren(parent.id);
+      const childrens = await Category.getChildren({ parentId: parent.id });
       parent.childrens = childrens;
     });
 

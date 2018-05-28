@@ -1,9 +1,17 @@
 <script>
+import io from "socket.io-client";
+
 export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      socket: {},
+
+      isShowNotifyBox: false,
+      notifyViewId: 0,
+      notifyType: "",
+      notifyRequest: {}
     };
   },
   computed: {
@@ -14,6 +22,36 @@ export default {
       return this.$store.getters.userAuth.id;
     }
   },
+  created() {
+    // подключение сокетов
+    const socket = io("http://localhost:3000", {
+      query: {
+        "x-access-token": localStorage.getItem("token")
+      }
+    });
+
+    this.socket = socket;
+    socket.on("connect", () => {
+      console.log("Коннект");
+    });
+
+    socket.on("message", obj => {});
+    socket.on("request", obj => {
+      console.log("REQUEST SOCKET");
+      this.notifyRequest = obj;
+      this.notifyType = "request";
+      this.isShowNotifyBox = true;
+
+      this.notifyViewId += 1;
+      const id = this.notifyViewId;
+
+      setTimeout(() => {
+        if (this.notifyViewId === id) {
+          this.isShowNotifyBox = false;
+        }
+      }, 5000);
+    });
+  },
   methods: {
     login() {
       this.$store.dispatch("login", {
@@ -21,9 +59,11 @@ export default {
         password: this.password
       });
     },
+
     signup() {
       this.$router.push({ path: "signup" });
     },
+
     logout() {
       this.$store.dispatch("logout");
     }
@@ -33,6 +73,30 @@ export default {
 
 <template>
   <div class="main">
+    <div v-show="isShowNotifyBox === true" class="notify">
+      <div class="request" v-if="notifyType === 'request'">
+        <div class="user-photo">
+        </div>
+        <div class="description">
+          <router-link 
+            class="user-name"
+            :to="{name:'userPage', params:{userId: notifyRequest.userCustomer.id}}"
+          >
+            {{notifyRequest.userCustomer.name}} {{notifyRequest.userCustomer.surname}}
+          </router-link> 
+          <template v-if="notifyRequest.type === 'success'">принял</template>
+          <template v-else-if="notifyRequest.type === 'cancel'">отклонил</template> 
+          заявку по задаче 
+          <router-link 
+            class="task-name"
+            :to="{name:'taskPage', params:{taskId: notifyRequest.task.id}}"
+          >
+            "{{notifyRequest.task.title}}"
+          </router-link> 
+        </div>
+        
+      </div>
+    </div>
     <div id="nav">
       <div class="logo">
         <div class="logo-text">Tasks service</div>
@@ -80,6 +144,47 @@ export default {
 
 <style lang="scss">
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
+
+.notify {
+  @extend %box;
+
+  position: fixed;
+  z-index: 1000;
+  bottom: 15px;
+  left: 15px;
+  height: 70px;
+  width: 290px;
+  background-color: rgb(82, 82, 82);
+  border-radius: 3px;
+  padding: 10px;
+  box-sizing: border-box;
+  color: white;
+
+  .request {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .user-photo {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background-color: brown;
+    }
+
+    .description {
+      flex: 1;
+      margin-left: 10px;
+
+      .user-name,
+      .task-name {
+        color: #c9d9e8;
+        font-weight: 500;
+      }
+    }
+  }
+}
 
 .main {
   width: 960px;

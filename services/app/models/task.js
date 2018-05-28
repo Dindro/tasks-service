@@ -2,7 +2,6 @@ const db = require("../../config/db");
 let model = {};
 
 model.create = async (task) => {
-
 	if (task.dateStart === "") {
 		task.dateStart = null;
 	}
@@ -13,8 +12,8 @@ model.create = async (task) => {
 
 	const query = `
 		INSERT INTO tasks SET 
-		id_user_customer = ${task.userId},
-		id_category = ${task.categoryId},
+		userCustomerId = ${task.userId},
+		categoryId = ${task.categoryId},
 		title = '${task.title}',
 		description = '${task.description}',
 		priceFrom = ${task.priceFrom},
@@ -42,7 +41,7 @@ model.getByUserId = async ({ userId, count }) => {
 
 	const query = `
 		SELECT * FROM tasks 
-		WHERE id_user_customer = ${userId} 
+		WHERE userCustomerId = ${userId} 
 		ORDER BY created 
 		DESC ${param}
 	;`;
@@ -55,7 +54,7 @@ model.getByUserId = async ({ userId, count }) => {
 	}
 };
 
-model.getById = async (taskId) => {
+model.getById = async ({ taskId }) => {
 	const query = `SELECT * FROM tasks WHERE id = ${taskId};`;
 	try {
 		const results = await db.getResult(query);
@@ -75,12 +74,13 @@ model.getAll = async () => {
 	}
 }
 
-model.makePerformer = async ({ userExecutorId, taskId }) => {
+model.makePerformer = async ({ userPerformerId, taskId }) => {
 	const query = `
 		UPDATE tasks SET 
-		id_user_executor = ${userExecutorId},
+		userPerformerId = ${userExecutorId},
 		started = now()
-		WHERE id = ${taskId}
+		WHERE 
+		id = ${taskId}
 	;`;
 
 	try {
@@ -92,12 +92,12 @@ model.makePerformer = async ({ userExecutorId, taskId }) => {
 	}
 }
 
-// Добавить координаты в таблицу tasks_coordinates
-model.addCoordinate = async (coordinateId, taskId) => {
+// Добавить координаты в таблицу tasks_locations
+model.addLocations = async ({ locationId, taskId }) => {
 	const query = `
 		INSERT INTO tasks_coordinates SET 
-		id_coordinate = ${coordinateId},
-		id_task = ${taskId}
+		locationId = ${locationId},
+		taskId = ${taskId}
 	;`;
 
 	try {
@@ -108,11 +108,11 @@ model.addCoordinate = async (coordinateId, taskId) => {
 	}
 };
 
-model.getCoordinates = async (taskId) => {
+model.getCoordinates = async ({ taskId }) => {
 	const query = `
-		SELECT c.* FROM tasks_coordinates as t_c INNER JOIN coordinates as c 
-		WHERE t_c.id_coordinate = c.id AND 
-		t_c.id_task = ${taskId} 
+		SELECT c.* FROM tasks_locations as t_l INNER JOIN locations as l 
+		WHERE t_l.locationId = l.id AND 
+		t_l.taskId = ${taskId} 
 		ORDER BY c.priority ASC;
 	;`;
 

@@ -26,14 +26,10 @@ app.use(cookieParser());
 app.use(cors());
 
 // роутер
-require('./app/routes')(app);
+require('./app/routes')({ app, io });
 
-io.on('connection', function (socket) {
-	socket.on('hello', function (message) {
-		console.log(message);
-		socket.emit('hello', 'Привет от сервера');
-	});
-})
+// сокеты
+require('./app/api/socket')(io);
 
 const port = process.env.PORT || 3000;
 server.listen(port, function () {

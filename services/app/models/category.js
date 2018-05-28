@@ -3,7 +3,7 @@ const db = require('../../config/db');
 let model = {};
 
 model.getParent = async () => {
-	const query = `SELECT * FROM categories WHERE parent IS NULL;`;
+	const query = `SELECT * FROM categories WHERE parentId IS NULL;`;
 	try {
 		const result = await db.getResult(query);
 		return result;
@@ -12,8 +12,8 @@ model.getParent = async () => {
 	}
 };
 
-model.getChildren = async (parentId) => {
-	const query = `SELECT * FROM categories WHERE parent = ${parentId};`;
+model.getChildren = async ({ parentId }) => {
+	const query = `SELECT * FROM categories WHERE parentId = ${parentId};`;
 	try {
 		const result = await db.getResult(query);
 		return result;
@@ -22,8 +22,8 @@ model.getChildren = async (parentId) => {
 	}
 };
 
-model.getById = async (id) => {
-	const query = `SELECT * FROM categories WHERE id = ${id};`;
+model.getById = async ({ categoryId }) => {
+	const query = `SELECT * FROM categories WHERE id = ${categoryId};`;
 	try {
 		const result = await db.getResult(query);
 		return result[0];

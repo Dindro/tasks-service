@@ -6,7 +6,7 @@ const category = require('../api/category');
 const task = require('../api/task');
 const request = require('../api/request');
 
-module.exports = (app, passport) => {
+module.exports = ({ app, io }) => {
 	app.route('/api/v1/signup')
 		.post(user.signup);
 
@@ -38,7 +38,7 @@ module.exports = (app, passport) => {
 		.get(verifyToken, request.get);
 
 	app.route('/api/v1/request')
-		.post(verifyToken, request.create)
+		.post(verifyToken, (req, res) => request.create(req, res, io))
 		.get(verifyToken, request.getMyRequests)
 		.delete(verifyToken, request.delete)
 
@@ -52,7 +52,7 @@ module.exports = (app, passport) => {
 		.post(verifyToken, request.cancel)
 
 	app.route('/api/v1/makePerformer')
-		.post(verifyToken, request.makePerformer)
+		.post(verifyToken, (req, res) => request.makePerformer(req, res, io))
 
 	// #endregion
 }

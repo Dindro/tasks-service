@@ -2,8 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // части
-import TheNavigation from '@/components/TheNavigation';
-import TheHeader from '@/components/TheHeader';
+import TheNavigation from '../components/TheNavigation';
+import TheHeader from '../components/TheHeader';
 
 // страницы
 import LoginPage from '../components/LoginPage';

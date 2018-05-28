@@ -1,7 +1,7 @@
 const db = require("../../config/db");
 let model = {};
 
-model.create = async (id_task) => {
+model.create = async ({ taskId }) => {
 	const query = `
 		SELECT * FROM table_name WHERE id = ${id_task}
 	;`;

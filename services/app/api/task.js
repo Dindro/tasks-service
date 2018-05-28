@@ -1,5 +1,5 @@
 const Task = require('../models/task');
-const Coordinate = require('../models/coordinate');
+const Location = require('../models/location');
 const User = require('../models/user');
 const Request = require('../models/request');
 const Category = require('../models/category');
@@ -8,14 +8,14 @@ let api = {};
 
 api.create = async (req, res) => {
 	// проверка на авторизиацию
-	if (req.userId === undefined) {
+	if (!req.userId) {
 		return res.status(400).json({ success: 200, message: "Вы не авторизировались" });
 	}
 
 	const userId = req.userId;
 	const {
 		categoryId,
-		title,
+		name,
 		description,
 		priceFrom,
 		priceBefore,
@@ -30,7 +30,7 @@ api.create = async (req, res) => {
 		const taskId = await Task.create({
 			userId,
 			categoryId,
-			title,
+			name,
 			description,
 			priceFrom,
 			priceBefore,
@@ -42,8 +42,8 @@ api.create = async (req, res) => {
 
 		const addressesPrms = addresses.map(async (address, index) => {
 			address.priority = index + 1;
-			const coordinateId = await Coordinate.create(address);
-			const idCoordinateTask = await Task.addCoordinate(coordinateId, taskId);
+			const locationId = await Location.create(address);
+			const locationTaskId = await Task.addLocations({ locationId, taskId });
 		});
 
 		res.status(200).json({ success: true, taskId });
@@ -57,7 +57,7 @@ api.getAll = async (req, res) => {
 		const tasks = await Task.getAll();
 
 		const tasksPrms = tasks.map(async (task) => {
-			const user = await User.getById(task.id_user_customer);
+			const user = await User.getById({ userId: task.userCustomerId });
 			task.user = user;
 		})
 
@@ -75,10 +75,10 @@ api.getByUserId = async (req, res) => {
 	const { count } = req.query;
 	let { userId } = req.query;
 
-	if (userId === undefined) {
+	if (!userId) {
 		userId = req.userId;
 
-		if (userId === undefined) {
+		if (!userId) {
 			return res.status(200).json({ success: false, message: 'id not found' });
 		}
 	}
@@ -95,21 +95,21 @@ api.get = async (req, res) => {
 	const { taskId } = req.query;
 
 	try {
-		const task = await Task.getById(taskId);
+		const task = await Task.getById({ taskId });
 
 		// получаем адреса
-		const addressesPrm = Task.getCoordinates(task.id);
+		const addressesPrm = Task.getCoordinates({ taskId: task.id });
 
 		// получаем заказчика
-		const userCustomerPrm = User.getById(task.id_user_customer);
+		const userCustomerPrm = User.getById({ userId: task.userCustomerId });
 
 		// TODO: получить исполнителя
 
 		// получаем количество новых заявок
-		const requestNotViewCountPrm = Request.getNotViewCount(task.id);
+		const requestNotViewCountPrm = Request.getNotViewCount({ taskId: task.id });
 
 		// получаем название категории
-		const categoryPrm = Category.getById(task.id_category);
+		const categoryPrm = Category.getById({ categoryId: task.categoryId });
 
 
 		// ждем ответов

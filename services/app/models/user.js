@@ -1,8 +1,7 @@
-const crypto = require('crypto'); //Занимается шифрованием
 const db = require("../../config/db");
 let model = {};
 
-model.getByEmail = async (email) => {
+model.getByEmail = async ({ email }) => {
 	const query = `SELECT * FROM users WHERE email = '${email}';`;
 	try {
 		const result = await db.getResult(query);
@@ -12,8 +11,8 @@ model.getByEmail = async (email) => {
 	}
 };
 
-model.getById = async function (id) {
-	var query = `SELECT * FROM users WHERE id = ${id};`;
+model.getById = async function ({ userId }) {
+	var query = `SELECT * FROM users WHERE id = ${userId};`;
 	try {
 		var user = await db.getResult(query);
 		return user[0];
@@ -26,14 +25,14 @@ model.registration = async function (user) {
 	const query = `
 		INSERT INTO users SET 
 		email = '${user.email}',
-		hashedpassword = '${user.hashedpassword}',
+		hashedPassword = '${user.hashedPassword}',
 		salt = '${user.salt}',
 		name = '${user.name}',
 		surname = '${user.surname}',
 		birthday = '${user.birthday}';`;
 	try {
-		const userAdded = await db.getResult(query);
-		return userAdded.insertId;
+		const user = await db.getResult(query);
+		return user.insertId;
 	} catch (e) {
 		throw e;
 	}

@@ -22,17 +22,17 @@ api.signup = async (req, res) => {
 			return;
 		}
 
-		const user = await User.getByEmail(email);
+		const user = await User.getByEmail({ email });
 		if (user !== undefined) {
 			res.status(200).json({ success: false, message: "Пользователь уже существует" });
 			return;
 		}
 
 		const salt = Math.random() + 'salt';
-		const hashedpassword = encryptPassword(password, salt)
+		const hashedPassword = encryptPassword(password, salt)
 		const insertId = await User.registration({
 			email,
-			hashedpassword,
+			hashedPassword,
 			salt,
 			surname,
 			name,
@@ -54,8 +54,8 @@ api.signup = async (req, res) => {
 api.login = async (req, res) => {
 	const { email, password } = req.body;
 	try {
-		let user = await User.getByEmail(email);
-		if (user === undefined) {
+		const user = await User.getByEmail({ email });
+		if (!user) {
 			res.status(200).json({ success: false, message: "Не правильный email" });
 			return;
 		}
@@ -71,9 +71,9 @@ api.login = async (req, res) => {
 				{ expiresIn: config.jwt.expires }
 			);
 
-			delete user.hashedpassword;
+			delete user.hashedPassword;
 			delete user.salt;
-			delete user.id_image;
+			delete user.imageId;
 			delete user.right;
 
 			res.status(200).json({ user, token });
@@ -96,9 +96,9 @@ api.get = async (req, res) => {
 			userId = req.userId;
 		}
 	}
-	const user = await User.getById(userId);
+	const user = await User.getById({ userId });
 
-	delete user.hashedpassword;
+	delete user.hashedPassword;
 	delete user.salt;
 
 	res.json({ success: true, user });

@@ -4,9 +4,9 @@ let model = {};
 model.create = async ({ userId, taskId, message, price }) => {
 	const query = `
 		INSERT INTO requests SET 
-		id_user = ${userId},
-		id_task = ${taskId},
-		text = '${message}',
+		userId = ${userId},
+		taskId = ${taskId},
+		message = '${message}',
 		price = ${price}
 	;`;
 
@@ -34,6 +34,22 @@ model.getById = async ({ requestId }) => {
 	}
 }
 
+model.getAllWithoutUserId = async ({ taskId, userId }) => {
+	const query = `
+		SELECT * FROM requests WHERE 
+		taskId = ${taskId} AND 
+		userId != ${userId}
+	;`;
+
+	try {
+		const results = await db.getResult(query);
+		return results;
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
 model.getByTaskId = async ({ taskId, type }) => {
 	let query = '';
 
@@ -41,7 +57,7 @@ model.getByTaskId = async ({ taskId, type }) => {
 		case 'canceled':
 			query = `
 				SELECT * FROM requests WHERE 
-				id_task = ${taskId} AND 
+				taskId = ${taskId} AND 
 				isReject = true 
 				ORDER BY created ASC
 			;`;
@@ -50,7 +66,7 @@ model.getByTaskId = async ({ taskId, type }) => {
 		default:
 			query = `
 				SELECT * FROM requests WHERE 
-				id_task = ${taskId} AND 
+				taskId = ${taskId} AND 
 				isReject = false 
 				ORDER BY created ASC
 			;`;
@@ -67,11 +83,11 @@ model.getByTaskId = async ({ taskId, type }) => {
 }
 
 // чтобы человек два раза не отправлял заявку
-model.getByTaskAndUserId = async (taskId, userId) => {
+model.getByTaskAndUserId = async ({ taskId, userId }) => {
 	const query = `
 		SELECT * FROM requests WHERE 
-		id_task = ${taskId} AND 
-		id_user = ${userId}
+		taskId = ${taskId} AND 
+		userId = ${userId}
 	;`;
 
 	try {
@@ -83,10 +99,10 @@ model.getByTaskAndUserId = async (taskId, userId) => {
 	}
 };
 
-model.getNotViewCount = async (taskId) => {
+model.getNotViewCount = async ({ taskId }) => {
 	const query = `
 		SELECT COUNT(*) as count FROM requests WHERE 
-		id_task = ${taskId} AND
+		taskId = ${taskId} AND
 		isView = false
 	;`;
 
@@ -107,7 +123,7 @@ model.getByUserId = async ({ userId, type }) => {
 		case 'canceled':
 			query = `
 				SELECT * FROM requests WHERE 
-				id_user = ${userId} AND 
+				userId = ${userId} AND 
 				isReject = true 
 				ORDER BY created ASC
 			;`;
@@ -116,7 +132,7 @@ model.getByUserId = async ({ userId, type }) => {
 		case 'loading':
 			query = `
 				SELECT * FROM requests WHERE 
-				id_user = ${userId} AND 
+				userId = ${userId} AND 
 				isReject = false 
 				ORDER BY created ASC
 			;`;
@@ -127,12 +143,12 @@ model.getByUserId = async ({ userId, type }) => {
 				SELECT r.* FROM 
 				(
 					SELECT * FROM requests WHERE 
-					id_user = ${userId} AND
+					userId = ${userId} AND
 					isReject = false
 				) AS r
 				INNER JOIN tasks 
-				ON r.id_task = tasks.id
-				WHERE tasks.id_user_executor = ${userId} 
+				ON r.taskId = tasks.id
+				WHERE tasks.userPerformerId = ${userId} 
 				ORDER BY r.created ASC
 			;`
 			break;
@@ -140,7 +156,7 @@ model.getByUserId = async ({ userId, type }) => {
 		default:
 			query = `
 				SELECT * FROM requests WHERE 
-				id_user = ${userId} 
+				userId = ${userId} 
 				ORDER BY created ASC
 			;`;
 			break;
@@ -165,16 +181,16 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 				SELECT COUNT(*) as count FROM 
 				(
 					SELECT * FROM requests WHERE 
-					id_user = ${userId} AND
+					userId = ${userId} AND
 					isReject = ${isReject}
 				) as r
-				LEFT JOIN tasks ON r.id_user = tasks.id_user_executor 
-				WHERE tasks.id_user_executor IS NULL
+				LEFT JOIN tasks ON r.userId = tasks.userPerformerId 
+				WHERE tasks.userPerformerId IS NULL
 			;`;
 		} else {
 			query = `
 				SELECT COUNT(*) as count FROM requests WHERE 
-				id_user = ${userId} AND
+				userId = ${userId} AND
 				isReject = ${isReject}
 			;`;
 		}
@@ -182,7 +198,7 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 	else {
 		query = `
 			SELECT COUNT(*) as count FROM requests WHERE 
-			id_task = ${taskId} AND
+			taskId = ${taskId} AND
 			isReject = ${isReject}
 		;`;
 	}
@@ -202,12 +218,12 @@ model.getRequestsSuccessfulCount = async ({ userId }) => {
 		SELECT COUNT(*) as count FROM 
 		(
 			SELECT * FROM requests WHERE 
-			id_user = ${userId} AND
+			userId = ${userId} AND
 			isReject = false
 		) AS r
 		INNER JOIN tasks 
-		ON r.id_task = tasks.id 
-		WHERE tasks.id_user_executor = ${userId}
+		ON r.taskId = tasks.id 
+		WHERE tasks.userPerformerId = ${userId}
 	;`;
 
 	try {
@@ -219,11 +235,11 @@ model.getRequestsSuccessfulCount = async ({ userId }) => {
 	}
 };
 
-model.updateView = async (taskId) => {
+model.updateView = async ({ taskId }) => {
 	const query = `
 		UPDATE requests SET 
 		isView = true
-		WHERE id_task = ${taskId}
+		WHERE taskId = ${taskId}
 	;`;
 
 	try {
@@ -264,6 +280,6 @@ model.delete = async ({ requestId }) => {
 	catch (e) {
 		throw e;
 	}
-}
+};
 
 module.exports = model;

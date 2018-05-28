@@ -1,13 +1,13 @@
 const db = require("../../config/db");
 let model = {};
 
-model.create = async (coordinate) => {
+model.create = async (location) => {
 	const query = `
-		INSERT INTO coordinates SET 
-		name = '${coordinate.name}',
-		priority = ${coordinate.priority},
-		lon = ${coordinate.lon},
-		lat = ${coordinate.lat}
+		INSERT INTO locations SET 
+		name = '${location.name}',
+		priority = ${location.priority},
+		lon = ${location.lon},
+		lat = ${location.lat}
 	;`;
 
 	try {
@@ -17,6 +17,5 @@ model.create = async (coordinate) => {
 		throw e;
 	}
 };
-
 
 module.exports = model;
