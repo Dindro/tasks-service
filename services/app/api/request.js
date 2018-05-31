@@ -2,6 +2,7 @@ const Task = require('../models/task');
 const Request = require('../models/request');
 const User = require('../models/user');
 const Socket = require('../models/socket');
+const SocketApi = require('./socket');
 
 let api = {};
 
@@ -32,22 +33,27 @@ api.create = async (req, res, io) => {
 
 		res.status(200).send({ requestInsertId });
 
-		// TODO: через сокеты сообщить заказчика
-		const { userCustomerId } = task;
-		const customerSocketsPrm = Socket.getByUserId({ userId: userCustomerId });
+		// через сокеты сообщить заказчика
 		const requestPrm = Request.getById({ requestId: requestInsertId });
 		const userPerformerPrm = User.getById({ userId });
 
-		const customerSockets = await customerSocketsPrm;
-		const request = await requestPrm;
+		const requestOfTask = await requestPrm;
 		const userPerformer = await userPerformerPrm;
 
-		for (const item of customerSockets) {
-			const client = io.sockets.sockets[item.value];
-			if (client) {
-				client.emit('request', { task, request, userPerformer, type: 'new' });
+		const { userCustomerId } = task;
+
+		SocketApi.send({
+			userId: userCustomerId,
+			socketType: 'io',
+			type: 'request',
+			data: {
+				task,
+				request: requestOfTask,
+				userPerformer,
+				type: 'new'
 			}
-		}
+		});
+
 	} catch (e) {
 		console.log(e);
 	}
@@ -244,13 +250,16 @@ api.makePerformer = async (req, res, io) => {
 		});
 
 		// оповещаем исполнителя
-		const performerSockets = await Socket.getByUserId({ userId: request.userId, type: 'io' });
-		for (const item of performerSockets) {
-			const client = io.sockets.sockets[item.value];
-			if (client) {
-				client.emit('request', { task, userCustomer, type: 'success' });
+		SocketApi.send({
+			userId: { request },
+			socketType: 'io',
+			type: 'request',
+			data: {
+				task,
+				userCustomer,
+				type: 'success'
 			}
-		}
+		});
 
 		// отклоняем и оповещаем об отклонении
 		const loosersRequests = await Request.getAllWithoutUserId({

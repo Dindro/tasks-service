@@ -1,8 +1,12 @@
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
 const Socket = require('../models/socket');
+let _io;
+let api = {};
 
-module.exports = (io) => {
+api.listeners = (io) => {
+	_io = io;
+
 	// удаляем все сессии сокетов
 	Socket.deleteAll();
 
@@ -27,7 +31,7 @@ module.exports = (io) => {
 
 	io.on('connection', (client) => {
 		const userId = client.userId;
-		
+
 		// если авторизован
 		if (userId) {
 			// добавляем их в бд
@@ -44,3 +48,15 @@ module.exports = (io) => {
 		});
 	})
 }
+
+api.send = async ({ userId, socketType, type, data }) => {
+	const sockets = await Socket.getByUserId({ userId, type: socketType });
+	for (const item of sockets) {
+		const client = _io.sockets.sockets[item.value];
+		if (client) {
+			client.emit(type, data);
+		}
+	}
+}
+
+module.exports = api;

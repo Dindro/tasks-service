@@ -25,11 +25,11 @@ app.use(cookieParser());
 // доступность с любого домена
 app.use(cors());
 
+// сокеты
+require('./app/api/socket').listeners(io);
+
 // роутер
 require('./app/routes')({ app, io });
-
-// сокеты
-require('./app/api/socket')(io);
 
 const port = process.env.PORT || 3000;
 server.listen(port, function () {

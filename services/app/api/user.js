@@ -60,24 +60,23 @@ api.login = async (req, res) => {
 			return;
 		}
 
-		if (checkPassword(password, user.salt, user.hashedpassword) == false) {
+		if (checkPassword(password, user.salt, user.hashedPassword) == false) {
 			res.status(200).json({ success: false, message: "Не правильный пароль" });
 			return;
 		}
-		else {
-			const token = jwt.sign(
-				{ id: user.id },
-				config.jwt.secret,
-				{ expiresIn: config.jwt.expires }
-			);
 
-			delete user.hashedPassword;
-			delete user.salt;
-			delete user.imageId;
-			delete user.right;
+		// получаем токен
+		const token = jwt.sign(
+			{ id: user.id },
+			config.jwt.secret,
+			{ expiresIn: config.jwt.expires }
+		);
 
-			res.status(200).json({ user, token });
-		}
+		delete user.hashedPassword;
+		delete user.salt;
+		delete user.imageId;
+
+		res.status(200).json({ user, token });
 	}
 	catch (e) {
 		res.status(500).json({ success: false, message: e });
@@ -97,9 +96,6 @@ api.get = async (req, res) => {
 		}
 	}
 	const user = await User.getById({ userId });
-
-	delete user.hashedPassword;
-	delete user.salt;
 
 	res.json({ success: true, user });
 };

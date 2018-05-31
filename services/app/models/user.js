@@ -12,6 +12,25 @@ model.getByEmail = async ({ email }) => {
 };
 
 model.getById = async function ({ userId }) {
+	const query = `SELECT * FROM users WHERE id = ${userId};`;
+	try {
+		const result = await db.getResult(query);
+		let user = user[0];
+		if (user) {
+			delete user.email;
+			delete user.hashedPassword;
+			delete user.salt;
+			delete user.phone;
+			delete user.about;
+			delete user.right;
+		}
+		return user;
+	} catch (e) {
+		throw e;
+	}
+};
+
+model.getFullById = async function ({ userId }) {
 	var query = `SELECT * FROM users WHERE id = ${userId};`;
 	try {
 		var user = await db.getResult(query);
