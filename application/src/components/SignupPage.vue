@@ -1,87 +1,125 @@
 <script>
 export default {
+  props: {
+    name: {
+      default: ""
+    },
+    surname: {
+      default: ""
+    },
+    birthday: {
+      default: Date.now()
+    }
+  },
+
   data() {
     return {
-      email: '',
-      password: '',
-      name: '',
-      surname: '',
-      birthday: Date.now(),
+      email: "",
+      password: "",
+      passwordRepeat: "",
+      userName: this.name,
+      userSurname: this.surname,
+      userBirthday: this.birthday,
+      error: ""
     };
   },
   methods: {
-    signup() {
-      this.$store.dispatch("signup", {
+    async signup() {
+      const data = await this.$store.dispatch("signup", {
         email: this.email,
         password: this.password,
-        name: this.name,
-        surname: this.surname,
-        birthday: this.birthday
+        name: this.userName,
+        surname: this.userSurname,
+        birthday: this.userBirthday
       });
+
+      if (data.success === false) {
+        this.error = data.message;
+      }
     }
   }
 };
 </script>
 
 <template>
-	<div class="main">
-		<div class="background"></div>
-		<div class="option">
-			<div class="container login">
-				<input type="text" name="email" v-model="email">
-				<input type="password" name="password" v-model="password">
-        <input type="text" name="name" v-model="name">
-        <input type="text" name="surname" v-model="surname">
-        <input type="date" name="surname" v-model="birthday">
-				<button @click="signup">Регистрация</button>
-			</div>
-			<div class="container signup"></div>
-		</div>
-	</div>
+  <div class="dinamic">
+    <div class="signup-form">
+      <div class="top">Регистрация пользователя</div>
+      <div class="form">
+        <div class="error" v-if="error !== ''">
+          <strong>Ошибка:</strong> {{error}}
+        </div>
+        <input type="text" name="email" v-model="email" placeholder="Email">
+			  <input type="password" name="password" v-model="password" placeholder="Пароль">
+        <input type="password" name="password" v-model="passwordRepeat" placeholder="Повторите пароль">
+        <input type="text" name="name" v-model="userName" placeholder="Ваше имя">
+        <input type="text" name="surname" v-model="userSurname" placeholder="Ваша фамилия">
+        <div class="suggest">Дата рождения</div>
+        <input type="date" name="surname" v-model="userBirthday">
+			  <button @click="signup">Регистрация</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.main {
-  width: 960px;
-  margin: 0 auto;
-  padding: 0 15px;
-  height: 100vh;
-  display: flex;
-  //align-items: stretch;
+@import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
-  // // Нужен для того чтобы сделать размер правильным из за float
-  // &::after {
-  //   content: " ";
-  //   display: block;
-  //   height: 0;
-  //   clear: both;
-  // }
-}
+.dinamic {
+  float: right;
+  width: 795px;
 
-.option {
-  display: inline-block;
-  width: 300px;
-  background-color: blueviolet;
+  .signup-form {
+    @extend %box;
+    width: 400px;
+    padding: 30px 100px;
+    margin: 57px auto 0 auto;
 
-  .login {
-    margin-top: 100px;
+    .top {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form {
+      width: 220px;
+      margin: 0 auto;
+
+      .error {
+        @extend %request-status-canceled;
+        padding: 7px 10px;
+        border-radius: 3px;
+      }
+
+      input {
+        margin-top: 10px;
+        padding: 7px 10px;
+        border-radius: 3px;
+        border: 1px solid $clr-tb-border;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'Roboto';
+      }
+
+      input[type="date"] {
+        margin-top: 3px;
+      }
+
+      .suggest {
+        margin-top: 10px;
+        font-weight: 500;
+        color: $clr-font-grey;
+      }
+
+      button {
+        @extend %button-dark-green;
+        margin-top: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
   }
-
-  .signup {
-    margin-top: 50px;
-  }
-
-  .container {
-    height: 150px;
-    background-color: white;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 3px;
-  }
-}
-
-.background {
-  flex: 1;
-  background-color: brown;
 }
 </style>

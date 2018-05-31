@@ -55,20 +55,25 @@ export default new Router({
 			component: TheHeader, // Шапка
 			children: [
 				{
-					path: '/',
-					name: 'loginPage',
-					component: LoginPage,
-				},
-				{
-					path: '/signup',
-					name: 'signupPage',
-					component: SignupPage,
-				},
-				{
 					// левая навигация
 					path: '',
 					component: TheNavigation,
 					children: [
+						{
+							path: '/',
+							name: 'loginPage',
+							component: LoginPage,
+						},
+						{
+							path: '/signup',
+							name: 'signupPage',
+							component: SignupPage,
+							props: (route) => ({
+								name: route.query.name,
+								surname: route.query.surname,
+								birthday: route.query.birthday
+							}),
+						},
 						{
 							// навигация по сообщениям
 							path: '',
@@ -88,7 +93,7 @@ export default new Router({
 						},
 						{
 							// страница задач
-							name: 'tasks',
+							name: 'tasksPage',
 							path: '/tasks',
 							component: TasksPage,
 						},

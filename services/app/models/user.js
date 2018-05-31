@@ -15,7 +15,7 @@ model.getById = async function ({ userId }) {
 	const query = `SELECT * FROM users WHERE id = ${userId};`;
 	try {
 		const result = await db.getResult(query);
-		let user = user[0];
+		let user = result[0];
 		if (user) {
 			delete user.email;
 			delete user.hashedPassword;
@@ -23,6 +23,22 @@ model.getById = async function ({ userId }) {
 			delete user.phone;
 			delete user.about;
 			delete user.right;
+		}
+		return user;
+	} catch (e) {
+		throw e;
+	}
+};
+
+// получить авторизированного пользователя
+model.getAuthUserById = async function ({ userId }) {
+	const query = `SELECT * FROM users WHERE id = ${userId};`;
+	try {
+		const result = await db.getResult(query);
+		let user = result[0];
+		if (user) {
+			delete user.hashedPassword;
+			delete user.salt;
 		}
 		return user;
 	} catch (e) {

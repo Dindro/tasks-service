@@ -11,26 +11,24 @@ let api = {};
 api.signup = async (req, res) => {
 	const { email, password, surname, name, birthday } = req.body;
 
+	if (checkEmailFilter(email) === false) {
+		return res.status(400).json({ success: false, message: "Некорректный email" });
+	}
+
+	if (checkPasswordFilter(password) === false) {
+		return res.status(400).json({ success: false, message: "Некорректный пароль" });
+	}
+
+	const user = await User.getByEmail({ email });
+	if (user) {
+		return res.status(400).json({ success: false, message: "Пользователь с таким email существует" });
+	}
+
+	const salt = Math.random() + 'salt';
+	const hashedPassword = encryptPassword(password, salt);
+
 	try {
-		if (checkEmailFilter(email) === false) {
-			res.status(200).json({ success: false, message: "Неккоректный email" });
-			return;
-		}
-
-		if (checkPasswordFilter(password) === false) {
-			res.status(200).json({ success: false, message: "Неккоректный пароль" });
-			return;
-		}
-
-		const user = await User.getByEmail({ email });
-		if (user !== undefined) {
-			res.status(200).json({ success: false, message: "Пользователь уже существует" });
-			return;
-		}
-
-		const salt = Math.random() + 'salt';
-		const hashedPassword = encryptPassword(password, salt)
-		const insertId = await User.registration({
+		const userInsertId = await User.registration({
 			email,
 			hashedPassword,
 			salt,
@@ -40,14 +38,14 @@ api.signup = async (req, res) => {
 		});
 
 		const token = jwt.sign(
-			{ id: insertId },
+			{ id: userInsertId },
 			config.jwt.secret,
 			{ expiresIn: config.jwt.expires }
-		)
+		);
 
-		res.status(200).json({ success: true, insertId, token });
+		res.status(200).json({ success: true, userInsertId, token });
 	} catch (e) {
-		res.status(500).json({ success: false, message: e });
+		console.log(e);
 	}
 };
 
@@ -56,13 +54,11 @@ api.login = async (req, res) => {
 	try {
 		const user = await User.getByEmail({ email });
 		if (!user) {
-			res.status(200).json({ success: false, message: "Не правильный email" });
-			return;
+			return res.status(400).json({ success: false, message: "Пользователя не существует" });
 		}
 
 		if (checkPassword(password, user.salt, user.hashedPassword) == false) {
-			res.status(200).json({ success: false, message: "Не правильный пароль" });
-			return;
+			return res.status(400).json({ success: false, message: "Не корректный пароль" });
 		}
 
 		// получаем токен
@@ -83,21 +79,43 @@ api.login = async (req, res) => {
 	}
 };
 
+// получаем пользователя
 api.get = async (req, res) => {
-	let userId = parseInt(req.params.userId);
+	let { userId } = req.query;
+	const userAuthId = req.userId;
 
-	// 0 - значит нужно получить аккаунт по токену
-	if (userId === 0) {
-		if (req.userId === undefined) {
-			return res.json({ success: false });
+	// если userId пустой
+	if (!userId) {
+		// проверим токен
+		if (!userAuthId) {
+			return res.status(400).json({ success: false, message: "userId не определен" });
+		}
+		userId = userAuthId;
+	}
+
+	userId = parseInt(userId);
+
+	try {
+		let user;
+
+		// если пользователь хочет получить себя
+		if (userId === userAuthId) {
+			// то возвращаем полную информацию
+			user = await User.getAuthUserById({ userId });
 		}
 		else {
-			userId = req.userId;
+			user = await User.getById({ userId });
 		}
-	}
-	const user = await User.getById({ userId });
 
-	res.json({ success: true, user });
+		if (!user) {
+			return res.json(404).json({ success: false, message: "Пользователя не существует" });
+		}
+
+		res.json({ success: true, user });
+
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 api.logout = async (req, res) => {

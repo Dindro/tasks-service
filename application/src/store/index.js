@@ -8,6 +8,10 @@ import router from '../router';
 import task from './modules/task';
 import request from './modules/request';
 
+// api
+import User from '../api/user';
+import { stat } from 'fs';
+
 const taskAPI = `http://${window.location.hostname}:3000/api/v1`;
 const HTTP = axios.create({
 	baseURL: taskAPI,
@@ -19,14 +23,13 @@ const HTTP = axios.create({
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-	strict: true,
 	modules: {
 		task,
 		request
 	},
 	state: {
 		userAuth: {},
-		isLogged: !!localStorage.getItem("token"),
+		isLogged: false,
 	},
 	getters: {
 		name(state) {
@@ -36,88 +39,97 @@ const store = new Vuex.Store({
 			return state.userAuth;
 		},
 		isLogged(state) {
-			return state.isLogged;
+			if ('id' in state.userAuth) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 	},
 	mutations: {
 		userAuth(state, userAuth) {
 			state.userAuth = userAuth;
 		},
+
 		isLogged(state, isLogged) {
 			state.isLogged = isLogged;
+		},
+
+		mut(state, { type, value }) {
+			state[type] = value;
 		}
 	},
 	actions: {
-		login({ commit }, { email, password }) {
-			HTTP.post(
-				'login',
-				{
-					email,
-					password
-				})
-				.then((response) => {
-					const { data } = response;
-					console.log(response);
-					commit('userAuth', data.user);
-					commit('isLogged', true);
-					localStorage.setItem('token', data.token);
-					router.push(`/id${data.user.id}`);
-				})
-				.catch((e) => {
-					console.log(e);
-				})
-		},
-
-		signup({ commit }, { email, password, name, surname, birthday }) {
-			HTTP.post('signup', {
-				email,
-				password,
-				name,
-				surname,
-				birthday
-			})
-				.then((response) => {
-					console.log(response);
-					if (!data.success) {
-						console.log("Ошибка", data.message);
-					}
-				})
-				.catch((e) => {
-					console.log(e);
-				})
-		},
-
-		async getUser({ commit, state, dispatch }, { userId }) {
+		//получить авторизированного пользователя (себя)
+		async getUserAuth({ commit, dispatch }) {
 			try {
-				/*
-					делаем запрос
-					приходит ответ
-					берем данные
-				*/
-				const { data } = await HTTP.get(`getUser/${userId}`);
-				console.log(data);
-				// если токен потух или его вообще нет
-				if (data.success === false) {
-					dispatch('logout');
-					return undefined;
-				}
+				const data = await User.get({});
+				const userAuth = data.user;
+				commit('userAuth', userAuth);
 
-				return data.user;
-			}
-			catch (e) {
+				if (userAuth) {
+					commit('mut', { type: 'isLogged', value: true });
+				}
+			} catch (e) {
 				console.log(e);
 			}
 		},
 
-		async getUserAuth({ commit, dispatch }) {
-			const userAuth = await dispatch('getUser', { userId: 0 });
-			commit('userAuth', userAuth);
+		// авторизация
+		async login({ commit }, { email, password }) {
+			try {
+				const data = await User.login({ email, password });
+				const { user, token } = data;
+
+				if (user) {
+					commit('mut', { type: 'userAuth', value: user });
+					commit('mut', { type: 'isLogged', value: true });
+					localStorage.setItem('token', token);
+					router.push({ name: 'userPage', params: { userId: user.id } });
+				}
+
+				return data;
+			} catch ({ response }) {
+				const { status, data } = response;
+				if (status === 400) {
+					return data;
+				}
+			}
 		},
 
+		// регистрация
+		async signup({ commit, dispatch }, user) {
+			try {
+				const data = await User.signup(user);
+				const { token, userInsertId } = data;
+				localStorage.setItem('token', token);
+				dispatch('getUserAuth');
+				router.push({ name: 'userPage', params: { userId: userInsertId } });
+				return data;
+			} catch ({ response }) {
+				const { data, status } = response;
+				if (status === 400) {
+					return data;
+				}
+			}
+		},
+
+		// выход
 		logout({ commit }) {
 			localStorage.removeItem("token");
 			commit('isLogged', false);
 			commit('userAuth', {});
+		},
+
+		async getUser({ commit, state, dispatch }, { userId }) {
+			try {
+				const { user } = await User.get({ userId });
+				return user;
+			}
+			catch ({ response }) {
+				console.log(response);
+			}
 		},
 
 		async getCategories({ commit }) {

@@ -23,6 +23,15 @@ export default {
     isMyPage() {
       const { id } = this.$store.getters.userAuth;
       return parseInt(this.userId) === id;
+    },
+
+    age() {
+      if ("birthday" in this.user) {
+        const birthday = new Date(this.user.birthday);
+        return new Date().getFullYear() - birthday.getFullYear();
+      } else {
+        return "-";
+      }
     }
   },
   methods: {
@@ -178,7 +187,7 @@ export default {
           <div class="profile-info">
             <div class="profile-info-row" v-if="user.birthday">
               <div class="properties">Возраст:</div>
-              <div class="description">{{user.birthday}}</div>
+              <div class="description">{{age}}</div>
             </div>
             <div class="profile-info-row" v-if="user.city">
               <div class="properties">Город:</div>
@@ -205,15 +214,15 @@ export default {
               <div class="description">
                 <div class="rating">
                   Вежливость
-                  <rating-box :ratingCount="rating"></rating-box>
+                  <rating-box class="rating-item" :ratingCount="user.rating1"></rating-box>
                 </div>
                 <div class="rating">
                   Пункутальность
-                  <rating-box :ratingCount="rating"></rating-box>
+                  <rating-box class="rating-item" :ratingCount="user.rating2"></rating-box>
                 </div>
                 <div class="rating">
                   Адекватнось
-                  <rating-box :ratingCount="rating"></rating-box>
+                  <rating-box class="rating-item" :ratingCount="user.rating3"></rating-box>
                 </div>
               </div>
             </div>
@@ -315,6 +324,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -326,9 +336,8 @@ export default {
 }
 
 .mini-box {
-  border: 1px solid $clr-box-border;
-  background-color: white;
-  border-radius: 2px;
+  @extend %box;
+
   margin-bottom: 15px; //padding: 15px;
   &:last-child {
     margin-bottom: 0;
@@ -514,10 +523,18 @@ export default {
           // перенос слов
           word-wrap: break-word;
         }
+
         .description {
           // перенос слов
           word-wrap: break-word;
           width: 343px;
+
+          .rating-item {
+            display: inline-block;
+            margin-left: 10px;
+            position: relative;
+            top: 4px;
+          }
         }
       }
     }

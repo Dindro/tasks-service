@@ -3,82 +3,162 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+
+      name: "",
+      surname: "",
+      birthday: "",
+
+      error: ""
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("login", {
+    async login() {
+      const data = await this.$store.dispatch("login", {
         email: this.email,
         password: this.password
       });
-      //this.$router.push({path: 'messages'});
-    }
-  },
-  computed: {
-    name() {
-      return this.$store.getters.name;
+
+      if (data.success === false) {
+        this.error = data.message;
+      }
+    },
+
+    signup() {
+      this.$router.push({
+        name: "signupPage",
+        query: {
+          name: this.name,
+          surname: this.surname,
+          birthday: this.birthday
+        }
+      });
     }
   }
 };
 </script>
 
 <template>
-	<div class="main">
-		<div class="background"></div>
-		<div class="option">
-			<div class="container login">
-				<input type="text" name="login" v-model="email">
-				<input type="password" name="password" v-model="password">
-				<button @click="login">{{name}}</button>
+  <div class="dinamic">
+    <div class="dinamic-content">
+      
+    </div>
+    <div id="options">
+      <div class="container login">
+        <div class="error" v-if="error !== ''">
+          <strong>Ошибка:</strong> {{error}}
+        </div>
+				<input type="text" name="login" v-model="email" placeholder="Email">
+				<input type="password" name="password" v-model="password" placeholder="Пароль">
+				<button class="enter" @click="login">Вход</button>
 			</div>
-			<div class="container signup"></div>
-		</div>
-	</div>
+			<div class="container signup">
+        <div class="top">Впервые в Task Service?</div>
+        <div class="fast">Быстрая регистрация</div>
+        <form>
+          <input type="text" name="name" placeholder="Ваше имя" v-model="name" required>
+          <input type="text" name="surname" placeholder="Ваша фамилия" v-model="surname" required>
+          <div class="suggest">Дата рождения</div>
+          <input type="date" name="birthday" v-model="birthday" required>
+          <button class="registration" @click="signup">Продолжить регистрацию</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.main {
-  width: 960px;
-  margin: 0 auto;
-  padding: 0 15px;
-  height: 100vh;
-  display: flex;
-  //align-items: stretch;
+@import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
-  // // Нужен для того чтобы сделать размер правильным из за float
-  // &::after {
-  //   content: " ";
-  //   display: block;
-  //   height: 0;
-  //   clear: both;
-  // }
+.dinamic {
+  float: right;
+  width: 795px;
 }
 
-.option {
-  display: inline-block;
-  width: 300px;
-  background-color: blueviolet;
+$widthOption: 270px;
+$widthDinamicContent: 795 - $widthOption - 15;
+$marginLeftOption: 795 - $widthOption;
+
+.dinamic-content {
+  width: $widthDinamicContent;
+  float: left;
+}
+
+#options {
+  width: $widthOption;
+  margin: 57px 0 0 $marginLeftOption;
 
   .login {
-    margin-top: 100px;
+    margin-top: 57px;
+    padding: 10px 20px;
+
+    input[type="password"] {
+      margin-top: 10px;
+    }
+
+    .enter {
+      @extend %button;
+      margin-top: 10px;
+      padding: 7px 20px;
+    }
+
+    .error {
+      @extend %request-status-canceled;
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      border-radius: 3px;
+    }
   }
 
   .signup {
-    margin-top: 50px;
+    margin-top: 30px;
+
+    .top {
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .fast {
+      padding-top: 7px;
+      text-align: center;
+      color: #6b6b6b;
+    }
+
+    input {
+      margin-top: 10px;
+      font-family: "Roboto";
+    }
+
+    input[type="date"] {
+      margin-top: 3px;
+    }
+
+    .suggest {
+      margin-top: 10px;
+      font-weight: 500;
+      color: $clr-font-grey;
+    }
+
+    button.registration {
+      @extend %button-dark-green;
+      margin-top: 10px;
+      width: 100%;
+    }
   }
 
   .container {
-    height: 150px;
-    background-color: white;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 3px;
-  }
-}
+    @extend %box;
 
-.background {
-  flex: 1;
-  background-color: brown;
+    padding: 20px;
+
+    input {
+      padding: 7px 10px;
+      border-radius: 3px;
+      border: 1px solid $clr-tb-border;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
 }
 </style>

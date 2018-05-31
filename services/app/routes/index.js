@@ -7,17 +7,21 @@ const task = require('../api/task');
 const request = require('../api/request');
 
 module.exports = ({ app, io }) => {
+	// #region Пользователи
+
 	app.route('/api/v1/signup')
 		.post(user.signup);
 
 	app.route('/api/v1/login')
 		.post(user.login);
 
-	app.route('/api/v1/getUser/:userId')
+	app.route('/api/v1/user')
 		.get(verifyToken, user.get);
 
 	app.route('/api/v1/logout')
 		.get(user.logout);
+
+	// #endregion
 
 	app.route('/api/v1/getCategories')
 		.get(category.getCategories);

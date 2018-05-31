@@ -46,6 +46,17 @@
 		background-color: #dbefdb;
 	}
 }
+
+%button-dark-green {
+	@extend %button;
+	color: white;
+	font-weight: 500;
+	background-color: #5fb053;
+	
+  &:hover {
+		background-color: #68b35d;
+	}
+}
 // #endregion
 
 // #region СТАТУСЫ ЗАЯВОК

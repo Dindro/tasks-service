@@ -4,8 +4,12 @@ import io from "socket.io-client";
 export default {
   data() {
     return {
+      isShowAuth: false,
+
       email: "",
       password: "",
+      error: "",
+
       socket: {},
 
       isShowNotifyBox: false,
@@ -53,19 +57,32 @@ export default {
     });
   },
   methods: {
-    login() {
-      this.$store.dispatch("login", {
+    async login() {
+      const data = await this.$store.dispatch("login", {
         email: this.email,
         password: this.password
       });
+
+      if (data.success === false) {
+        this.error = data.message;
+      } else {
+        this.showAuth();
+      }
     },
 
     signup() {
-      this.$router.push({ path: "signup" });
+      this.$router.push({ name: "signupPage" });
     },
 
     logout() {
       this.$store.dispatch("logout");
+    },
+
+    showAuth() {
+      this.isShowAuth = !this.isShowAuth;
+      this.error = "";
+      this.email = "";
+      this.password = "";
     }
   }
 };
@@ -102,39 +119,50 @@ export default {
         <div class="logo-text">Tasks service</div>
       </div>
       <div class="nav-content">
-        <div class="nav-router" v-if="isLogged">
-          <router-link tag="div" :to="{name: 'userPage', params: { userId: getUserAuthId}}">
+        <div class="nav-router" v-if="isShowAuth === false">
+          <router-link :to="{name: 'userPage', params: { userId: getUserAuthId}}" v-if="isLogged">
             <i class="icon-home"></i>
             Моя страница
           </router-link>
-          <router-link tag="div" to="/tasks">
+          <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
+            <i class="icon-content_paste"></i>
+            Мои заявки
+          </router-link>
+          <router-link :to="{name: 'tasksPage'}">
             <i class="icon-content_paste"></i>
             Задачи
           </router-link>
-          <router-link tag="div" to="/requests">
-            <i class="icon-content_paste"></i>
-            Заявки
-          </router-link>
-          <router-link tag="div" to="/messages">
+          <router-link to="/messages">
             <i class="icon-markunread"></i>
             Сообщения
           </router-link>
-          <router-link tag="div" to="/chats">Чат</router-link>
-          <router-link tag="div" to="/signup">
+          <router-link to="/chats">Чат</router-link>
+          <router-link to="/signup">
             <i class="icon-check_circle"></i>
             Регистрация
           </router-link>
-          <router-link tag="div" to="/">Авторизация</router-link>
-          <div @click="logout">
+          <router-link to="/">Авторизация</router-link>
+          <div class="line"></div>
+          <div class="router-item" @click="logout" v-if="isLogged === true">
             <i class="icon-exit_to_app"></i>
             Выйти
           </div>
+          <div class="router-item" @click="showAuth" v-else>
+            <i class="icon-exit_to_app"></i>
+            Вход
+          </div>
         </div>
         <div class="auth" v-else>
+          <div class="error" v-if="error !== ''">
+            <strong>Ошибка:</strong> {{error}}
+          </div>
           <input type="text" name="email" id="email" placeholder="Email" v-model="email">
           <input type="password" name="password" id="password" placeholder="Пароль" v-model="password">
           <button class="login" @click="login">Войти</button>
           <button class="signup" @click="signup">Регистрация</button>
+          <div class="back">
+            <span @click="showAuth">Назад</span>
+          </div>
         </div>
       </div>
     </div>
@@ -217,8 +245,10 @@ export default {
       width: 100%;
 
       .nav-router {
-        div {
+        a,
+        div.router-item {
           cursor: pointer;
+          display: block;
           position: relative;
           padding: 8px 0 8px 35px;
           margin-left: -7px;
@@ -243,9 +273,22 @@ export default {
             color: $clr-icon-light;
           }
         }
+
+        .line {
+          border-top: 1px solid #dfe2e8;
+          margin: 7px 0 7px 27px;
+        }
       }
 
       .auth {
+        .error {
+          @extend %request-status-canceled;
+          margin-bottom: 10px;
+          padding: 7px 10px;
+          border-radius: 3px;
+          border: 1px solid #e6d5d5;
+        }
+
         input {
           border: 1px solid #e1e5eb;
           border-radius: 3px;
@@ -259,23 +302,31 @@ export default {
         }
 
         button {
+          @extend %button;
+
           width: 100%;
-          border: none;
           margin-top: 5px;
           padding: 7px 10px;
-          border-radius: 3px;
-          background-color: $clr-btn;
-          transition: all 0.5s ease;
-          color: white;
-          cursor: pointer;
-
-          &:hover {
-            background-color: $clr-btn-hover;
-          }
         }
 
         .login {
           margin-top: 10px;
+        }
+
+        .back {
+          padding-top: 10px;
+          text-align: center;
+
+          span {
+            color: $clr-font-darkgrey;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+
+            &:hover {
+              color: $clr-font-grey;
+            }
+          }
         }
       }
     }
