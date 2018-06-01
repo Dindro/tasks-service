@@ -122,6 +122,7 @@ const store = new Vuex.Store({
 			commit('userAuth', {});
 		},
 
+		// получаем пользователя
 		async getUser({ commit, state, dispatch }, { userId }) {
 			try {
 				const { user } = await User.get({ userId });

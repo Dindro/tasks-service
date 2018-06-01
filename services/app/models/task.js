@@ -1,4 +1,6 @@
-const db = require("../../config/db");
+const db = require('../../config/db');
+const Category = require('./category');
+
 let model = {};
 
 model.create = async (task) => {
@@ -57,8 +59,17 @@ model.getByUserId = async ({ userId, count }) => {
 model.getById = async ({ taskId }) => {
 	const query = `SELECT * FROM tasks WHERE id = ${taskId};`;
 	try {
-		const results = await db.getResult(query);
-		return results[0];
+		const result = await db.getResult(query);
+		let task = result[0];
+
+		if (!task) {
+			// получаем координаты
+			task.locations = await model.getLocations({ taskId: task.id });
+			const category = await Category.getById({ categoryId: task.categoryId });
+
+			// TODO: получить картинки
+		}
+		return task;
 	} catch (e) {
 		throw e;
 	}
@@ -108,10 +119,14 @@ model.addLocations = async ({ locationId, taskId }) => {
 	}
 };
 
-model.getCoordinates = async ({ taskId }) => {
+model.getLocations = async ({ taskId }) => {
 	const query = `
-		SELECT c.* FROM tasks_locations as t_l INNER JOIN locations as l 
-		WHERE t_l.locationId = l.id AND 
+		SELECT c.* FROM 
+		tasks_locations as t_l 
+		INNER JOIN 
+		locations as l 
+		WHERE 
+		t_l.locationId = l.id AND 
 		t_l.taskId = ${taskId} 
 		ORDER BY c.priority ASC;
 	;`;

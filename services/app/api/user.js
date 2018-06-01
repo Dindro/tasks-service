@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
 
-
 const User = require('../models/user.js');
 
 let api = {};

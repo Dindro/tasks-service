@@ -5,10 +5,10 @@ const user = require('../api/user');
 const category = require('../api/category');
 const task = require('../api/task');
 const request = require('../api/request');
+const image = require('../api/image');
 
 module.exports = ({ app, io }) => {
 	// #region Пользователи
-
 	app.route('/api/v1/signup')
 		.post(user.signup);
 
@@ -20,12 +20,12 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/logout')
 		.get(user.logout);
-
 	// #endregion
 
 	app.route('/api/v1/getCategories')
 		.get(category.getCategories);
 
+	// #region Пользователи
 	app.route('/api/v1/task')
 		.post(verifyToken, task.create)
 		.get(task.get);
@@ -35,9 +35,9 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/userTasks')
 		.get(verifyToken, task.getByUserId);
+	// #endregion
 
 	// #region ЗАЯВКИ
-
 	app.route('/api/v1/requestsByTaskId')
 		.get(verifyToken, request.get);
 
@@ -57,6 +57,8 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/makePerformer')
 		.post(verifyToken, (req, res) => request.makePerformer(req, res, io))
-
 	// #endregion
+
+	app.route('/api/v1/upload')
+		.post(image.upload);
 }

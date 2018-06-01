@@ -7,12 +7,13 @@ const Category = require('../models/category');
 let api = {};
 
 api.create = async (req, res) => {
+	const userId = req.userId;
+
 	// проверка на авторизиацию
-	if (!req.userId) {
+	if (!userId) {
 		return res.status(400).json({ success: 200, message: "Вы не авторизировались" });
 	}
 
-	const userId = req.userId;
 	const {
 		categoryId,
 		name,
@@ -97,13 +98,14 @@ api.get = async (req, res) => {
 	try {
 		const task = await Task.getById({ taskId });
 
-		// получаем адреса
-		const addressesPrm = Task.getCoordinates({ taskId: task.id });
-
 		// получаем заказчика
 		const userCustomerPrm = User.getById({ userId: task.userCustomerId });
 
-		// TODO: получить исполнителя
+		// получаем исполнителя
+		let userPerformerPrm;
+		if (task.userPerformerId !== null) {
+			userCustomerPrm = User.getById({ userId: task.userPerformerId });
+		}
 
 		// получаем количество новых заявок
 		const requestNotViewCountPrm = Request.getNotViewCount({ taskId: task.id });
@@ -117,7 +119,9 @@ api.get = async (req, res) => {
 		task.categoryName = category.name;
 		task.requestNotViewCount = await requestNotViewCountPrm;
 		task.userCustomer = await userCustomerPrm;
-		task.addresses = await addressesPrm;
+		if (!userCustomerPrm) {
+			task.userPerformer = await userPerformerPrm;
+		}
 
 		res.status(200).json({ task });
 	} catch (e) {
