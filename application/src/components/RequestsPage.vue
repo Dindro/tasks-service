@@ -50,7 +50,7 @@ export default {
       "getMyRequests",
       "getRequestsCount",
       "getByTaskId",
-      "getRequestsCountByTaskId"
+      "getRequestsCountByTaskId",
     ]),
 
     // вызывается каждый раз при изменения таба

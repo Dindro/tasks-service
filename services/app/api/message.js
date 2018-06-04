@@ -1,16 +1,47 @@
-var ModelDialogUser = require("@models/chat/dialog_user");
-var ModelChat = require("@models/chat/dialog");
-var ModelMessage = require("@models/chat/message");
-var ModelMessageDeleted = require("@models/chat/messagedeleted");
-var ModelSocket = require("@models/socket");
+const Chat = require('../models/chat');
+const Message = require('../models/message');
 
 let api = {};
 
+api.create = async (req, res) => {
+	const userId = req.userId;
+
+	// проверка на авторизиацию
+	if (!userId) {
+		return res.status(400).json({ success: false, message: 'Вы не авторизировались' });
+	}
+
+	let { text, chatId } = req.body;
+
+	try {
+		const chat = await Chat.getByIdAndUserId({ userId, chatId });
+
+		// проверка принадлежит ли пользователь чату
+		if (!chat) {
+			return res.status(400).json({ success: false, message: 'Нет доступа к чату' });
+		}
+
+		// добавляем сообщение в БД
+		const messageId = await Message.create({
+			userId,
+			chatId,
+			text
+		});
+
+		// TODO: отправить сообщение по сокету
+
+		res.status(200).json({ messageId });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+/* 
 api.Get = async (req, res) => {
-	/* if (req.session.authorized == false) {
-		res.status(401).json({ success: false, message: "Вы не авторизованы" });
+	if (req.session.authorized == false) {
+		res.status(401).json({ success: false, message: 'Вы не авторизованы' });
 		return;
-	} */
+	}
 
 	//const id_sender = req.session.id_user;
 	const id_sender = 1;
@@ -32,31 +63,6 @@ api.Get = async (req, res) => {
 	}
 };
 
-api.Post = async (req, res) => {
-	if (req.session.authorized == false) {
-		res.status(401).json({ success: false, message: "Вы не авторизованы" });
-		return;
-	}
-
-	const id_sender = req.session.id_user;
-	let { id_receiver, text } = req.body;
-
-	try {
-		let commonIdDialog = await ModelDialogUser.GetCommonIdDialog(id_user_sender, id_user_receiver);
-		if (commonIdDialog == undefined) {
-			const insertedIdDialog = await ModelDialog.Create();
-			const insertedIdUserSender = ModelDialogUser.Add(insertedIdDialog, id_user_sender);
-			const insertedIdUserReceiver = ModelDialogUser.Add(insertedIdDialog, id_user_receiver);
-			await Promise.all([insertedIdUserSender, insertedIdUserReceiver]);
-			commonIdDialog = insertedIdDialog;
-		}
-		const insertedIdMessage = await ModelMessage.Create(id_user_sender, id_dialog, msg);
-		res.status(200).json({ success: true, insertedIdMessage });
-	} catch (e) {
-		res.status(500).json({ e });
-	}
-};
-
 api.GetV2 = async function (req, res) {
 	const id_user_request = 2;
 	let {
@@ -69,7 +75,7 @@ api.GetV2 = async function (req, res) {
 	try {
 		// Получаем общий диалог
 		const commonIdChat = await ModelChat.GetCommonIdChat(id_user_request, id_user_interlocutor);
-		const messages = await(async () => {
+		const messages = await (async () => {
 			if (startTime)
 				return await ModelMessage.GetByTime(commonIdChat, id_sender, timeStart, count);
 			else
@@ -105,11 +111,11 @@ api.GetFromChat = function (req, res) {
 	} catch (e) {
 
 	}
-}
+} */
 
 module.exports = api;
 
-// Вычисления вложенности сообщения
+/* // Вычисления вложенности сообщения
 async function OperateInside(messages, isAgainChild = false) {
 	let messagesPromises = messages.map(GetInside(message, isAgainChild));
 
@@ -146,4 +152,4 @@ async function GetInside(message, isAgainChild = false) {
 		message.coordinates,
 		message.lot
 	] = await Promise.all[childMessages, images, coordinates, lot];
-}
+} */

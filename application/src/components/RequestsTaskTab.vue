@@ -36,7 +36,8 @@ export default {
       "getByTaskId",
       "getRequestsCountByTaskId",
       "cancelRequest",
-      "makePerformer"
+      "makePerformer",
+      "createChat"
     ]),
 
     ...mapMutations("request", ["selectAllRequests"]),
@@ -80,7 +81,7 @@ export default {
         </div>
       </div>
       <div class="requests-tab-items" v-else>
-        <button class="add-chat">Добавить в беседу</button>
+        <button @click="createChat()" class="add-chat">Добавить в беседу</button>
         <button class="cancel">Отклонить заявки</button>
       </div>
       <div class="tab-options">

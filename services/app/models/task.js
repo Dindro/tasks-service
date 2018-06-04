@@ -16,7 +16,7 @@ model.create = async (task) => {
 		INSERT INTO tasks SET 
 		userCustomerId = ${task.userId},
 		categoryId = ${task.categoryId},
-		title = '${task.title}',
+		name = '${task.name}',
 		description = '${task.description}',
 		priceFrom = ${task.priceFrom},
 		priceBefore = ${task.priceBefore},

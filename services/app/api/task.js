@@ -11,7 +11,7 @@ api.create = async (req, res) => {
 
 	// проверка на авторизиацию
 	if (!userId) {
-		return res.status(400).json({ success: 200, message: "Вы не авторизировались" });
+		return res.status(400).json({ success: false, message: "Вы не авторизировались" });
 	}
 
 	const {

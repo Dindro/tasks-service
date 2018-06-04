@@ -6,6 +6,8 @@ const category = require('../api/category');
 const task = require('../api/task');
 const request = require('../api/request');
 const image = require('../api/image');
+const message = require('../api/message');
+const chat = require('../api/chat');
 
 module.exports = ({ app, io }) => {
 	// #region Пользователи
@@ -61,4 +63,14 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/upload')
 		.post(image.upload);
+
+	// #region СООБЩЕНИЯ
+	app.route('/api/v1/message')
+		.post(verifyToken, message.create);
+	// #endregion
+
+	// #region ЧАТЫ
+	app.route('/api/v1/chat')
+		.post(verifyToken, chat.create);
+	// #endregion
 }

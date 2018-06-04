@@ -43,6 +43,7 @@ api.listeners = (io) => {
 			client.emit('hello', 'Привет от сервера');
 		});
 
+		// при отключении
 		client.on('disconnect', async () => {
 			Socket.delete({ clientId: client.id });
 		});

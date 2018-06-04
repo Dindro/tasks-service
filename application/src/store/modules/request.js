@@ -1,5 +1,6 @@
 import Request from '../../api/request';
 import Task from '../../api/task';
+import Chat from '../../api/chat';
 import Vue from 'vue';
 
 export default {
@@ -36,6 +37,13 @@ export default {
 					Vue.set(state.requests, index, { ...request, deleted: true });
 				}
 			});
+		},
+
+		setChatId(state, { taskId, chatId }) {
+			const task = state.tasks.find(x => x.id === taskId);
+			if (task) {
+				Vue.set(task, 'chatId', chatId);
+			}
 		}
 	},
 
@@ -139,5 +147,30 @@ export default {
 				console.log(e);
 			}
 		},
+
+		async createChat({ commit, state }) {
+			// получаем выделенные заявки
+			let requests = [];
+			for (const item of state.taskRequests) {
+				if (item.selected === true) {
+					requests.push(item.id);
+				}
+			}
+
+			const taskId = parseInt(state.selectedItem);
+
+			try {
+				const data = await Chat.create({
+					taskId,
+					requests
+				});
+				const { chatId } = chatId;
+
+				commit('setChatId', { taskId, chatId });
+
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	}
 }
