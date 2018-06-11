@@ -162,7 +162,7 @@ export default {
               :class="{ active: selectedItem == task.id }"
               :key="task.id"
             >
-              {{task.title}}
+              {{task.name}}
             </router-link>
           </template>
 				</div>

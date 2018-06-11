@@ -56,7 +56,7 @@ model.getFullById = async function ({ userId }) {
 	}
 };
 
-model.registration = async function (user) {
+model.registration = async (user) => {
 	const query = `
 		INSERT INTO users SET 
 		email = '${user.email}',
@@ -68,6 +68,21 @@ model.registration = async function (user) {
 	try {
 		const user = await db.getResult(query);
 		return user.insertId;
+	} catch (e) {
+		throw e;
+	}
+};
+
+model.updateViews = async ({ userId, views }) => {
+	const query = `
+		UPDATE users SET 
+		views = ${views} 
+		WHERE 
+		id = ${userId};
+	`;
+	try {
+		const result = await db.getResult(query);
+		return result;
 	} catch (e) {
 		throw e;
 	}

@@ -125,18 +125,21 @@ export default {
             Моя страница
           </router-link>
           <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
-            <i class="icon-content_paste"></i>
+            <i class="icon-markunread_mailbox"></i>
             Мои заявки
           </router-link>
           <router-link :to="{name: 'tasksPage'}">
-            <i class="icon-content_paste"></i>
+            <i class="icon-gavel"></i>
             Задачи
           </router-link>
           <router-link to="/messages">
             <i class="icon-markunread"></i>
             Сообщения
           </router-link>
-          <router-link to="/chats">Чат</router-link>
+          <router-link to="/chats">
+            <i class="icon-markunread"></i>
+            Чат
+          </router-link>
           <router-link to="/signup">
             <i class="icon-check_circle"></i>
             Регистрация

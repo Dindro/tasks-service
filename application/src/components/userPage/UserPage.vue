@@ -1,5 +1,8 @@
 <script>
-import RatingBox from "./RatingBox";
+import RatingBox from "../elements/RatingBox";
+import ReviewsList from "./ReviewsList";
+
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   props: ["userId"],
@@ -8,18 +11,18 @@ export default {
       lastYScrollPos: 0,
       upPos: 0,
       downPos: 0,
-      user: {},
+      //user: {},
       tasks: [],
       rating: 4.5
     };
   },
   components: {
-    RatingBox
+    RatingBox,
+    ReviewsList
   },
   computed: {
-    /* user() {
-      return this.$store.getters.userAuth;
-    } */
+    ...mapState("user", ["user"]),
+
     isMyPage() {
       const { id } = this.$store.getters.userAuth;
       return parseInt(this.userId) === id;
@@ -35,6 +38,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions("user", ["getUser", "updateViews"]),
+    ...mapMutations("user", ["common"]),
+
     scroll(e) {
       // условия - класс элемента не должен фиксироваться
       const boxID = "left-column";
@@ -111,11 +117,11 @@ export default {
       this.lastYScrollPos = YScrollPos;
     },
 
-    async getUser(userId) {
+    /* async getUser(userId) {
       // получаем с сервера о пользователе
       const user = await this.$store.dispatch("getUser", { userId });
       this.user = user;
-    },
+    }, */
 
     async getUserTasks() {
       const tasks = await this.$store.dispatch("getUserTasks", {
@@ -126,15 +132,14 @@ export default {
     }
   },
   created() {
+    this.common({ type: "userId", value: this.userId });
     this.getUser(this.userId);
     this.getUserTasks();
+    this.updateViews(this.userId);
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
     window.addEventListener("resize", this.scroll);
-
-    // получаем авторизированного пользователя
-    // this.$store.dispatch("getUserAuth");
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.scroll);
@@ -170,7 +175,10 @@ export default {
             <span class="tasks-count">4</span>
           </div>
           <div class="tasks-list">
-            <div class="task" v-for="task in tasks" :key="task.id">{{task.title}}</div>
+            <router-link class="task" v-for="task in tasks" :key="task.id" 
+              :to="{ name: 'taskPage', params: {taskId: task.id}}" >
+              {{task.name}}
+            </router-link>
           </div>
         </div>
       </div>
@@ -255,76 +263,21 @@ export default {
             </div>
             <div class="total">
               <div class="count">
-                10493
+                {{user.views}}
               </div>
               <div class="description">просмотров</div>
             </div>
           </div>
         </div>
-        <div class="rewiews mini-box">
-          <div class="reviews-tab">
-            <div class="reviews-tab-item">
-              <span class="tab-name">Все отзывы</span>
-              <span class="tab-count">35</span>
-            </div>
-            <div class="reviews-tab-item active">
-              <span class="tab-name">От исполнителей</span>
-              <span class="tab-count">35</span>
-            </div>
-            <div class="reviews-tab-item">
-              <span class="tab-name">От заказчиков</span>
-              <span class="tab-count">35</span>
-            </div>
-          </div>
-          <!-- <div class="line"></div> -->
-          <div class="reviews-list">
-            <div class="review" v-for="(review, key) in 10" :key="key">
-              <div class="border">
-                <div class="user">
-                  <div class="user-photo"></div>
-                  <div class="user-info-time">
-                    <div class="user-info">
-                      <div class="name-worker">
-                        <span class="name">Якимова Кристина</span>
-                        <span class="worker">Заказчик</span>
-                      </div>
-                      <div class="rating">Рейтинг:
-                        <span class="rating-count">4.6</span>
-                      </div>
-                      <div class="review-description">Отзывы:
-                        <span class="review-count">4</span>
-                      </div>
-                    </div>
-                    <div class="time">3 апреля</div>
-                  </div>
-                </div>
-                <div class="review-task">
-                  Отзыв задания "
-                  <span class="task-name">Нужен курьер для доставки чего чего то</span> "
-                </div>
-                <div class="review-text">
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут
-                  находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится
-                  отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв Тут находится отзыв
-                  Тут находится отзыв Тут находится отзыв Тут находится отзыв
-                </div>
-                <div class="review-rating">
-                  <div class="review-rating-item">Вежливость</div>
-                  <div class="review-rating-item">Пункутальность</div>
-                  <div class="review-rating-item">Адекватнось</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <reviews-list></reviews-list>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "../assets/colors.scss";
-@import "../assets/elements.scss";
+@import "../../assets/colors.scss";
+@import "../../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -464,6 +417,7 @@ export default {
       padding-top: 15px;
 
       .task {
+        display: block;
         padding-bottom: 7px;
         border-bottom: 1px solid $clr-border;
         margin-bottom: 7px;

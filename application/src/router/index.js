@@ -8,7 +8,7 @@ import TheHeader from '../components/TheHeader';
 // страницы
 import LoginPage from '../components/LoginPage';
 import SignupPage from '../components/SignupPage';
-import UserPage from '../components/UserPage';
+import UserPage from '../components/UserPage/UserPage';
 import TasksPage from '../components/TasksPage';
 import TaskPage from '../components/TaskPage';
 import TaskAddPage from '../components/TaskAddPage';

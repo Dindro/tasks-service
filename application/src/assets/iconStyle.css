@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('fonts/icomoon.ttf?j4ehjg') format('truetype'),
-    url('fonts/icomoon.woff?j4ehjg') format('woff'),
-    url('fonts/icomoon.svg?j4ehjg#icomoon') format('svg');
+    url('fonts/icomoon.ttf?2pl1jd') format('truetype'),
+    url('fonts/icomoon.woff?2pl1jd') format('woff'),
+    url('fonts/icomoon.svg?2pl1jd#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -23,6 +23,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-schedule:before {
+  content: "\e8b5";
+}
 .icon-add:before {
   content: "\e145";
 }
@@ -62,11 +65,20 @@
 .icon-favorite:before {
   content: "\e87d";
 }
+.icon-gavel:before {
+  content: "\e90e";
+}
 .icon-star:before {
   content: "\e838";
 }
 .icon-home:before {
   content: "\e88a";
+}
+.icon-room:before {
+  content: "\e8b4";
+}
+.icon-markunread_mailbox:before {
+  content: "\e89b";
 }
 .icon-reply:before {
   content: "\e15e";
@@ -85,4 +97,10 @@
 }
 .icon-star_half:before {
   content: "\e839";
+}
+.icon-watch_later:before {
+  content: "\e924";
+}
+.icon-work:before {
+  content: "\e8f9";
 }

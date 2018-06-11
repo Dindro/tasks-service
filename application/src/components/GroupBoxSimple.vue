@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ["options"],
+  props: ["options", "value", 'width', 'listWidth'],
   data() {
     return {
       selected: "",
@@ -13,6 +13,10 @@ export default {
       this.isOpen = true;
     },
     select(option) {
+      if (!option) {
+        return;
+      }
+
       this.selected = option.name;
       this.selectedOption = option;
       this.isOpen = false;
@@ -34,8 +38,12 @@ export default {
     }
   },
   mounted() {
+    if (this.value) {
+      this.select(this.options.find(x => x.id === this.value));
+    } else {
+      this.select(this.options[0]);
+    }
     window.addEventListener("mousedown", this.clickOther);
-    this.select(this.options[0]);
   },
   destroyed() {
     window.removeEventListener("mousedown", this.clickOther);
@@ -49,6 +57,7 @@ export default {
       class="select-el"
       :class="{open: isOpen}"
       @click="isOpen = !isOpen"
+      :style="{width: width}"
     >
       <input 
         type="text" 
@@ -66,6 +75,7 @@ export default {
     <div 
       class="list" 
       :class="{open: isOpen}"
+      :style="{width: listWidth}"
       ref="list">
       <div 
         class="item"
@@ -92,8 +102,8 @@ export default {
 .select-el {
   border-radius: 2px;
   border: 1px solid $clr-tb-border;
-  width: 200px;
   display: flex;
+  box-sizing: border-box;
   cursor: pointer;
 
   &.open {
@@ -132,7 +142,7 @@ button.open {
   border: 1px solid $clr-tb-border;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  width: 200px;
+  box-sizing: border-box;
   border-top: none;
   max-height: 200px;
   overflow-y: auto;

@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ["options", "placeholder"],
+  props: ["options", "placeholder", "width", "value", 'listWidth'],
   data() {
     return {
       selected: "",
@@ -8,7 +8,7 @@ export default {
 
       isOpen: false,
       findedOptions: [],
-      isFinded: false
+      isFinded: false,
     };
   },
   computed: {
@@ -25,6 +25,10 @@ export default {
       this.isOpen = true;
     },
     select(option) {
+      if (!option) {
+        return;
+      }
+
       this.selected = option.name;
 
       if (this.isFinded === true) {
@@ -83,6 +87,8 @@ export default {
     }
   },
   mounted() {
+    this.select(this.options.find(x => x.id === this.value));
+    this.listWidth = this.$refs.select.clientWidth;
     window.addEventListener("mousedown", this.clickOther);
   },
   destroyed() {
@@ -95,7 +101,9 @@ export default {
   <div ref="select" class="select">
     <div 
       class="select-el"
-      :class="{open: isOpen}">
+      :class="{open: isOpen}"
+      :style = "{ width: width}"
+      ref="select">
       <input 
         type="text" 
         class="find" 
@@ -114,6 +122,7 @@ export default {
     <div 
       class="list" 
       :class="{open: isOpen}"
+      :style = "{ width: listWidth}"
       ref="list">
       <div v-if="realOption.length === 0" class="not-find">
         Ничего не найдено
@@ -128,8 +137,7 @@ export default {
           first: option.parent ? false : true ,
           second: option.parent ? true : false,
           selected: option === selectedOption
-        }"
-        >
+        }">
         <span v-html="option.name"></span>
       </div>
     </div>
@@ -146,8 +154,8 @@ export default {
 .select-el {
   border-radius: 2px;
   border: 1px solid $clr-tb-border;
-  width: 250px;
   display: flex;
+  box-sizing: border-box;
 
   &.open {
     border-bottom-left-radius: 0;
@@ -180,9 +188,8 @@ button.open {
   border: 1px solid $clr-tb-border;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  width: 250px;
   border-top: none;
-  max-height: 250px;
+  box-sizing: border-box;
   overflow-y: auto;
   box-shadow: 0px 3px 11px 0px rgba(132, 132, 132, 0.19);
 

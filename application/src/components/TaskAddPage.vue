@@ -4,6 +4,7 @@ import GroupBoxSimple from "./GroupBoxSimple";
 import AddressBox from "./AddressBox";
 import CheckBox from "./CheckBox";
 
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -11,7 +12,7 @@ export default {
       selectedCategoryId: "",
       categoryPlaceholder: "Выберите категорию",
 
-      title: "",
+      name: "",
       priceFrom: "",
       priceBefore: "",
       description: "",
@@ -54,7 +55,10 @@ export default {
       dateEnd: "",
 
       phoneNumber: "",
-      isComment: true
+      isComment: true,
+
+      error: "",
+      isWait: false
     };
   },
   components: {
@@ -63,11 +67,20 @@ export default {
     AddressBox,
     CheckBox
   },
+  
   methods: {
-    publish() {
-      this.$store.dispatch("createTask", {
+    ...mapActions("task", ["createTask", "getCategories"]),
+
+    async publish() {
+      if (this.isWait) {
+        return;
+      }
+
+      this.error = "";
+      this.isWait = true;
+      const data = await this.createTask({
         categoryId: this.selectedCategoryId,
-        title: this.title,
+        name: this.name,
         description: this.description,
         priceFrom: this.priceFrom,
         priceBefore: this.priceBefore,
@@ -77,16 +90,23 @@ export default {
         phoneNumber: this.phoneNumber,
         isComment: this.isComment
       });
+
+      if (data.success === false) {
+        this.error = data.message;
+        this.isWait = false;
+      } else {
+        const { taskId } = data;
+        this.$router.push({ name: "taskPage", params: { taskId } });
+      }
     },
+
     async getCategory() {
-      this.categories = await this.$store.dispatch("getCategories");
+      this.categories = await this.getCategories();
     }
   },
   created() {
     this.getCategory();
-  },
-
-  mounted() {}
+  }
 };
 </script>
 
@@ -104,6 +124,8 @@ export default {
               <group-box 
                 :options="categories" 
                 v-model="selectedCategoryId"
+                width = '250px'
+                listWidth = '250px'
                 placeholder="Выберите категорию">
               </group-box>
             </div>
@@ -111,7 +133,7 @@ export default {
           <div class="option title">
             <div class="option-name">Название задачи</div>
             <div class="option-description">
-              <input type="text" id='title' v-model="title" placeholder="Опишите то, что вам нужно">
+              <input type="text" id='title' v-model="name" placeholder="Опишите то, что вам нужно">
             </div>
           </div>
           <div class="option price">
@@ -138,7 +160,11 @@ export default {
           <div class="option date">
             <div class="option-name">Дата и время</div>
             <div class="option-description">
-              <group-box-simple :options="dateOption" v-model="selectedDateId"></group-box-simple>
+              <group-box-simple 
+                :options="dateOption" 
+                v-model="selectedDateId"
+                width="200px"
+                listWidth="200px" ></group-box-simple>
             </div>
           </div>
           <div class="option-add date-period" v-if="selectedDateId!==3">
@@ -176,7 +202,15 @@ export default {
           </div>
         </div>
         <div class="buttons">
-          <button class="topublish" @click="publish">Опубликовать задание</button>
+          <button 
+            class="topublish"
+            :class="{ wait: isWait === true }" 
+            @click="publish">
+            Опубликовать задание
+          </button>
+          <div class="error" v-if="error !== ''">
+            <strong>Ошибка:</strong> {{error}}
+          </div>
         </div>
       </div>
     </div>
@@ -185,6 +219,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -196,10 +231,9 @@ export default {
   float: left;
 
   .tasks {
-    background-color: white;
+    @extend %box;
+    
     margin: 57px 0 15px 0;
-    border-radius: 2px;
-    border: 1px solid $clr-border;
 
     .tasks-tab {
       padding: 15px 20px;
@@ -317,10 +351,11 @@ export default {
 
     .buttons {
       padding: 15px 20px 20px 20px;
+      display: flex;
+      align-items: flex-start;
 
       .topublish {
         cursor: pointer;
-        margin: auto;
         background-color: $clr-btn;
         color: white;
         border: none;
@@ -331,6 +366,22 @@ export default {
         &:hover {
           background-color: $clr-btn-hover;
         }
+
+        &.wait {
+          background-color: #7e7e7e;
+
+          &:hover {
+            background-color: #7e7e7e;
+          }
+        }
+      }
+
+      .error {
+        @extend %request-status-canceled;
+        flex: 1;
+        margin-left: 10px;
+        border-radius: 3px;
+        padding: 8px 10px;
       }
     }
   }

@@ -8,9 +8,10 @@ const request = require('../api/request');
 const image = require('../api/image');
 const message = require('../api/message');
 const chat = require('../api/chat');
+const review = require('../api/review');
 
 module.exports = ({ app, io }) => {
-	// #region Пользователи
+	// #region ПОЛЬЗОВАТЕЛИ
 	app.route('/api/v1/signup')
 		.post(user.signup);
 
@@ -22,21 +23,27 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/logout')
 		.get(user.logout);
+
+	app.route('/api/v1/userViews')
+		.post(verifyToken, user.updateViews);
 	// #endregion
 
-	app.route('/api/v1/getCategories')
+	app.route('/api/v1/categories')
 		.get(category.getCategories);
 
-	// #region Пользователи
+	// #region ЗАДАЧИ
 	app.route('/api/v1/task')
 		.post(verifyToken, task.create)
 		.get(task.get);
 
 	app.route('/api/v1/tasks')
-		.get(task.getAll);
+		.get(verifyToken, task.getTasks);
 
 	app.route('/api/v1/userTasks')
 		.get(verifyToken, task.getByUserId);
+
+	app.route('/api/v1/tasksCount')
+		.get(verifyToken, task.getCountByUserId);
 	// #endregion
 
 	// #region ЗАЯВКИ
@@ -72,5 +79,10 @@ module.exports = ({ app, io }) => {
 	// #region ЧАТЫ
 	app.route('/api/v1/chat')
 		.post(verifyToken, chat.create);
+	// #endregion
+
+	// #region ОТЗЫВЫ
+	app.route('/api/v1/reviewsByUserId')
+		.get(review.getByUserId);
 	// #endregion
 }

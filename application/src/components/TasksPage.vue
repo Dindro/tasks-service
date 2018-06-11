@@ -1,17 +1,185 @@
 <script>
+import GroupBox from "./GroupBox";
+import GroupBoxSimple from "./GroupBoxSimple";
+
+import { mapActions, mapState } from "vuex";
+
 export default {
   data() {
     return {
-      tasks: []
+      tasks: [],
+      myTasksCount: " ",
+      searchText: "",
+      isSearch: false,
+
+      isWaitScrolling: false,
+      selectedTab: "all",
+
+      categories: [
+        {
+          id: 0,
+          name: "Все категории"
+        }
+      ],
+      selectedCategoryId: 0,
+
+      statusItems: [
+        { id: 0, name: "Все статусы" },
+        { id: 1, name: "Свободные" },
+        { id: 2, name: "Выполняются" },
+        { id: 3, name: "Закрытые" }
+      ],
+      selectedStatusId: 0,
+      priceFrom: "",
+      priceBefore: ""
     };
   },
+  watch: {
+    priceFrom() {
+      this.changeFilter();
+    },
+    priceBefore() {
+      this.changeFilter();
+    },
+    selectedStatusId() {
+      this.changeFilter();
+    },
+    selectedCategoryId() {
+      this.changeFilter();
+    }
+  },
+  computed: {
+    config() {
+      return {
+        filterPriceFrom: this.priceFrom,
+        filterPriceBefore: this.priceBefore,
+        filterStatusId: this.selectedStatusId,
+        filterCategoryId: this.selectedCategoryId
+      };
+    }
+  },
+
+  components: {
+    GroupBox,
+    GroupBoxSimple
+  },
   methods: {
-    async getTasks() {
-      this.tasks = await this.$store.dispatch("getTasks");
+    ...mapActions("task", ["getTasks", "getTasksCount", "getCategories"]),
+
+    async startGetTasks() {
+      this.tasks = await this.getTasks({});
+    },
+
+    // загрузка при скроллинге
+    async checkScroll(e) {
+      if (this.isWaitScrolling) {
+        return;
+      }
+
+      let bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight;
+
+      if (bottomOfWindow) {
+        this.isWaitScrolling = true;
+        const lastTask = this.tasks[this.tasks.length - 1];
+        if (!lastTask) {
+          this.isWaitScrolling = false;
+          return;
+        }
+
+        const tasks = await this.getTasks({
+          count: 20,
+          lastTaskId: lastTask.id,
+          search: this.searchText,
+          filterUser: this.selectedTab === "my" ? true : false,
+          ...this.config
+        });
+        this.tasks.push(...tasks);
+        this.isWaitScrolling = false;
+      }
+    },
+
+    async getCount() {
+      this.myTasksCount = await this.getTasksCount({});
+    },
+
+    async search() {
+      if (this.searchText === "") {
+        return;
+      }
+
+      this.isSearch = true;
+      const tasks = await this.getTasks({
+        search: this.searchText,
+        filterUser: this.selectedTab === "my",
+        ...this.config
+      });
+      this.tasks = tasks;
+    },
+
+    async selectTab(type) {
+      this.searchText = "";
+      this.isSearch = false;
+
+      if (type === "all") {
+        this.startGetTasks();
+      } else if (type === "my") {
+        const tasks = await this.getTasks({
+          count: 20,
+          filterUser: true
+        });
+        this.tasks = tasks;
+      }
+
+      this.selectedTab = type;
+    },
+
+    getRating(user) {
+      const rating = (user.rating1 + user.rating2 + user.rating3) / 3;
+      return rating.toFixed(1);
+    },
+
+    getTime(task) {
+      if (task.doFrom !== null && task.doBefore !== null) {
+        return `${new Date(task.doFrom).format("dd mmm")} - ${new Date(
+          task.doBefore
+        ).format("dd mmm")}`;
+      } else if (task.doFrom !== null) {
+        return `${new Date(task.doFrom).format("dd mmm")} - Без ограничений`;
+      } else if (task.doBefore !== null) {
+        return `до ${new Date(task.doBefore).format("dd mmm")}`;
+      } else {
+        return "Без ограничений";
+      }
+    },
+
+    async getCategory() {
+      const categories = await this.getCategories();
+      this.categories.push(...categories);
+    },
+
+    async changeFilter() {
+      const tasks = await this.getTasks({
+        search: this.searchText,
+        filterUser: this.selectedTab === "my",
+        ...this.config
+      });
+      this.tasks = tasks;
     }
   },
   created() {
-    this.getTasks();
+    this.startGetTasks();
+    this.getCount();
+    this.getCategory();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.checkScroll);
+    window.addEventListener("resize", this.checkScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.checkScroll);
+    window.removeEventListener("resize", this.checkScroll);
   }
 };
 </script>
@@ -22,12 +190,18 @@ export default {
       <div class="tasks">
         <div class="tasks-tab">
           <div class="tasks-tab-items">
-            <div class="tasks-tab-item">
+            <div 
+              class="tasks-tab-item" 
+              @click="selectTab('all')"
+              :class="{active: selectedTab === 'all'}">
               <span class="tab-name">Все задания</span>
             </div>
-            <div class="tasks-tab-item active" v-if="$store.getters.isLogged">
+            <div 
+              class="tasks-tab-item" 
+              :class="{active: selectedTab === 'my'}" 
+              @click="selectTab('my')" v-if="$store.getters.isLogged">
               <span class="tab-name">Мои задания</span>
-              <span class="tab-count">35</span>
+              <span class="tab-count">{{myTasksCount}}</span>
             </div>
           </div>
           <div class="tasks-tab-buttons">
@@ -41,41 +215,61 @@ export default {
         </div>
         <div class="tasks-options">
           <div class="search">
-            <input type="text" id="search" placeholder="Поиск по заданиям">
-            <button class="tofind">
+            <input type="text" id="search" v-model="searchText" placeholder="Поиск по заданиям">
+            <button class="tofind" @click="search">
               <i class="icon-search"></i>
             </button>
           </div>
         </div>
         <div class="tasks-list">
-          <div class="task" v-for="(task, i) in tasks" :key="i">
+          <div v-if="tasks.lenght === 0">Ничего не найдено</div>
+          <div class="task" v-for="task in tasks" :key="task.id">
             <div class="task-name-price">
               <router-link 
-                tag="div"
                 class="task-name"
                 :to="{name: 'taskPage', params: { taskId: task.id}}">
-                {{task.title}}
+                {{task.name}}
               </router-link>
-              <div class="price">{{task.priceFrom}} руб</div>
+              <div class="price">{{task.priceFrom}} - {{task.priceBefore}} руб</div>
             </div>
             <div class="user-task-info">
               <div class="user">
-                <div class="photo"></div>
+                <div 
+                  class="photo"
+                  :style="{
+                    background: 'url(https://image.flaticon.com/icons/png/128/145/145843.png)',
+                    'background-size': 'cover'
+                  }"></div>
                 <div class="user-info">
                   <router-link 
-                    tag="div"
                     class="user-name" 
                     :to="{name: 'userPage', params: { userId: task.user.id}}"
                   >
                     {{task.user.surname}} {{task.user.name}}
                   </router-link>
-                  <div class="rating">Средний рейтинг: 4.6</div>
-                  <div class="reviews">Отзывы: 35</div>
+                  <div class="rating">
+                    Средний рейтинг: {{getRating(task.user)}}
+                  </div>
+                  <div class="reviews">Отзывы: {{task.user.reviewsCount}}</div>
                 </div>
               </div>
               <div class="task-info">
-                <div class="time">до 28 июня</div>
-                <div class="address">улица Тукташа 5, Чебоксары</div>
+                <div class="time">
+                  <i class="icon-schedule"></i>
+                  {{getTime(task)}}
+                </div>
+                <template v-if="task.locations.length !== 0">
+                  <div class="address">
+                    <i class="icon-room"></i>
+                    {{task.locations[0].name}}
+                  </div>
+                  <div 
+                    class="address" 
+                    v-if="task.locations.length > 1">
+                    <i class="icon-room"></i>
+                    {{task.locations[task.locations.length - 1].name}}
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -99,16 +293,29 @@ export default {
           Параметры поиска
         </div>
         <div class="option-list">
-          <div class="option" v-for="(option, key) in 10" :key="key">
-            <div class="option-name">Сортировка</div>
-            <select>
-              <option>
-                <div>Hello</div>
-              </option>
-              <option>2 Что то то</option>
-              <option>3 Что то то</option>
-              <option>4 Что то то</option>
-            </select>
+          <div class="option category">
+            <div class="option-name">Категория</div>
+            <group-box 
+              :options = 'categories' 
+              v-model="selectedCategoryId" 
+              listWidth = '198px'
+              width="100%"></group-box>
+          </div>
+          <div class="option status">
+            <div class="option-name">Статус</div>
+            <group-box-simple
+              :options ='statusItems'
+              v-model="selectedStatusId"
+              width='100%'
+              listWidth='198px'></group-box-simple>
+          </div>
+          <div class="option prices">
+            <div class="option-name">Диапазон цен</div>
+            <div class="value">
+              <input type="text" v-model.lazy.number="priceFrom" placeholder="Мин">
+              <span>-</span>
+              <input type="text" v-model.lazy.number="priceBefore" placeholder="Макс">
+            </div>
           </div>
         </div>
       </div>
@@ -118,6 +325,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -129,10 +337,9 @@ export default {
   float: left;
 
   .tasks {
-    background-color: white;
+    @extend %box;
+    
     margin: 57px 0 15px 0;
-    border-radius: 2px;
-    border: 1px solid $clr-border;
 
     .tasks-tab {
       display: flex;
@@ -306,9 +513,20 @@ export default {
           }
 
           .task-info {
+            flex: 1;
+            margin-left: 10px;
+            text-align: end;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+
+            .time,
+            .address {
+              i {
+                position: relative;
+                top: 1px;
+              }
+            }
           }
         }
       }
@@ -321,9 +539,8 @@ export default {
   margin: 57px 0 15px 565px;
 
   .map-box {
-    border: 1px solid $clr-border;
-    border-radius: 2px;
-    background-color: white;
+    @extend %box;
+    
     padding: 15px;
 
     .map {
@@ -349,10 +566,9 @@ export default {
   }
 
   .find-options {
+    @extend %box;
+    
     margin-top: 15px;
-    border: 1px solid $clr-border;
-    border-radius: 2px;
-    background-color: white;
 
     .options-top {
       border-bottom: 1px solid $clr-border;
@@ -377,11 +593,37 @@ export default {
         .option-name {
           font-weight: 500;
           color: $clr-font-darkgrey;
+          margin-bottom: 10px;
         }
 
         select {
           width: 100%;
           margin-top: 10px;
+        }
+
+        &.category {
+          .select > div {
+            width: 100%;
+          }
+        }
+
+        &.prices {
+          .value {
+            display: flex;
+
+            input {
+              flex: 1;
+              min-width: 0;
+              border-radius: 2px;
+              border: 1px solid $clr-tb-border;
+              padding: 7px 14px;
+            }
+
+            span {
+              margin: 0 5px;
+              padding-top: 7px;
+            }
+          }
         }
       }
     }

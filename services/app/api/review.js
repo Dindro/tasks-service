@@ -126,4 +126,13 @@ api.get = async (req, res) => {
 	}
 };
 
+api.getByUserId = (req, res) => {
+	const {
+		userId,
+		reviewLastId,
+		count,
+		type
+	} = req.query;
+};
+
 module.exports = api;

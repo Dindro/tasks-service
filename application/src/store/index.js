@@ -7,10 +7,10 @@ import router from '../router';
 // модули
 import task from './modules/task';
 import request from './modules/request';
+import user from './modules/user';
 
 // api
 import User from '../api/user';
-import { stat } from 'fs';
 
 const taskAPI = `http://${window.location.hostname}:3000/api/v1`;
 const HTTP = axios.create({
@@ -25,7 +25,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	modules: {
 		task,
-		request
+		request,
+		user
 	},
 	state: {
 		userAuth: {},
@@ -148,15 +149,6 @@ const store = new Vuex.Store({
 			try {
 				const { data } = await HTTP.post('task', task);
 				console.log("taskId", data.taskId);
-			} catch (e) {
-
-			}
-		},
-
-		async getTasks({ commit }) {
-			try {
-				const { data } = await HTTP.get('tasks');
-				return data.tasks;
 			} catch (e) {
 
 			}

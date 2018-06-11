@@ -119,7 +119,38 @@ api.get = async (req, res) => {
 
 api.logout = async (req, res) => {
 	res.status(200).send({ success: false, token: null });
-}
+};
+
+api.updateViews = async (req, res) => {
+	let { userId } = req.body;
+	const authUserId = req.userId;
+
+	try {
+		if (!userId) {
+			return res.status(400).json({ success: false, message: 'userId is not defined' })
+		}
+
+		userId = parseInt(userId);
+
+		if (userId === authUserId) {
+			return res.status(200);
+		}
+
+		const user = await User.getById({ userId });
+		if (!user) {
+			return res.status(400).json({ success: false, message: 'user is not defined' })
+		}
+
+		let views = parseInt(user.views);
+		views += 1;
+		await User.updateViews({ userId, views });
+
+		res.status(200).json({ success: true });
+	}
+	catch (e) {
+		console.log(e);
+	}
+};
 
 module.exports = api;
 

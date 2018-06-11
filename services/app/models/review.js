@@ -31,7 +31,7 @@ model.get = async ({ userId, count, reviewLastId, type }) => {
 				return `userCustomerId = ${userId}`;
 				break;
 			default:
-				return `userExecutorId = ${userId} OR userPerformerId = ${userId}`;
+				return `userCustomerId = ${userId} OR userPerformerId = ${userId}`;
 				break;
 		}
 	};
@@ -57,6 +57,27 @@ model.get = async ({ userId, count, reviewLastId, type }) => {
 	} catch (e) {
 		throw e;
 	}
-}
+};
+
+model.getCount = async ({ userId }) => {
+	const query = `
+		SELECT COUNT(*) AS count FROM
+		(
+			SELECT id FROM tasks 
+			WHERE 
+			userCustomerId = ${userId} OR userPerformerId = ${userId}
+		) AS t
+		INNER JOIN 
+		reviews 
+		ON t.id = reviews.taskId
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result[0].count;
+	} catch (e) {
+		throw e;
+	}
+};
 
 module.exports = model;
