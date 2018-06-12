@@ -11,8 +11,6 @@ export default {
       lastYScrollPos: 0,
       upPos: 0,
       downPos: 0,
-      //user: {},
-      tasks: [],
       rating: 4.5
     };
   },
@@ -21,7 +19,19 @@ export default {
     ReviewsList
   },
   computed: {
-    ...mapState("user", ["user"]),
+    ...mapState("user", [
+      "user",
+      "favorites",
+      "favoritesCount",
+      "tasksCount",
+      "tasks",
+      "statics",
+    ]),
+
+    rating() {
+      const rating = (user.rating1 + user.rating2 + user.rating3) / 3;
+      return rating.toFixed(1);
+    },
 
     isMyPage() {
       const { id } = this.$store.getters.userAuth;
@@ -38,7 +48,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions("user", ["getUser", "updateViews"]),
+    ...mapActions("user", [
+      "getUser",
+      "updateViews",
+      "addToFavotites",
+      "getFavorites",
+      "getFavoritesCount",
+      "getTasksCount",
+      "getUserTasks",
+      "getUserStatic",
+      "getReviewsStatic"
+    ]),
     ...mapMutations("user", ["common"]),
 
     scroll(e) {
@@ -115,20 +135,6 @@ export default {
         box.style.marginTop = "";
       }
       this.lastYScrollPos = YScrollPos;
-    },
-
-    /* async getUser(userId) {
-      // получаем с сервера о пользователе
-      const user = await this.$store.dispatch("getUser", { userId });
-      this.user = user;
-    }, */
-
-    async getUserTasks() {
-      const tasks = await this.$store.dispatch("getUserTasks", {
-        userId: this.userId,
-        count: 10
-      });
-      this.tasks = tasks;
     }
   },
   created() {
@@ -136,6 +142,11 @@ export default {
     this.getUser(this.userId);
     this.getUserTasks();
     this.updateViews(this.userId);
+    this.getFavorites();
+    this.getFavoritesCount();
+    this.getTasksCount();
+    this.getUserStatic();
+    this.getReviewsStatic();
   },
   mounted() {
     window.addEventListener("scroll", this.scroll);
@@ -153,26 +164,54 @@ export default {
     <div class="main-user">
       <div id="left-column">
         <div class="user-photo mini-box">
-          <div class="photo"></div>
+          <div 
+            class="photo"
+            :style="{
+              'background-image': `url(${user.image})`,
+              'background-size':'cover'
+            }">
+          </div>
           <button class="send-message" v-if="!isMyPage">Отправить сообщение</button>
           <button class="edit-profile" v-else>Редактировать профиль</button>
+          <button 
+            class="add-favorite" 
+            @click="addToFavotites" 
+            v-if="!isMyPage && !user.isFavorite">
+            Добавить в избранные
+          </button>
+          <button 
+            class="delete-favorite" 
+            @click="addToFavotites" 
+            v-if="!isMyPage && user.isFavorite">
+            Удалить из избранных
+          </button>
         </div>
-        <div class="mini-box friends">
+        <div class="mini-box friends" v-if="favoritesCount !== 0">
           <div class="friends-top">
             Избранные
-            <span class="friends-count">34</span>
+            <span class="friends-count">{{favoritesCount}}</span>
           </div>
           <div class="friends-list">
-            <div class="friend" v-for="(friend, key) in 6" :key="key">
-              <div class="friend-photo"></div>
-              <span class="friend-name">Александр</span>
+            <div class="friend" v-for="favorite in favorites" :key="favorite.id">
+              <div 
+                class="friend-photo"
+                :style="{
+                  'background-image': `url(${favorite.userAdding.image})`,
+                  'background-size':'cover'
+                }">
+              </div>
+              <router-link 
+                class="friend-name"
+                :to="{name:'userPage', params: {userId: favorite.userAdding.id}}">
+                {{favorite.userAdding.name}}
+              </router-link>
             </div>
           </div>
         </div>
-        <div class="mini-box tasks">
+        <div class="mini-box tasks" v-if="tasksCount !== 0">
          <div class="tasks-top">
-            Открытые задачи
-            <span class="tasks-count">4</span>
+            Задачи
+            <span class="tasks-count">{{tasksCount}}</span>
           </div>
           <div class="tasks-list">
             <router-link class="task" v-for="task in tasks" :key="task.id" 
@@ -187,8 +226,8 @@ export default {
           <div class="name-status">
             <span class="name">{{user.name}} {{user.surname}}</span>
             <span class="status">
-              <template v-if="user.status">Online</template>
-              <template v-else>Offline</template>
+              <!-- <template v-if="user.status">Online</template>
+              <template v-else>Offline</template> -->
             </span>
           </div>
           <div class="line after-name-status"></div>
@@ -197,9 +236,9 @@ export default {
               <div class="properties">Возраст:</div>
               <div class="description">{{age}}</div>
             </div>
-            <div class="profile-info-row" v-if="user.city">
+            <div class="profile-info-row" v-if="user.address">
               <div class="properties">Город:</div>
-              <div class="description">{{user.city}}</div>
+              <div class="description">{{user.address}}</div>
             </div>
             <div class="profile-info-row" v-if="user.about">
               <div class="properties">О себе:</div>
@@ -215,23 +254,24 @@ export default {
             </div>
             <div class="profile-info-row">
               <div class="properties">Средний рейтинг:</div>
-              <div class="description">{{user.rating}}</div>
+              <div class="description">{{rating}}</div>
             </div>
-            <div class="profile-info-row">
-              <div class="properties">Рейтинг:</div>
+            <div class="profile-info-row rating">
+              <div class="properties">Вежливость:</div>
               <div class="description">
-                <div class="rating">
-                  Вежливость
-                  <rating-box class="rating-item" :ratingCount="user.rating1"></rating-box>
-                </div>
-                <div class="rating">
-                  Пункутальность
-                  <rating-box class="rating-item" :ratingCount="user.rating2"></rating-box>
-                </div>
-                <div class="rating">
-                  Адекватнось
-                  <rating-box class="rating-item" :ratingCount="user.rating3"></rating-box>
-                </div>
+                <rating-box class="rating-item" :ratingCount="user.rating1"></rating-box>
+              </div>
+            </div>
+            <div class="profile-info-row rating">
+              <div class="properties">Пункутальность:</div>
+              <div class="description">
+                <rating-box class="rating-item" :ratingCount="user.rating2"></rating-box>
+              </div>
+            </div>
+            <div class="profile-info-row rating">
+              <div class="properties">Адекватнось:</div>
+              <div class="description">
+                <rating-box class="rating-item" :ratingCount="user.rating3"></rating-box>
               </div>
             </div>
           </div>
@@ -239,25 +279,25 @@ export default {
           <div class="totals">
             <div class="total">
               <div class="count">
-                34
+                {{statics.favoritesCount}}
               </div>
               <div class="description">избранных</div>
             </div>
             <div class="total">
               <div class="count">
-                35
+                {{statics.reviewsCount}}
               </div>
               <div class="description">отзывов</div>
             </div>
             <div class="total">
               <div class="count">
-                56
+                {{statics.tasksSuccessCount}}
               </div>
               <div class="description">выполненных заданий</div>
             </div>
             <div class="total">
               <div class="count">
-                4
+                {{statics.tasksCreateCount}}
               </div>
               <div class="description">созданных заданий</div>
             </div>
@@ -343,6 +383,21 @@ export default {
         &:hover {
           background-color: $clr-btn-hover-light;
         }
+      }
+
+      &.add-favorite {
+        margin-top: 10px;
+        background-color: $clr-btn-light;
+        color: $clr-btn-font-light;
+
+        &:hover {
+          background-color: $clr-btn-hover-light;
+        }
+      }
+
+      &.delete-favorite {
+        margin-top: 10px;
+        @extend %button-red;
       }
     }
   }
@@ -482,12 +537,17 @@ export default {
           // перенос слов
           word-wrap: break-word;
           width: 343px;
+        }
 
-          .rating-item {
-            display: inline-block;
-            margin-left: 10px;
+        &.rating {
+          .description {
             position: relative;
-            top: 4px;
+
+            .rating-item {
+              display: inline-block;
+              position: absolute;
+              top: -3px;
+            }
           }
         }
       }

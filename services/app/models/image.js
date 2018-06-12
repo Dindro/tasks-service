@@ -1,16 +1,18 @@
-var mongoose = require('../libs/mongoose');
-var Schema = mongoose.Schema;
+const db = require("../../config/db");
+let model = {};
 
-var schema = new Schema({
-    name: {
-        type: String,
-    },
-    way: {
-        type: String,
-    },
-    date: {
-        type: String,
-    }
-});
+model.getById = async ({ imageId }) => {
+	const query = `
+		SELECT * FROM images WHERE id = ${imageId}
+	;`;
 
-module.exports.TempImage = mongoose.model('Temp', schema);
+	try {
+		const result = await db.getResult(query);
+		return result[0];
+	}
+	catch (e) {
+		throw e;
+	}
+};
+
+module.exports = model;

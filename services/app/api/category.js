@@ -20,6 +20,7 @@ api.getCategories = async (req, res) => {
       categories.push(parent);
       for (const children of parent.childrens) {
         categories.push(children);
+        delete parent.childrens;
       }
     }
 

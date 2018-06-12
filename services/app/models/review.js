@@ -20,7 +20,7 @@ model.create = async (review) => {
 	}
 };
 
-model.get = async ({ userId, count, reviewLastId, type }) => {
+model.getReviews = async ({ userId, type }) => {
 	// получить условия
 	const getType = () => {
 		switch (type) {
@@ -37,7 +37,7 @@ model.get = async ({ userId, count, reviewLastId, type }) => {
 	};
 
 	const query = `
-		SELECT reviews FROM
+		SELECT reviews.* FROM 
 		(
 			SELECT id FROM tasks 
 			WHERE 
@@ -46,9 +46,8 @@ model.get = async ({ userId, count, reviewLastId, type }) => {
 		INNER JOIN 
 		reviews 
 		ON t.id = reviews.taskId 
-		WHERE 
-		reviews.id < ${reviewLastId}
-		ORDER BY reviews.created DESC LIMIT ${count}
+		WHERE reviews.userId != ${userId} 
+		ORDER BY reviews.created DESC
 	;`;
 
 	try {
@@ -59,17 +58,33 @@ model.get = async ({ userId, count, reviewLastId, type }) => {
 	}
 };
 
-model.getCount = async ({ userId }) => {
+model.getCount = async ({ userId, type }) => {
+	// получить условия
+	const getType = () => {
+		switch (type) {
+			case 'fromCustomer':
+				return `userPerformerId = ${userId}`;
+				break;
+			case 'fromPerformer':
+				return `userCustomerId = ${userId}`;
+				break;
+			default:
+				return `userCustomerId = ${userId} OR userPerformerId = ${userId}`;
+				break;
+		}
+	};
+
 	const query = `
 		SELECT COUNT(*) AS count FROM
 		(
 			SELECT id FROM tasks 
 			WHERE 
-			userCustomerId = ${userId} OR userPerformerId = ${userId}
+			${getType()}
 		) AS t
 		INNER JOIN 
 		reviews 
-		ON t.id = reviews.taskId
+		ON t.id = reviews.taskId 
+		WHERE reviews.userId != ${userId}
 	;`;
 
 	try {

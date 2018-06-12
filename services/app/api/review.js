@@ -126,13 +126,59 @@ api.get = async (req, res) => {
 	}
 };
 
-api.getByUserId = (req, res) => {
+api.getReviews = async (req, res) => {
 	const {
 		userId,
-		reviewLastId,
-		count,
 		type
 	} = req.query;
+
+	try {
+		const reviews = await Review.getReviews({ userId, type });
+
+		const reviewsPrms = reviews.map(async (review) => {
+			const userPrm = User.getById({ userId: review.userId });
+			const taskPrm = Task.getById({ taskId: review.taskId });
+			const reviewsCountPrm = Review.getCount({ userId: review.userId });
+			review.user = await userPrm;
+			review.task = await taskPrm;
+			review.user.reviewsCount = await reviewsCountPrm;
+		});
+
+		for (const item of reviewsPrms) {
+			await item;
+		}
+
+		res.status(200).json({ success: true, reviews });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+api.getReviewsStatic = async (req, res) => {
+	const {
+		userId
+	} = req.query;
+
+	try {
+		const allPrm = Review.getCount({ userId });
+		const fromPerformerPrm = Review.getCount({ userId, type: 'fromPerformer' });
+		const fromCustomerPrm = Review.getCount({ userId, type: 'fromCustomer' });
+
+		const all = await allPrm;
+		const fromPerformer = await fromPerformerPrm;
+		const fromCustomer = await fromCustomerPrm;
+
+
+		res.status(200).json({
+			success: true, reviewsStatic: {
+				all,
+				fromPerformer,
+				fromCustomer
+			}
+		});
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 module.exports = api;

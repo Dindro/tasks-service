@@ -67,7 +67,9 @@ export default {
     ...mapActions("task", ["getTasks", "getTasksCount", "getCategories"]),
 
     async startGetTasks() {
-      this.tasks = await this.getTasks({});
+      this.tasks = await this.getTasks({
+        ...this.config
+      });
     },
 
     // загрузка при скроллинге
@@ -127,7 +129,8 @@ export default {
       } else if (type === "my") {
         const tasks = await this.getTasks({
           count: 20,
-          filterUser: true
+          filterUser: true,
+          ...this.config
         });
         this.tasks = tasks;
       }
@@ -237,7 +240,7 @@ export default {
                 <div 
                   class="photo"
                   :style="{
-                    background: 'url(https://image.flaticon.com/icons/png/128/145/145843.png)',
+                    'background-image': `url(${task.user.image})`,
                     'background-size': 'cover'
                   }"></div>
                 <div class="user-info">
@@ -277,7 +280,7 @@ export default {
       </div>
     </div>
     <div id="options">
-      <div class="map-box">
+      <!-- <div class="map-box">
         <div class="map">
           <yandex-map
             style="width: 100%; height: 100%"
@@ -286,7 +289,7 @@ export default {
           </yandex-map>
         </div>
         <button class="map-show">Показать полностью</button>
-      </div>
+      </div> -->
 
       <div class="find-options">
         <div class="options-top">
@@ -298,7 +301,7 @@ export default {
             <group-box 
               :options = 'categories' 
               v-model="selectedCategoryId" 
-              listWidth = '198px'
+              listWidth = '200px'
               width="100%"></group-box>
           </div>
           <div class="option status">
@@ -307,7 +310,7 @@ export default {
               :options ='statusItems'
               v-model="selectedStatusId"
               width='100%'
-              listWidth='198px'></group-box-simple>
+              listWidth='200px'></group-box-simple>
           </div>
           <div class="option prices">
             <div class="option-name">Диапазон цен</div>
@@ -338,7 +341,7 @@ export default {
 
   .tasks {
     @extend %box;
-    
+
     margin: 57px 0 15px 0;
 
     .tasks-tab {
@@ -540,7 +543,7 @@ export default {
 
   .map-box {
     @extend %box;
-    
+
     padding: 15px;
 
     .map {
@@ -567,7 +570,7 @@ export default {
 
   .find-options {
     @extend %box;
-    
+
     margin-top: 15px;
 
     .options-top {

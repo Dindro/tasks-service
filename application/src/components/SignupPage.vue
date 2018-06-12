@@ -56,7 +56,7 @@ export default {
         <input type="text" name="surname" v-model="userSurname" placeholder="Ваша фамилия">
         <div class="suggest">Дата рождения</div>
         <input type="date" name="surname" v-model="userBirthday">
-			  <button @click="signup">Регистрация</button>
+			  <button @click="signup">Зарегистрироваться</button>
       </div>
     </div>
   </div>

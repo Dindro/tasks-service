@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config');
 
 const User = require('../models/user.js');
+const Favorite = require('../models/favorite');
+const Review = require('../models/review');
+const Task = require('../models/task');
 
 let api = {};
 
@@ -104,6 +107,14 @@ api.get = async (req, res) => {
 		}
 		else {
 			user = await User.getById({ userId });
+			if (user) {
+				const favorite = await Favorite.getByUsers({
+					userAddedId: userAuthId,
+					userAddingId: userId
+				});
+
+				user.isFavorite = favorite !== undefined;
+			}
 		}
 
 		if (!user) {
@@ -117,10 +128,40 @@ api.get = async (req, res) => {
 	}
 };
 
+// получаем статистику пользователя
+api.getStatic = async (req, res) => {
+	let { userId } = req.query;
+
+	try {
+		const favoritesCountPrm = Favorite.getCount({ userAddedId: userId });
+		const reviewsCountPrm = Review.getCount({ userId });
+		const tasksSuccessCountPrm = Task.getCountByUserId({ userId, type: 'success' });
+		const tasksCreateCountPrm = Task.getCountByUserId({ userId, type: 'create' });
+
+		const favoritesCount = await favoritesCountPrm;
+		const reviewsCount = await reviewsCountPrm;
+		const tasksSuccessCount = await tasksSuccessCountPrm;
+		const tasksCreateCount = await tasksCreateCountPrm;
+
+		res.json({
+			success: true, statics: {
+				favoritesCount,
+				reviewsCount,
+				tasksSuccessCount,
+				tasksCreateCount
+			}
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+
 api.logout = async (req, res) => {
 	res.status(200).send({ success: false, token: null });
 };
 
+// обновление просмотров
 api.updateViews = async (req, res) => {
 	let { userId } = req.body;
 	const authUserId = req.userId;

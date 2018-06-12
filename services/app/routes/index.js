@@ -9,6 +9,7 @@ const image = require('../api/image');
 const message = require('../api/message');
 const chat = require('../api/chat');
 const review = require('../api/review');
+const favorite = require('../api/favorite');
 
 module.exports = ({ app, io }) => {
 	// #region ПОЛЬЗОВАТЕЛИ
@@ -26,6 +27,9 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/userViews')
 		.post(verifyToken, user.updateViews);
+
+	app.route('/api/v1/userStatic')
+		.get(verifyToken, user.getStatic);
 	// #endregion
 
 	app.route('/api/v1/categories')
@@ -82,7 +86,21 @@ module.exports = ({ app, io }) => {
 	// #endregion
 
 	// #region ОТЗЫВЫ
-	app.route('/api/v1/reviewsByUserId')
-		.get(review.getByUserId);
+	app.route('/api/v1/reviews')
+		.get(review.getReviews);
+
+	app.route('/api/v1/reviewsStatic')
+		.get(review.getReviewsStatic);
+	// #endregion
+
+	// #region ИЗБРАННЫЕ
+	app.route('/api/v1/favorite')
+		.post(verifyToken, favorite.add);
+
+	app.route('/api/v1/favorites')
+		.get(verifyToken, favorite.getFavorites);
+
+	app.route('/api/v1/favoritesCount')
+		.get(verifyToken, favorite.getFavoritesCount);
 	// #endregion
 }

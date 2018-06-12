@@ -1,4 +1,5 @@
-const db = require("../../config/db");
+const db = require("../../config/db")
+const Image = require('./image');
 let model = {};
 
 model.getByEmail = async ({ email }) => {
@@ -17,6 +18,11 @@ model.getById = async function ({ userId }) {
 		const result = await db.getResult(query);
 		let user = result[0];
 		if (user) {
+			const image = await Image.getById({ imageId: user.imageId });
+			if (image) {
+				user.image = image.path;
+			}
+
 			delete user.email;
 			delete user.hashedPassword;
 			delete user.salt;
@@ -37,6 +43,11 @@ model.getAuthUserById = async function ({ userId }) {
 		const result = await db.getResult(query);
 		let user = result[0];
 		if (user) {
+			const image = await Image.getById({ imageId: user.imageId });
+			if (image) {
+				user.image = image.path;
+			}
+
 			delete user.hashedPassword;
 			delete user.salt;
 		}
@@ -47,10 +58,17 @@ model.getAuthUserById = async function ({ userId }) {
 };
 
 model.getFullById = async function ({ userId }) {
-	var query = `SELECT * FROM users WHERE id = ${userId};`;
+	const query = `SELECT * FROM users WHERE id = ${userId};`;
 	try {
-		var user = await db.getResult(query);
-		return user[0];
+		const result = await db.getResult(query);
+		let user = result[0];
+		if (user) {
+			const image = await Image.getById({ imageId: user.imageId });
+			if (image) {
+				user.image = image.path;
+			}
+		}
+		return user;
 	} catch (e) {
 		throw e;
 	}

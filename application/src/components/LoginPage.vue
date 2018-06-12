@@ -41,7 +41,8 @@ export default {
 <template>
   <div class="dinamic">
     <div class="dinamic-content">
-      
+      <img src="../assets/img/main.png" alt="">
+      <div class="bottom">Добро пожаловать в Tasks service</div>
     </div>
     <div id="options">
       <div class="container login">
@@ -83,6 +84,36 @@ $marginLeftOption: 795 - $widthOption;
 .dinamic-content {
   width: $widthDinamicContent;
   float: left;
+
+  .top {
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 57px;
+    text-align: center;
+  }
+
+  img {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 30px;
+  }
+
+  .bottom {
+    @extend %box;
+  
+    padding: 20px;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    bottom: 66px;
+    border-radius: 3px;
+
+    em {
+      color: #505d83;
+    }
+  }
 }
 
 #options {

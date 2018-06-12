@@ -134,8 +134,8 @@ export default {
         @click="select(option)" 
         :key="key"
         :class="{
-          first: option.parent ? false : true ,
-          second: option.parent ? true : false,
+          first: option.parentId !== null ? false : true ,
+          second: option.parentId !== null ? true : false,
           selected: option === selectedOption
         }">
         <span v-html="option.name"></span>
@@ -190,6 +190,7 @@ button.open {
   border-bottom-right-radius: 3px;
   border-top: none;
   box-sizing: border-box;
+  max-height: 250px;
   overflow-y: auto;
   box-shadow: 0px 3px 11px 0px rgba(132, 132, 132, 0.19);
 

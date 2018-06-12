@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icomoon';
   src:
-    url('fonts/icomoon.ttf?2pl1jd') format('truetype'),
-    url('fonts/icomoon.woff?2pl1jd') format('woff'),
-    url('fonts/icomoon.svg?2pl1jd#icomoon') format('svg');
+    url('fonts/icomoon.ttf?d5jtzl') format('truetype'),
+    url('fonts/icomoon.woff?d5jtzl') format('woff'),
+    url('fonts/icomoon.svg?d5jtzl#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -28,6 +28,9 @@
 }
 .icon-add:before {
   content: "\e145";
+}
+.icon-assignment_ind:before {
+  content: "\e85e";
 }
 .icon-attach_file:before {
   content: "\e226";
@@ -71,6 +74,9 @@
 .icon-star:before {
   content: "\e838";
 }
+.icon-people:before {
+  content: "\e7fb";
+}
 .icon-home:before {
   content: "\e88a";
 }
@@ -79,6 +85,9 @@
 }
 .icon-markunread_mailbox:before {
   content: "\e89b";
+}
+.icon-notifications:before {
+  content: "\e7f4";
 }
 .icon-reply:before {
   content: "\e15e";
@@ -97,6 +106,9 @@
 }
 .icon-star_half:before {
   content: "\e839";
+}
+.icon-vpn_key:before {
+  content: "\e0da";
 }
 .icon-watch_later:before {
   content: "\e924";

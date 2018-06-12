@@ -4,14 +4,6 @@ const Category = require('./category');
 let model = {};
 
 model.create = async (task) => {
-  if (task.dateStart === "") {
-    task.dateStart = null;
-  }
-
-  if (task.dateEnd === "") {
-    task.dateEnd = null;
-  }
-
   const query = `
     INSERT INTO tasks SET 
     userCustomerId = ${task.userId},
@@ -20,14 +12,14 @@ model.create = async (task) => {
     description = '${task.description}',
     priceFrom = ${task.priceFrom},
     priceBefore = ${task.priceBefore},
-    doFrom = ${task.dateStart},
-    doBefore = ${task.dateEnd},
+    ${task.dateStart !== "" ? `doFrom = '${task.dateStart}',` : ''}
+    ${task.dateEnd !== "" ? `doBefore = '${task.dateEnd}',` : ''}
     phone = '${task.phoneNumber}',
     isComment = ${task.isComment}
   ;`;
   try {
-    const task = await db.getResult(query);
-    return task.insertId;
+    const result = await db.getResult(query);
+    return result.insertId;
   } catch (e) {
     throw e;
   }
@@ -231,13 +223,31 @@ model.getLocations = async ({ taskId }) => {
   }
 }
 
-model.getCountByUserId = async ({ userId }) => {
-  const query = `
-    SELECT COUNT(*) AS count 
-    FROM tasks 
-    WHERE 
-    userCustomerId = ${userId}
-  ;`;
+model.getCountByUserId = async ({ userId, type }) => {
+  let query = '';
+  if (!type || type === '') {
+    type = 'create';
+  }
+
+  switch (type) {
+    case 'create':
+      query = `
+        SELECT COUNT(*) AS count 
+        FROM tasks 
+        WHERE 
+        userCustomerId = ${userId}
+      ;`;
+      break;
+    case 'success':
+      query = `
+        SELECT COUNT(*) AS count 
+        FROM tasks 
+        WHERE 
+        userPerformerId = ${userId} AND 
+        finished IS NOT NULL 
+      ;`;
+      break;
+  }
 
   try {
     const result = await db.getResult(query);
@@ -246,45 +256,6 @@ model.getCountByUserId = async ({ userId }) => {
     throw e;
   }
 };
-
-model.getTasksBySearch = async ({ search, count, lastTaskId, userId }) => {
-  let whereId = '';
-  let whereUserId = '';
-  let whereSearch = '';
-
-  if (userId) {
-    whereUserId = `AND userCustomerId = ${userId} `
-  }
-
-  if (lastTaskId) {
-    whereId = `AND id < ${lastTaskId}`;
-  }
-
-  const words = search.split(' ');
-  for (let i = 0; i < words.length; i++) {
-    if (i === 0) {
-      whereSearch += `name LIKE '%${words[i]}%' `;
-    } else {
-      whereSearch += `AND name LIKE '%${words[i]}%' `;
-    }
-  }
-
-  const query = `
-    SELECT * FROM tasks  
-    WHERE 
-    ${whereSearch} 
-    ${whereUserId}
-    ${whereId} 
-    ORDER BY id DESC LIMIT ${count}
-  ;`;
-
-  try {
-    const results = await db.getResult(query);
-    return results;
-  } catch (e) {
-    throw e;
-  }
-}
 
 
 

@@ -125,28 +125,35 @@ export default {
             Моя страница
           </router-link>
           <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
+            <i class="icon-people"></i>
+            Избранные
+          </router-link>
+          <router-link to="/chats"  v-if="isLogged">
+            <i class="icon-markunread"></i>
+            Сообщения
+          </router-link>
+          <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
             <i class="icon-markunread_mailbox"></i>
-            Мои заявки
+            Заявки
           </router-link>
           <router-link :to="{name: 'tasksPage'}">
             <i class="icon-gavel"></i>
             Задачи
           </router-link>
-          <router-link to="/messages">
-            <i class="icon-markunread"></i>
-            Сообщения
-          </router-link>
-          <router-link to="/chats">
-            <i class="icon-markunread"></i>
-            Чат
-          </router-link>
-          <router-link to="/signup">
-            <i class="icon-check_circle"></i>
+          <router-link to="/signup" v-if="isLogged === false">
+            <i class="icon-assignment_ind"></i>
             Регистрация
           </router-link>
-          <router-link to="/">Авторизация</router-link>
+          <router-link to="/" v-if="isLogged === false">
+            <i class="icon-vpn_key"></i>
+            Авторизация
+          </router-link>
           <div class="line"></div>
-          <div class="router-item" @click="logout" v-if="isLogged === true">
+          <router-link to="/" v-if="isLogged">
+            <i class="icon-settings"></i>
+            Настройки
+          </router-link>
+          <div class="router-item" @click="logout" v-if="isLogged">
             <i class="icon-exit_to_app"></i>
             Выйти
           </div>
