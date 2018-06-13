@@ -522,6 +522,7 @@ export default {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            color: $clr-font-grey;
 
             .time,
             .address {

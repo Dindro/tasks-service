@@ -106,7 +106,13 @@ export default {
           <check-box :check="request.selected" @input="(val)=>selectCheckBox(val, request.id)"></check-box>
         </div>
         <div class="user">
-          <div class="photo"></div>
+          <div
+            :style="{
+              'background-image': `url(${request.user.image})`,
+              'background-size':'cover'
+            }" 
+            class="photo">
+          </div>
           <div class="user-info">
             <div class="name">
               <router-link
@@ -115,8 +121,8 @@ export default {
                 {{request.user.surname}} {{request.user.name}}
               </router-link>
             </div>
-            <div class="rating">Рейтинг: 3.5</div>
-            <div class="reviews">Отзывы: 34</div>
+            <div class="rating">Рейтинг: {{request.user.rating}}</div>
+            <div class="reviews">Отзывы: {{request.user.reviewsCount}}</div>
           </div>
         </div>
         <div 
@@ -129,8 +135,10 @@ export default {
         <div 
           class="message"
           v-else
-        >
-          {{request.text}}
+        > 
+          <strong>Цена</strong> {{request.price}}руб
+          <br/>
+          {{request.message}}
         </div>
       </div>
 		</div>
@@ -255,6 +263,7 @@ export default {
       .user {
         display: flex;
         margin-left: 10px;
+        width: 200px;
 
         .photo {
           height: 50px;

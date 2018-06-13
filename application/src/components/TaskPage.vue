@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 import TaskRequestsTab from "../components/TaskRequestsTab";
 import TaskTab from "../components/TaskTab";
@@ -18,19 +18,16 @@ export default {
     TaskTab
   },
   computed: {
-    ...mapState("task", {
-      task: state => state.task
-    }),
+    ...mapState("task", ["task"]),
+    ...mapGetters(["isLogged", "userAuth"]),
 
+    // это задание пользователя
     isMyPage() {
-      const isLogged = this.isLogged;
-      if (isLogged === false) {
+      if (this.isLogged === false) {
         return false;
       }
 
-      // FIX
-      const userAuth = { id: 1 }; //this.userAuth;
-      return userAuth.id === this.task.id_user_customer;
+      return this.userAuth.id === this.task.userCustomerId;
     },
 
     taskPrice() {
@@ -122,12 +119,6 @@ export default {
   mounted() {},
   methods: {
     ...mapActions("task", ["getTask"]),
-    // async getTask() {
-    //   this.task = await this.$store.dispatch("getTask", {
-    //     taskId: this.taskId
-    //   });
-    //   this.price = this.task.priceFrom;
-    // },
 
     sendRequest() {
       this.$store.dispatch("sendRequest", {
@@ -170,13 +161,19 @@ export default {
         <div class="tab-item active" @click="showTab('task')">
           Задача
         </div>
-        <div class="tab-item" @click="showTab('requests')">
+        <router-link 
+          v-if="isLogged && task.userCustomerId === userAuth.id"
+          tag="div"
+          :to="{name:'requestsPage', query: { tabOption: task.id }}"
+          class="tab-item">
           Заявки
           <span v-if="task.requestNotViewCount !== 0" class="count">
             {{requestCount}}
           </span>
-        </div>
-        <div class="tab-item" @click="showTab('chats')">
+        </router-link>
+        <div 
+          v-if="isLogged && task.userCustomerId === userAuth.id"
+          class="tab-item" @click="showTab('chats')">
           Диалоги с этой задачей
         </div>
       </div>
@@ -189,29 +186,75 @@ export default {
           <div class="detail status" :class="status.class">{{status.title}}</div>
           <div class="detail category">{{task.categoryName}}</div>
           <div class="detail">Просмотров: {{task.views}}</div>
-          <div class="detail">Создано: {{new Date(task.created).format("mmm dd yyyy")}}</div>
           <div class="detail">Номер задания: #{{task.id}}</div>
+          <div class="detail">Создано: {{new Date(task.created).format("mmm dd yyyy")}}</div>
+          <div 
+            v-if="task.started"
+            class="detail">
+            Начало: {{new Date(task.started).format("mmm dd yyyy")}}
+          </div>
+          <div 
+            v-if="task.finished"
+            class="detail">
+            Завершено: {{new Date(task.finished).format("mmm dd yyyy")}}
+          </div>
         </div>
         <div class="detail-buttons">
-          <div>
+          <!-- <div>
             <span class="go-comments">Перейти к комментариям</span>
-          </div>
-          <template v-if="isMyPage === true">
+          </div> -->
+          <template v-if="isMyPage === true && task.started === null">
             <button class="edit-task">Редактировать задачу</button>
             <button class="delete-task">Удалить задачу</button>
           </template>
+          <button 
+            v-if="task.userPerformerId === userAuth.id" 
+            class="run-task">Завершить задачу</button>
         </div>
       </div>
 
       <div class="customer">
         <div class="customer-top">Заказчик</div>
         <div class="customer-user">
-          <div class="user-photo"></div>
+          <div 
+            class="user-photo"
+            :style="{
+              'background-image': `url(${task.userCustomer.image})`,
+              'background-size':'cover'
+            }">
+          </div>
           <div class="user-info">
-            <div class="user-name">{{task.userCustomer.surname}} {{task.userCustomer.name}}</div>
-            <div class="user-age-city">21 лет, Чебоксары</div>
-            <div class="ratings">Средний балл: 4.3</div>
-            <div class="reviews">Отзывы: 45</div>
+            <router-link 
+              class="user-name"
+              :to="{name: 'userPage', params: {userId: task.userCustomer.id}}">
+              {{task.userCustomer.surname}} {{task.userCustomer.name}}
+            </router-link>
+            <div class="user-age-city">Возраст: {{task.userCustomer.age}}</div>
+            <div class="ratings">Средний балл: {{task.userCustomer.rating}}</div>
+            <div class="reviews">Отзывы: {{task.userCustomer.reviewsCount}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="customer" v-if="task.userPerformer">
+        <div class="customer-top">Исполнитель</div>
+        <div class="customer-user">
+          <div 
+            class="user-photo"
+            :style="{
+              'background-image': `url(${task.userPerformer.image})`,
+              'background-size':'cover'
+            }">
+          </div>
+          <div class="user-info">
+            <router-link 
+              class="user-name"
+              :to="{name: 'userPage', params: {userId: task.userPerformer.id}}">
+              {{task.userPerformer.surname}} {{task.userPerformer.name}}
+            </router-link>
+            <div class="user-age-city">Возраст: {{task.userPerformer.age}}</div>
+            <div class="ratings">Средний балл: {{task.userPerformer.rating}}</div>
+            <div class="reviews">Отзывы: {{task.userPerformer.reviewsCount}}</div>
           </div>
         </div>
       </div>
@@ -221,6 +264,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -445,10 +489,8 @@ export default {
   margin: 57px 0 0 565px;
 
   .tab {
+    @extend %box;
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
     padding: 10px 0;
     color: $clr-font-blue;
 
@@ -476,10 +518,8 @@ export default {
   }
 
   .details {
+    @extend %box;
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
 
     .details-top {
       padding: 15px 20px;
@@ -513,7 +553,7 @@ export default {
     }
 
     .detail-buttons {
-      padding: 15px 20px;
+      padding: 0px 20px 15px 20px;
 
       span.go-comments {
         display: block;
@@ -525,7 +565,7 @@ export default {
       button.edit-task {
         width: 100%;
         border: none;
-        margin-top: 15px;
+        margin-top: 5px;
         border-radius: 3px;
         padding: 10px;
         cursor: pointer;
@@ -553,14 +593,18 @@ export default {
           background-color: #ebc2c2;
         }
       }
+
+      button.run-task {
+        @extend %button-green;
+        width: 100%;
+      }
     }
   }
 
   .customer {
+    @extend %box;
+
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
 
     .customer-top {
       padding: 15px 20px;

@@ -3,11 +3,13 @@ import HTTP from '../http';
 export default {
 	namespaced: true,
 	state: {
-		task: {}
+		task: {},
+		taskError: false,
+		comments: []
 	},
 	mutations: {
-		mut(state, { type, val }) {
-			state[type] = val;
+		common(state, { type, value }) {
+			state[type] = value;
 		}
 	},
 
@@ -44,7 +46,22 @@ export default {
 				});
 				return data.tasks;
 			} catch (e) {
+				console.log(e);
+			}
+		},
 
+		async getTask({ commit }, { taskId }) {
+			try {
+				const { data } = await HTTP().get('task', {
+					params: {
+						taskId
+					}
+				});
+				const { task } = data;
+				commit('common', { type: 'task', value: task });
+			} catch ({ response }) {
+				const { data } = response;
+				commit('common', { type: 'taskError', value: true });
 			}
 		},
 
@@ -57,8 +74,18 @@ export default {
 				});
 				return data.count;
 			} catch (e) {
-
+				console.log(e);
 			}
 		},
+
+		async sendRequest({ commit }, request) {
+			try {
+				const { data } = await HTTP().post('request', request);
+				const { requestInsertId } = data;
+				return requestInsertId;
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	}
 }

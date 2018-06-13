@@ -125,16 +125,23 @@ model.getByUserId = async ({ userId, type }) => {
 				SELECT * FROM requests WHERE 
 				userId = ${userId} AND 
 				isReject = true 
-				ORDER BY created ASC
+				ORDER BY created DESC
 			;`;
 			break;
 
 		case 'loading':
 			query = `
-				SELECT * FROM requests WHERE 
-				userId = ${userId} AND 
-				isReject = false 
-				ORDER BY created ASC
+				SELECT r.* FROM 
+				(
+					SELECT * FROM requests 
+					WHERE 
+					userId = ${userId} AND 
+					isReject = false
+				) AS r
+				INNER JOIN tasks 
+				ON r.taskId = tasks.id 
+				WHERE tasks.userPerformerId IS NULL
+				ORDER BY created DESC
 			;`;
 			break;
 
@@ -149,7 +156,7 @@ model.getByUserId = async ({ userId, type }) => {
 				INNER JOIN tasks 
 				ON r.taskId = tasks.id
 				WHERE tasks.userPerformerId = ${userId} 
-				ORDER BY r.created ASC
+				ORDER BY r.created DESC
 			;`
 			break;
 
@@ -157,7 +164,7 @@ model.getByUserId = async ({ userId, type }) => {
 			query = `
 				SELECT * FROM requests WHERE 
 				userId = ${userId} 
-				ORDER BY created ASC
+				ORDER BY created DESC
 			;`;
 			break;
 	}
@@ -174,7 +181,7 @@ model.getByUserId = async ({ userId, type }) => {
 model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 	let query = '';
 
-	if (taskId === undefined) {
+	if (!taskId) {
 		if (isReject === false) {
 			// заявки в обработке
 			query = `
@@ -184,7 +191,7 @@ model.getRequestsRejectCount = async ({ userId, taskId, isReject }) => {
 					userId = ${userId} AND
 					isReject = ${isReject}
 				) as r
-				LEFT JOIN tasks ON r.userId = tasks.userPerformerId 
+				INNER JOIN tasks ON r.taskId = tasks.id 
 				WHERE tasks.userPerformerId IS NULL
 			;`;
 		} else {

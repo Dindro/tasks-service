@@ -54,10 +54,9 @@ model.getById = async ({ taskId }) => {
     const result = await db.getResult(query);
     let task = result[0];
 
-    if (!task) {
+    if (task) {
       // получаем координаты
       task.locations = await model.getLocations({ taskId: task.id });
-      const category = await Category.getById({ categoryId: task.categoryId });
 
       // TODO: получить картинки
     }
@@ -172,7 +171,7 @@ model.getTasks = async ({
 model.makePerformer = async ({ userPerformerId, taskId }) => {
   const query = `
     UPDATE tasks SET 
-    userPerformerId = ${userExecutorId},
+    userPerformerId = ${userPerformerId},
     started = now()
     WHERE 
     id = ${taskId}

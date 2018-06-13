@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   props: ["tabOption", "tabTop"],
@@ -17,7 +17,9 @@ export default {
       "requestsCount",
       "taskRequests",
       "taskRequestsCount"
-    ])
+    ]),
+
+    ...mapGetters(["userAuth"])
   },
 
   methods: {
@@ -75,15 +77,21 @@ export default {
         <template v-else>
           <div class="task-name-status">
             <router-link class="name" :to="{ name: 'taskPage', params: { taskId: request.task.id }}">
-              {{request.task.title}}
+              {{request.task.name}}
             </router-link>
-            <div v-if="request.task.id_user_executor !== null" class="status successfully">Успешно</div>
+            <div v-if="request.task.userPerformerId !== null" class="status successfully">Успешно</div>
             <div v-else-if="request.isReject === 0" class="status loading">Обработка</div>
             <div v-else-if="request.isReject === 1" class="status canceled">Отклонено</div>
           </div>
           <div class="request-info">
             <div class="user-customer">
-              <div class="customer-photo"></div>
+              <div 
+                :style="{
+                  'background-image': `url(${request.userCustomer.image})`,
+                  'background-size':'cover'
+                }"
+                class="customer-photo">
+              </div>
               <div class="customer-name-messages">
                 <div class="name-type">
                   <router-link class="name" :to="{name: 'userPage', params: { userId: request.userCustomer.id }}">
@@ -105,14 +113,27 @@ export default {
                   </div>
                 </div>
                 <div class="message">
-                  {{request.text}}
+                  {{request.message}}
                 </div>
                 <button v-if="request.isReject === 0 && request.task.started === null" @click="deleteRequest( {requestId: request.id })" class="request-cancel">Удалить заявку</button>
               </div>
-              <div class="executor-photo"></div>
+              <div 
+                :style="{
+                  'background-image': `url(${userAuth.image})`,
+                  'background-size':'cover'
+                }"
+                class="executor-photo">
+
+              </div>
             </div>
             <div class="user-customer" v-if="(request.isReject === 0 && request.task.started !== null) || request.isReject > 0 ">
-              <div class="customer-photo"></div>
+              <div 
+                :style="{
+                  'background-image': `url(${request.userCustomer.image})`,
+                  'background-size':'cover'
+                }"
+                class="customer-photo">
+              </div>
               <div class="customer-name-messages">
                 <div class="name-type">
                   <router-link class="name" :to="{name: 'userPage', params: { userId: request.userCustomer.id }}">

@@ -19,7 +19,7 @@ api.create = async (req, res, io) => {
 
 		// проверка заявку можно отправлять только один раз
 		const request = await Request.getByTaskAndUserId({ taskId, userId });
-		if (!request) {
+		if (request) {
 			return res.status(200).json({ success: false, message: 'Заявку можно отправить только один раз' });
 		}
 
@@ -263,7 +263,7 @@ api.makePerformer = async (req, res, io) => {
 
 		// отклоняем и оповещаем об отклонении
 		const loosersRequests = await Request.getAllWithoutUserId({
-			taskId,
+			taskId: task.id,
 			userId: request.userId
 		});
 

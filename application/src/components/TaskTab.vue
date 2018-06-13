@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   props: ["task"],
@@ -7,20 +7,21 @@ export default {
     return {
       tab: "",
       message: "",
-      price: ""
+      price: "",
+      requestSended: false
     };
   },
   computed: {
     ...mapGetters(["userAuth", "isLogged"]),
+    ...mapState("task", ["task", "comments"]),
 
+    // это задание пользователя
     isMyPage() {
-      const isLogged = this.isLogged;
-      if (isLogged === false) {
+      if (this.isLogged === false) {
         return false;
       }
 
-      const userAuth = this.userAuth;
-      return userAuth.id === this.task.id_user_customer;
+      return this.userAuth.id === this.task.userCustomerId;
     },
 
     taskPrice() {
@@ -106,31 +107,23 @@ export default {
       return status;
     }
   },
-  created() {
-    
-  },
-  mounted() {},
   methods: {
-    async getTask() {
-      this.task = await this.$store.dispatch("getTask", {
-        taskId: this.taskId
-      });
-      this.price = this.task.priceFrom;
-    },
+    ...mapActions("task", ["sendRequest"]),
 
-    sendRequest() {
-      this.$store.dispatch("sendRequest", {
+    async sendReq() {
+      const insertId = await this.sendRequest({
         taskId: this.task.id,
         message: this.message,
         price: this.price
       });
+      this.requestSended = true;
     },
 
     getSymbol(index) {
       const rusSymbolStart = 1040;
       const code = rusSymbolStart + index;
       return String.fromCharCode(code);
-    },
+    }
   }
 };
 </script>
@@ -138,19 +131,33 @@ export default {
 <template>
   <div>
     <div class="task">
-      <div class="task-name">{{task.title}}</div>
-      <div class="task-map">
-        <gmap-map style="width: 100%; height: 100%" :center="{lat: task.addresses[0].lat, lng: task.addresses[0].lon}" :zoom="7">
-          <gmap-marker :key="index" v-for="(address, index) in task.addresses" :position="{lat: address.lat, lng: address.lon}"></gmap-marker>
+      <div class="task-name">{{task.name}}</div>
+      <div 
+        class="task-map" 
+        v-if="'locations' in task && task.locations.length !== 0">
+        <gmap-map 
+          style="width: 100%; height: 100%" 
+          :center="{lat: task.locations[0].lat, lng: task.locations[0].lon}" 
+          :zoom="7">
+          <gmap-marker 
+            :key="location.id" 
+            v-for="location in task.locations" 
+            :position="{lat: location.lat, lng: location.lon}">
+          </gmap-marker>
         </gmap-map>
       </div>
       <div class="task-options">
-        <div class="option-row addresses">
+        <div 
+          class="option-row addresses" 
+          v-if="'locations' in task && task.locations.length !== 0">
           <div class="option-name">Адрес</div>
           <div class="option-description">
-            <div class="address-row" v-for="(address, index) in task.addresses" :key="index">
+            <div 
+              class="address-row" 
+              v-for="(location, index) in task.locations" 
+              :key="location.id">
               <div class="symbol">{{getSymbol(index)}}</div>
-              <div class="address">{{address.name}}</div>
+              <div class="address">{{location.name}}</div>
             </div>
           </div>
         </div>
@@ -166,13 +173,13 @@ export default {
             {{taskPrice}}
           </div>
         </div>
-        <div class="option-row">
+        <div class="option-row" v-if="task.description">
           <div class="option-name">Описание</div>
           <div class="option-description">{{task.description}}</div>
         </div>
       </div>
     </div>
-    <div class="request" v-if="isMyPage===false && isLogged === true">
+    <div class="request" v-if="isMyPage === false && isLogged === true && task.started === null">
       <div class="request-top">Оформление заявки</div>
       <div class="request-form">
         <div class="form-option price">
@@ -197,7 +204,8 @@ export default {
         </div>
         <div class="form-option send-button">
           <div class="form-option-el">
-            <button @click="sendRequest">Отправить заявку</button>
+            <button class="request-sended" v-if="requestSended">Заявка успешно отправлена</button>
+            <button v-else @click="sendReq()">Отправить заявку</button>
           </div>
         </div>
       </div>
@@ -206,14 +214,52 @@ export default {
       <div class="comments-top">
         Комментария
       </div>
-      <div class="comments-list"></div>
-      <div class="write-comment"></div>
+      <div class="comments-list" v-if="comments.length !== 0">
+        <div class="error" v-if="comments.length === 0">Нет комментарий</div>
+        <div class="comment" v-for="(comment, index) of comments" :key="index">
+          <div class="user-photo"></div>
+          <div class="comment-content">
+            <div class="user-name">
+              <router-link 
+                :to="{name:'userPage', params: {userId: 1}}"
+                class="user-name">Яковлев Андрей</router-link>
+            </div>
+            <div class="message">
+              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
+              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
+              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
+              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
+              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
+              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
+              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
+              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
+            </div>
+            <div class="date-answer">
+              16 февраля 2018
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="write-comment" v-if="isLogged">
+        <div 
+          class="user-photo"
+          :style="{
+            'background-image': `url(${userAuth.image})`,
+            'background-size':'cover'
+          }">
+          </div>
+        <div class="write-content">
+          <textarea id="message" placeholder="Напишите комментарие..."></textarea>
+          <button class="send">Отправить</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+@import "../assets/elements.scss";
 
 .dinamic {
   float: right;
@@ -225,11 +271,9 @@ export default {
   float: left;
 
   .task {
+    @extend %box;
     margin-top: 57px;
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
 
     .task-name {
       padding: 15px 20px;
@@ -339,10 +383,8 @@ export default {
   }
 
   .request {
+    @extend %box;
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
 
     .request-top {
       padding: 15px 20px;
@@ -401,6 +443,11 @@ export default {
             &:hover {
               background-color: $clr-btn-hover;
             }
+
+            &.request-sended {
+              @extend %button-green;
+              padding: 8px 16px;
+            }
           }
         }
 
@@ -419,16 +466,97 @@ export default {
   }
 
   .comments {
+    @extend %box;
     margin-bottom: 15px;
-    border: 1px solid $clr-box-border;
-    background-color: white;
-    border-radius: 2px;
-    height: 200px;
 
     .comments-top {
       padding: 15px 20px;
       border-bottom: 1px solid $clr-border;
       background-color: $clr-tab-background;
+    }
+
+    .comments-list {
+      padding: 0 20px;
+      padding-top: 10px;
+      border-bottom: 1px solid $clr-border;
+
+      .error {
+        padding-bottom: 10px;
+      }
+
+      .comment {
+        padding: 10px 0;
+        border-bottom: 1px solid $clr-border;
+        display: flex;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .user-photo {
+          height: 50px;
+          width: 50px;
+          border-radius: 50%;
+          background-color: #5181b8;
+        }
+
+        .comment-content {
+          flex: 1;
+          margin-left: 10px;
+
+          .user-name {
+            color: $clr-font-black;
+            font-weight: 500;
+          }
+
+          .message {
+            margin-top: 5px;
+          }
+
+          .date-answer {
+            margin-top: 5px;
+            color: $clr-font-grey;
+          }
+        }
+      }
+    }
+
+    .write-comment {
+      padding: 15px 20px;
+      display: flex;
+
+      .user-photo {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        background-color: #5181b8;
+      }
+
+      .write-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        flex: 1;
+        margin-left: 10px;
+
+        textarea {
+          width: 100%;
+          height: 50px;
+          padding: 7px 14px;
+          border: 1px solid $clr-tb-border;
+          border-radius: 3px;
+          font-family: "Roboto";
+          box-sizing: border-box;
+          resize: none;
+        }
+
+        button {
+          @extend %button;
+
+          padding: 7px 15px;
+          margin-top: 15px;
+        }
+      }
     }
   }
 }

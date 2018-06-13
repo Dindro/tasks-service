@@ -193,7 +193,7 @@ api.get = async (req, res) => {
 		// получаем исполнителя
 		let userPerformerPrm;
 		if (task.userPerformerId !== null) {
-			userCustomerPrm = User.getById({ userId: task.userPerformerId });
+			userPerformerPrm = User.getById({ userId: task.userPerformerId });
 		}
 
 		// получаем количество новых заявок
@@ -208,7 +208,7 @@ api.get = async (req, res) => {
 		task.categoryName = category.name;
 		task.requestNotViewCount = await requestNotViewCountPrm;
 		task.userCustomer = await userCustomerPrm;
-		if (!userCustomerPrm) {
+		if (userCustomerPrm) {
 			task.userPerformer = await userPerformerPrm;
 		}
 
