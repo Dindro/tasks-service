@@ -29,7 +29,7 @@ export default {
     ]),
 
     rating() {
-      const rating = (user.rating1 + user.rating2 + user.rating3) / 3;
+      let rating = (user.rating1 + user.rating2 + user.rating3) / 3;
       return rating.toFixed(1);
     },
 
