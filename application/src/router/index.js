@@ -13,43 +13,15 @@ import TasksPage from '../components/TasksPage';
 import TaskPage from '../components/TaskPage';
 import TaskAddPage from '../components/TaskAddPage';
 import RequestsPage from '../components/RequestsPage';
+import ChatNavigation from '../components/chatsPage/ChatNavigation';
+import Chats from '../components/chatsPage/Chats';
+import ChatMessages from '../components/chatsPage/ChatMessages';
 
-
-// Страницы
-//import Authentication from '@/components/pages/Authentication/Authentication'
-import ListDialog from '@/components/pages/Dialog/ListDialog'
-//import ListMessage from '@/components/pages/Message/ListMessage'
-
-
-// Parts
-
-import messagesNavigation from '@/components/parts/messagesNavigation'
-import chats from '@/components/parts/chats'
-import messages from '@/components/parts/messages'
-
-import Workplace from '@/components/parts/Workplace'
-//import Blockoption from '@/components/parts/Blockoption'
-/* import message from '@/components/parts/Message' */
-//const message = () => import('@/components/parts/Message');
-import registration from '@/components/pages/Registration/Registration'
-
-//Draft
-import full from '@/components/pages/DRAFT/full'
-import chatsStatic from '@/components/pages/DRAFT/chats'
-import messagesStatic from '@/components/pages/DRAFT/messages'
 
 Vue.use(Router);
 export default new Router({
 	mode: 'history',
 	routes: [
-		{
-			path: '/chatsstatic',
-			component: chatsStatic
-		},
-		{
-			path: '/messagesstatic',
-			component: messagesStatic
-		},
 		{
 			path: '',
 			component: TheHeader, // Шапка
@@ -77,17 +49,18 @@ export default new Router({
 						{
 							// навигация по сообщениям
 							path: '',
-							component: messagesNavigation,
+							component: ChatNavigation,
 							children: [
 								{
 									path: '/chats',
 									name: 'chats',
-									component: chats
+									component: Chats
 								},
 								{
-									path: '/messages',
-									name: 'messages',
-									component: messages
+									path: '/chats/id:chatId',
+									name: 'chatMessages',
+									component: ChatMessages,
+									props: true
 								},
 							]
 						},
@@ -120,37 +93,8 @@ export default new Router({
 							component: UserPage,
 							props: true,
 						},
-						// {
-						//   path: '/test',
-						//   name: 'message',
-						//   component: message
-						// },
-						// {
-						//   path: '/dialogues',
-						//   name: 'Blockoption',
-						//   component: Blockoption,
-						//   /* props: (route) => ({ id: route.query.id }, { option: route.query.unread }) */
-						//   /* children: [
-						//     {
-						//       path: '/dialogues',
-						//       name: 'Dialog',
-						//       component: ListDialog,
-						//     },
-						//     {
-						//       path: '/dialogues',
-						//       name: 'Message',
-						//       component: ListMessage,
-						//       props: (route) => ({ id: route.query.id }),
-						//     }
-						//   ] */
-						// }
 					]
 				},
-				// {
-				//   path: '/login',
-				//   name: 'Authentication',
-				//   component: Authentication
-				// },
 			]
 		}
 	]

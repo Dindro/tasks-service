@@ -1,5 +1,6 @@
 <script>
 import io from "socket.io-client";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -19,6 +20,8 @@ export default {
     };
   },
   computed: {
+    ...mapState("chat", ["chatId"]),
+
     isLogged() {
       return this.$store.getters.isLogged;
     },
@@ -39,7 +42,12 @@ export default {
       console.log("Коннект");
     });
 
-    socket.on("message", obj => {});
+    socket.on("message", obj => {
+      const id = obj;
+      if (id === this.chatId) {
+        this.getMessages();
+      }
+    });
     socket.on("request", obj => {
       console.log("REQUEST SOCKET");
       this.notifyRequest = obj;
@@ -57,6 +65,8 @@ export default {
     });
   },
   methods: {
+    ...mapActions('chat', ['getMessages']),
+    
     async login() {
       const data = await this.$store.dispatch("login", {
         email: this.email,
@@ -114,6 +124,7 @@ export default {
         
       </div>
     </div>
+    
     <div id="nav">
       <div class="logo">
         <div class="logo-text">Tasks service</div>
@@ -128,7 +139,7 @@ export default {
             <i class="icon-people"></i>
             Избранные
           </router-link>
-          <router-link to="/chats"  v-if="isLogged">
+          <router-link :to="{name:'chats'}"  v-if="isLogged">
             <i class="icon-markunread"></i>
             Сообщения
           </router-link>

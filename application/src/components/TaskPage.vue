@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 
 import TaskRequestsTab from "../components/TaskRequestsTab";
 import TaskTab from "../components/TaskTab";
@@ -13,10 +13,12 @@ export default {
       test: this.$store.getters["task/doubleCount"]
     };
   },
+
   components: {
     TaskRequestsTab,
     TaskTab
   },
+
   computed: {
     ...mapState("task", ["task"]),
     ...mapGetters(["isLogged", "userAuth"]),
@@ -113,26 +115,16 @@ export default {
       return status;
     }
   },
+
   created() {
+    this.common({ type: "taskId", value: this.taskId });
     this.getTask({ taskId: this.taskId });
+    this.getComments();
   },
-  mounted() {},
+
   methods: {
-    ...mapActions("task", ["getTask"]),
-
-    sendRequest() {
-      this.$store.dispatch("sendRequest", {
-        taskId: this.task.id,
-        message: this.message,
-        price: this.price
-      });
-    },
-
-    getSymbol(index) {
-      const rusSymbolStart = 1040;
-      const code = rusSymbolStart + index;
-      return String.fromCharCode(code);
-    },
+    ...mapActions("task", ["getTask", "getComments", "finishTask"]),
+    ...mapMutations("task", ["common"]),
 
     showTab(tabName) {
       if (this.tab === tabName) {
@@ -208,8 +200,8 @@ export default {
             <button class="delete-task">Удалить задачу</button>
           </template>
           <button 
-            v-if="task.userPerformerId === userAuth.id" 
-            class="run-task">Завершить задачу</button>
+            v-else-if="task.userPerformerId === userAuth.id && task.finished === null" 
+            class="run-task" @click="finishTask">Завершить задачу</button>
         </div>
       </div>
 

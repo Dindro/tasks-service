@@ -3,7 +3,7 @@ let model = {};
 
 model.create = async (review) => {
 	const query = `
-		INSERT INTO review SET 
+		INSERT INTO reviews SET 
 		taskId = ${review.taskId},
 		userId = ${review.userId},
 		description = '${review.description}',
@@ -53,6 +53,21 @@ model.getReviews = async ({ userId, type }) => {
 	try {
 		const reviews = await db.getResult(query);
 		return reviews;
+	} catch (e) {
+		throw e;
+	}
+};
+
+// получить отзывы по идентификатору задачи
+model.getByTaskIdAndUserId = async ({ taskId, userId }) => {
+	const query = `
+		SELECT * FROM reviews
+		WHERE userId = ${userId} AND taskId = ${taskId}
+	;`;
+
+	try {
+		const review = await db.getResult(query);
+		return review[0];
 	} catch (e) {
 		throw e;
 	}

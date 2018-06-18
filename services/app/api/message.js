@@ -1,5 +1,7 @@
 const Chat = require('../models/chat');
+const User = require('../models/user');
 const Message = require('../models/message');
+const SocketApi = require('./socket');
 
 let api = {};
 
@@ -29,10 +31,56 @@ api.create = async (req, res) => {
 		});
 
 		// TODO: отправить сообщение по сокету
+		const chatUsers = await Chat.getUsersByChatId({ chatId: chat.chatId });
+		for (const chatUser of chatUsers) {
+			SocketApi.send({
+				userId: chatUser.userId,
+				socketType: 'io',
+				type: 'message',
+				data: chatId
+			})
+		}
 
 		res.status(200).json({ messageId });
 	} catch (e) {
 		console.log(e);
+	}
+};
+
+// получить сообщения
+api.getMessages = async (req, res) => {
+	const userId = req.userId;
+
+	// проверка на авторизиацию
+	if (!userId) {
+		return res.status(400).json({ success: false, message: 'Вы не авторизировались' });
+	}
+
+	let {
+		chatId
+	} = req.query;
+
+	chatId = parseInt(chatId);
+
+	// TODO: сделать проверку на то что мой чат
+
+	try {
+		const messages = await Message.getMessages({ chatId });
+
+		let users = [];
+		const chatUsers = await Chat.getUsersByChatId({ chatId });
+		const chatUsersPrms = chatUsers.map(async (chatUser) => {
+			const user = await User.getById({ userId: chatUser.userId });
+			users.push(user);
+		});
+
+		for (const item of chatUsersPrms) {
+			await item;
+		}
+
+		res.status(200).json({ users, messages });
+	} catch (error) {
+		console.log(error);
 	}
 };
 

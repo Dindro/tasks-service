@@ -10,6 +10,7 @@ const message = require('../api/message');
 const chat = require('../api/chat');
 const review = require('../api/review');
 const favorite = require('../api/favorite');
+const comment = require('../api/comment');
 
 module.exports = ({ app, io }) => {
 	// #region ПОЛЬЗОВАТЕЛИ
@@ -48,6 +49,15 @@ module.exports = ({ app, io }) => {
 
 	app.route('/api/v1/tasksCount')
 		.get(verifyToken, task.getCountByUserId);
+
+	app.route('/api/v1/taskFinish')
+		.post(verifyToken, task.finish);
+	// #endregion
+
+	// #region КОММЕНТАРИЯ
+	app.route('/api/v1/comment')
+		.post(verifyToken, comment.create)
+		.get(comment.getComments);
 	// #endregion
 
 	// #region ЗАЯВКИ
@@ -77,15 +87,21 @@ module.exports = ({ app, io }) => {
 
 	// #region СООБЩЕНИЯ
 	app.route('/api/v1/message')
-		.post(verifyToken, message.create);
+		.post(verifyToken, message.create)
+		.get(verifyToken, message.getMessages);
 	// #endregion
 
 	// #region ЧАТЫ
 	app.route('/api/v1/chat')
+		.get(verifyToken, chat.getChats)
 		.post(verifyToken, chat.create);
+
 	// #endregion
 
 	// #region ОТЗЫВЫ
+	app.route('/api/v1/review')
+		.post(verifyToken, review.create);
+
 	app.route('/api/v1/reviews')
 		.get(review.getReviews);
 
@@ -103,4 +119,5 @@ module.exports = ({ app, io }) => {
 	app.route('/api/v1/favoritesCount')
 		.get(verifyToken, favorite.getFavoritesCount);
 	// #endregion
+
 }

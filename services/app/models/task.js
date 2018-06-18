@@ -184,7 +184,7 @@ model.makePerformer = async ({ userPerformerId, taskId }) => {
   catch (e) {
     throw e;
   }
-}
+};
 
 // Добавить координаты в таблицу tasks_locations
 model.addLocations = async ({ locationId, taskId }) => {
@@ -256,6 +256,23 @@ model.getCountByUserId = async ({ userId, type }) => {
   }
 };
 
+// завершение задачи
+model.finish = async ({ taskId }) => {
+  const query = `
+    UPDATE tasks SET 
+    finished = now()
+    WHERE 
+    id = ${taskId}
+  ;`;
+
+  try {
+    const result = await db.getResult(query);
+    return result[0];
+  }
+  catch (e) {
+    throw e;
+  }
+};
 
 
 module.exports = model;

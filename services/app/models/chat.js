@@ -85,6 +85,51 @@ model.addUser = async ({ userId, chatId }) => {
 	}
 };
 
+// получить чаты
+model.getChats = async ({ userId }) => {
+	const query = `
+		SELECT * FROM chats_users WHERE userId = ${userId}
+	;`;
+
+	try {
+		const chats = await db.getResult(query);
+		return chats;
+	} catch (e) {
+		throw e;
+	}
+};
+
+
+// получить чаты
+model.getById = async ({ chatId }) => {
+	const query = `
+		SELECT * FROM chats WHERE id = ${chatId}
+	;`;
+
+	try {
+		const chat = await db.getResult(query);
+		return chat[0];
+	} catch (e) {
+		throw e;
+	}
+};
+
+// получить участников чата
+model.getUsersByChatId = async ({ chatId }) => {
+	const query = `
+		SELECT * FROM chats_users 
+		WHERE chatId = ${chatId}
+	;`;
+
+	try {
+		const users = await db.getResult(query);
+		return users;
+	} catch (e) {
+		throw e;
+	}
+};
+
+
 
 const f = {
 	GetDialoguesByTime: async function (id_user, dialoguesLimit, startTime) {

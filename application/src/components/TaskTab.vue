@@ -1,5 +1,7 @@
 <script>
-import { mapGetters, mapState, mapActions } from "vuex";
+import RatingBoxSet from "./elements/RatingBoxSet";
+import RatingBox from "./elements/RatingBox";
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   props: ["task"],
@@ -8,9 +10,22 @@ export default {
       tab: "",
       message: "",
       price: "",
-      requestSended: false
+      requestSended: false,
+      comment: "",
+
+      description: "",
+      rating1: 0,
+      rating2: 0,
+      rating3: 0,
+      reviewSended: false
     };
   },
+
+  components: {
+    RatingBoxSet,
+    RatingBox
+  },
+
   computed: {
     ...mapGetters(["userAuth", "isLogged"]),
     ...mapState("task", ["task", "comments"]),
@@ -105,10 +120,32 @@ export default {
         status.class = "do";
       }
       return status;
+    },
+
+    isViewWriteReview() {
+      if(this.task.finished === null || this.isLogged === false) {
+        return false;
+      }
+
+      if(this.task.userPerformerId === this.userAuth.id && !this.task.userPerformerReview) {
+        return true;
+      }
+      else if(this.task.userCustomerId === this.userAuth.id && !this.task.userCustomerReview) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
   },
+
   methods: {
-    ...mapActions("task", ["sendRequest"]),
+    ...mapActions("task", [
+      "sendRequest",
+      "sendComment",
+      "getComments",
+      "sendReview"
+    ]),
 
     async sendReq() {
       const insertId = await this.sendRequest({
@@ -123,6 +160,24 @@ export default {
       const rusSymbolStart = 1040;
       const code = rusSymbolStart + index;
       return String.fromCharCode(code);
+    },
+
+    sendComm() {
+      if (this.comment === "") {
+        return;
+      }
+      this.sendComment({ message: this.comment });
+      this.comment = "";
+    },
+
+    async sendRev() {
+      await this.sendReview({
+        description: this.description,
+        rating1: this.rating1,
+        rating2: this.rating2,
+        rating3: this.rating3
+      });
+      this.reviewSended = true;
     }
   }
 };
@@ -210,47 +265,173 @@ export default {
         </div>
       </div>
     </div>
+    <div 
+      class="review" 
+      v-if="isViewWriteReview">
+      <div class="review-top">Оформление отзыва</div>
+      <div class="review-form">
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Отзыв
+          </div>
+          <div class="form-option-el">
+            <textarea v-model.trim="description" placeholder="Напишите отзыв..."></textarea>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Вежливость
+          </div>
+          <div class="form-option-el">
+            <rating-box-set v-model="rating1"></rating-box-set>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Пунктуальность
+          </div>
+          <div class="form-option-el">
+            <rating-box-set v-model="rating2"></rating-box-set>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Адекватность
+          </div>
+          <div class="form-option-el">
+            <rating-box-set v-model="rating3"></rating-box-set>
+          </div>
+        </div>
+        <div class="form-option send-button">
+          <div class="form-option-el">
+            <button class="request-sended" v-if="reviewSended">Отзыв успешно отправлен</button>
+            <button v-else @click="sendRev()">Отправить отзыв</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div 
+      class="review" 
+      v-if="task.finished !== null && task.userPerformerReview">
+      <div class="review-top">Отзыв от исполнителя</div>
+      <div class="review-form">
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Отзыв
+          </div>
+          <div class="form-option-el">
+            {{task.userPerformerReview.description}}
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Вежливость
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userPerformerReview.rating1"></rating-box>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Пунктуальность
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userPerformerReview.rating2"></rating-box>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Адекватность
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userPerformerReview.rating3"></rating-box>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div 
+      class="review" 
+      v-if="task.finished !== null && task.userCustomerReview">
+      <div class="review-top">Отзыв от заказчика</div>
+      <div class="review-form">
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Отзыв
+          </div>
+          <div class="form-option-el">
+            {{task.userCustomerReview.description}}
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Вежливость
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userCustomerReview.rating1"></rating-box>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Пунктуальность
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userCustomerReview.rating2"></rating-box>
+          </div>
+        </div>
+        <div class="form-option review-description">
+          <div class="form-option-name">
+            Адекватность
+          </div>
+          <div class="form-option-el">
+            <rating-box :ratingCount="task.userCustomerReview.rating3"></rating-box>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="comments">
       <div class="comments-top">
         Комментария
       </div>
-      <div class="comments-list" v-if="comments.length !== 0">
+      <div class="comments-list">
         <div class="error" v-if="comments.length === 0">Нет комментарий</div>
-        <div class="comment" v-for="(comment, index) of comments" :key="index">
-          <div class="user-photo"></div>
+        <div class="comment" v-else v-for="comment of comments" :key="comment.id">
+          <div 
+            class="user-photo"
+            :style="{
+              'background-image': `url(${comment.user.image})`,
+              'background-size':'cover'
+            }">
+          </div>
           <div class="comment-content">
             <div class="user-name">
               <router-link 
-                :to="{name:'userPage', params: {userId: 1}}"
-                class="user-name">Яковлев Андрей</router-link>
+                :to="{name:'userPage', params: {userId: comment.user.id}}"
+                class="user-name">{{comment.user.surname}} {{comment.user.name}}
+              </router-link>
+              <span class="customer" v-if="comment.user.id === task.userCustomer.id">
+                Заказчик
+              </span>
             </div>
             <div class="message">
-              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
-              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
-              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
-              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
-              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
-              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
-              Tnd dfds fsdf sdf sd fsd fdf dsfdsf
-              dfsdfadsfs sdf sds dsf sdfs dsf sdf df
+              {{comment.message}}
             </div>
             <div class="date-answer">
-              16 февраля 2018
+              {{new Date(comment.created).format('HH:MM - dd mmmm')}}
             </div>
           </div>
         </div>
       </div>
-      <div class="write-comment" v-if="isLogged">
+      <div class="write-comment" v-if="isLogged && task.isComment > 0 && task.finished === null">
         <div 
           class="user-photo"
           :style="{
             'background-image': `url(${userAuth.image})`,
             'background-size':'cover'
           }">
-          </div>
+        </div>
         <div class="write-content">
-          <textarea id="message" placeholder="Напишите комментарие..."></textarea>
-          <button class="send">Отправить</button>
+          <textarea id="message" v-model.trim="comment" placeholder="Напишите комментарий..."></textarea>
+          <button class="send" @click="sendComm">Отправить</button>
         </div>
       </div>
     </div>
@@ -465,6 +646,73 @@ export default {
     }
   }
 
+  .review {
+    @extend %box;
+    margin-bottom: 15px;
+
+    .review-top {
+      padding: 15px 20px;
+      border-bottom: 1px solid $clr-border;
+      background-color: $clr-tab-background;
+    }
+
+    .review-form {
+      padding: 15px 20px;
+
+      .form-option {
+        padding-bottom: 10px;
+
+        &:last-child {
+          padding-bottom: 0;
+        }
+
+        .form-option-name {
+          font-weight: 500;
+          padding-bottom: 5px;
+        }
+
+        .form-option-el {
+          input[type="text"],
+          textarea {
+            padding: 7px 14px;
+            border: 1px solid $clr-tb-border;
+            border-radius: 3px;
+            font-family: "Roboto";
+            box-sizing: border-box;
+          }
+
+          input[type="text"] {
+            width: 100px;
+          }
+
+          textarea {
+            resize: none;
+            width: 100%;
+          }
+
+          button {
+            cursor: pointer;
+            background-color: $clr-btn;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+              background-color: $clr-btn-hover;
+            }
+
+            &.request-sended {
+              @extend %button-green;
+              padding: 8px 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .comments {
     @extend %box;
     margin-bottom: 15px;
@@ -507,6 +755,12 @@ export default {
           .user-name {
             color: $clr-font-black;
             font-weight: 500;
+
+            .customer {
+              color: $clr-font-grey;
+              font-weight: 400;
+              margin-left: 5px;
+            }
           }
 
           .message {
@@ -516,6 +770,7 @@ export default {
           .date-answer {
             margin-top: 5px;
             color: $clr-font-grey;
+            font-size: 12px;
           }
         }
       }

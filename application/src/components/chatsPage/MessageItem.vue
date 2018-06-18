@@ -1,19 +1,56 @@
+<script>
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
+
+export default {
+  props: ["msg"],
+  data() {
+    return {
+      message: this.msg,
+      isSelected: false,
+    };
+  },
+  computed: {
+    ...mapState("chat", ["chatUsers"]),
+
+    user() {
+      const userId = this.message.userId;
+      return this.chatUsers.find(user => user.id === userId);
+    }
+  },
+  methods: {
+    select() {
+      this.isSelected = !this.isSelected;
+    }
+  }
+};
+</script>
+
+
 <template>
-	<div class="message-onetime">
-		<div class="photo"></div>
+  <div class="message-onetime">
+		<div 
+      :style = "{
+        'background-image': `url(${user.image})`,
+        'background-size': 'cover'
+      }"
+      class="photo">
+    </div>
 		<div class="container">
 			<div class="message-top">
 				<div class="name-time">
-					<span class="name">Сергей</span>
-					<span class="time">14:45</span>
+					<router-link :to="{name:'userPage', params: {userId: user.id}}" class="name">{{user.name}}</router-link>
+					<span class="time">{{new Date(message.created).format('HH:MM')}}</span>
 				</div>
 			</div>
-			<div class="message">
-				<div class="select"></div>
+			<div 
+        class="message"
+        :class="{selected: isSelected}"
+        @click="select">
+				<div class="select icon-select"></div>
 				<div class="is-read">
 					<div class="message-text">
-						Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст Обычный текст
-						<div class="insert">
+						{{message.text}} 
+						<div class="insert" v-if="message.insert">
 							<div class="insert-top">
 								<div class="insert-photo"></div>
 								<div class="name-time">
@@ -30,78 +67,18 @@
 						</div>
 					</div>
 					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
+						<span class="response icon-reply"></span>
+						<span class="favorite icon-star"></span>
 					</div>
 				</div>
 			</div>
-			<div class="message selected">
-				<div class="select"></div>
+			<div class="message selected" v-if="message.other">
+				<div class="select icon-select"></div>
 				<div class="is-read">
 					<div class="message-text">Тут будет много текста Тут будет много текста</div>
 					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message selected">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message selected">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message selected">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
-					</div>
-				</div>
-			</div>
-			<div class="message selected">
-				<div class="select"></div>
-				<div class="is-read">
-					<div class="message-text">Тут будет много текста Тут будет много текста</div>
-					<div class="items">
-						<span class="response"></span>
-						<span class="favorite"></span>
+						<span class="response icon-reply"></span>
+						<span class="favorite icon-star"></span>
 					</div>
 				</div>
 			</div>
@@ -110,16 +87,33 @@
 </template>
 
 <script>
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
+
 export default {
+  props: ["msg"],
+  data() {
+    return {
+      message: this.msg,
+      isSelected: false
+    };
+  },
+  computed: {
+    ...mapState("chat", ["chatUsers"]),
+
+    user() {
+      const userId = this.message.userId;
+      return this.chatUsers.find(user => user.id === userId);
+    }
+  },
   methods: {
-    Select: function() {
-			
-		}
+    select() {
+      this.isSelected = !this.isSelected;
+    }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $color-background: #f5f5f5;
 $color-border: #e3e4e8;
 $color-black: #444444;
@@ -128,12 +122,10 @@ $color-active: #f0f2f5;
 $color-message-selected: #edf0f5;
 $color-time: rgba(120, 126, 140, 0.6);
 
-//Выше глобальные цвета
-
 $message-top: 7px;
 $message-bottom: 7px;
 
-$select-wh: 16px; // Ширина и высота селекта
+$select-wh: 18px; // Ширина и высота селекта
 $photo-wh: 36px; // Ширина и высота фото
 
 $select-mt: $message-top + ($photo-wh/2) - ($select-wh/2);
@@ -141,7 +133,7 @@ $photo-ml: 5 + $select-wh + 10; // margin-left фото
 
 $message-minH: $message-top + $photo-wh + $message-bottom; // Когда только одно сообщение
 $message-text-ml: 5 + $photo-wh + 10;
-$message-top-left: 5 + $select-wh + 10 + $photo-wh + 10;
+$message-top-left: 5 + 16 + 10 + $photo-wh + 10;
 
 $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top контейнера
 
@@ -213,7 +205,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       .items {
         .response,
         .favorite {
-          
+          display: inline-block !important;
         }
       }
     }
@@ -256,6 +248,7 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
       .select {
         display: block;
+        color: #7293b6;
       }
     }
 
@@ -292,10 +285,10 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
       position: absolute;
       width: $select-wh;
       height: $select-wh;
-      border-radius: 50%;
-      background-color: #7293b6;
+      color: #99b0c6;
+      font-size: $select-wh;
       display: none;
-      margin: 10px 0 7px 5px; // 10px из за margin-bottom: 3px
+      margin: 9px 0 8px 5px; // 9px из за margin-bottom: 3px
       min-width: $select-wh;
     }
 
@@ -354,15 +347,22 @@ $container-mt: -($photo-wh + $message-top + $message-bottom); // margin-top ко
 
       .items {
         position: absolute;
-        right: 0;
+        right: 5px;
+        top: 7px;
 
         .response,
         .favorite {
-          display: inline-block;
-          width: 15px;
-          height: 15px;
-          background-color: transparent;
-          border-radius: 50%;
+          display: none;
+          width: 18px;
+          height: 18px;
+          color: rgb(163, 163, 163);
+          font-size: 18px;
+        }
+
+        .favorite {
+          font-size: 16px;
+          position: relative;
+          top: -1px;
         }
       }
     }

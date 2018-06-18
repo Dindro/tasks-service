@@ -1,6 +1,8 @@
 const Chat = require('../models/chat');
 const Task = require('../models/task');
 const Request = require('../models/request');
+const Message = require('../models/message');
+const User = require('../models/user');
 
 let api = {};
 
@@ -69,6 +71,76 @@ api.create = async (req, res) => {
 		}
 
 		res.status(200).json({ chatId });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// получить чаты
+api.getChats = async (req, res) => {
+	const userId = req.userId;
+
+	// проверка на авторизиацию
+	if (!userId) {
+		return res.status(400).json({
+			success: false,
+			message: 'Вы не авторизировались'
+		});
+	}
+
+	try {
+		let chats = [];
+		const myChats = await Chat.getChats({ userId });
+
+		// получим последние сообщения
+		// собеседников
+		const myChatsPrms = myChats.map(async (chat) => {
+			// получаем сам чат
+			const realChat = await Chat.getById({ chatId: chat.chatId })
+
+			// получаем последнее сообщение
+			const lastMessage = await Message.getLastMessage({ chatId: chat.chatId });
+
+			// получаем собеседников чата
+			let users = [];
+			const chatUsers = await Chat.getUsersByChatId({ chatId: chat.chatId });
+			const chatUsersPrms = chatUsers.map(async (chatUser) => {
+				// не получаем себя, а зачем второй раз
+				if (chatUser.userId !== userId) {
+					// получаем собеседника
+					const user = await User.getById({ userId: chatUser.userId });
+					users.push(user);
+				}
+			});
+
+			// ждем собеседников
+			for (const item of chatUsersPrms) {
+				await item;
+			}
+
+			chats.push({
+				...realChat,
+				lastMessage,
+				users
+			})
+		});
+
+		for (const item of myChatsPrms) {
+			await item;
+		}
+
+		chats = chats.sort((a, b) => {
+			if (a.lastMessage && b.lastMessage === undefined) {
+				return -1;
+			} else if (b.lastMessage && a.lastMessage === undefined) {
+				return 1;
+			}
+			else {
+				return a.lastMessage.created > b.lastMessage.created
+			}
+		})
+
+		res.status(200).json({ chats });
 	} catch (e) {
 		console.log(e);
 	}

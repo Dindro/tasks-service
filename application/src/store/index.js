@@ -1,13 +1,13 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
-import io from 'socket.io-client';
 import router from '../router';
 
 // модули
 import task from './modules/task';
 import request from './modules/request';
 import user from './modules/user';
+import chat from './modules/chat';
 
 // api
 import User from '../api/user';
@@ -26,7 +26,8 @@ const store = new Vuex.Store({
 	modules: {
 		task,
 		request,
-		user
+		user,
+		chat
 	},
 	state: {
 		userAuth: {},

@@ -189,11 +189,20 @@ api.get = async (req, res) => {
 
 		// получаем заказчика
 		const userCustomerPrm = User.getById({ userId: task.userCustomerId });
+		const userCustomerReviewPrm = Review.getByTaskIdAndUserId({
+			taskId: taskId,
+			userId: task.userCustomerId
+		});
 
 		// получаем исполнителя
 		let userPerformerPrm;
+		let userPerformerReviewPrm
 		if (task.userPerformerId !== null) {
 			userPerformerPrm = User.getById({ userId: task.userPerformerId });
+			userPerformerReviewPrm = Review.getByTaskIdAndUserId({
+				taskId: taskId,
+				userId: task.userPerformerId
+			});
 		}
 
 		// получаем количество новых заявок
@@ -208,8 +217,10 @@ api.get = async (req, res) => {
 		task.categoryName = category.name;
 		task.requestNotViewCount = await requestNotViewCountPrm;
 		task.userCustomer = await userCustomerPrm;
+		task.userCustomerReview = await userCustomerReviewPrm;
 		if (userCustomerPrm) {
 			task.userPerformer = await userPerformerPrm;
+			task.userPerformerReview = await userPerformerReviewPrm;
 		}
 
 		res.status(200).json({ task });
@@ -237,4 +248,37 @@ api.getCountByUserId = async (req, res) => {
 
 }
 
+// завершить задачу
+api.finish = async (req, res) => {
+	const { userId } = req;
+	const { taskId } = req.body;
+
+	// проверка на авторизацию
+	if (!userId) {
+		return res.status(400).json({
+			success: false,
+			message: 'Вы не авторизировались'
+		});
+	}
+
+	try {
+		const task = await Task.getById({ taskId });
+
+		// получаем исполнителя
+		const user = await User.getById({ userId });
+
+		if (user.id !== userId || task.started === null) {
+			return res.status(400).json({
+				success: false,
+				message: 'Ошибка'
+			});
+		}
+
+		await Task.finish({ taskId });
+
+		res.status(200).json({ success: true });
+	} catch (e) {
+		console.log(e);
+	}
+}
 module.exports = api;

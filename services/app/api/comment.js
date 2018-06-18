@@ -1,5 +1,6 @@
-const Task = require("../models/task");
-const Comment = require("../models/comment");
+const Task = require('../models/task');
+const Comment = require('../models/comment');
+const User = require('../models/user');
 
 let api = {};
 
@@ -51,6 +52,7 @@ api.create = async (req, res) => {
 	}
 };
 
+// получить комментария
 api.getComments = async (req, res) => {
 
 	let {
@@ -81,7 +83,16 @@ api.getComments = async (req, res) => {
 			taskId,
 		});
 
-		res.status(200).json({ success: true, commentInsertId });
+		const commentsPrms = comments.map(async (comment) => {
+			const user = await User.getById({ userId: comment.userId });
+			comment.user = user;
+		});
+
+		for (const item of commentsPrms) {
+			await item;
+		}
+
+		res.status(200).json({ success: true, comments });
 	} catch (error) {
 		console.log(error);
 	}

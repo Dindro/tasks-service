@@ -53,6 +53,12 @@ api.create = async (req, res) => {
 			rating3
 		});
 
+		// обновляем рейтинг пользователя
+		const updatingUserId = task.userCustomerId === userId ? task.userPerformerId : task.userCustomerId;
+		User.updateRatings({
+			userId: updatingUserId
+		});
+
 		// TODO: уведомлять заказчика или исполнителя
 
 		// подготовка данных

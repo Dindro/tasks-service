@@ -125,4 +125,39 @@ model.updateViews = async ({ userId, views }) => {
 	}
 };
 
+// подсчитываем рейтинг
+model.updateRatings = async ({ userId }) => {
+	let rating1 = 0;
+	let rating2 = 0;
+	let rating3 = 0;
+	const reviews = await Review.getReviews({ userId });
+	for (const item of reviews) {
+		rating1 += item.rating1;
+		rating2 += item.rating2;
+		rating3 += item.rating3;
+	}
+
+	const count = reviews.length;
+	if (count !== 0) {
+		rating1 = rating1 / count;
+		rating2 = rating2 / count;
+		rating3 = rating3 / count;
+	}
+
+	const query = `
+		UPDATE users SET 
+		rating1 = ${rating1},
+		rating2 = ${rating2},
+		rating3 = ${rating3}
+		WHERE 
+		id = ${userId};
+	`;
+	try {
+		const result = await db.getResult(query);
+		return result;
+	} catch (e) {
+		throw e;
+	}
+};
+
 module.exports = model;

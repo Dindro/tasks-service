@@ -2,7 +2,7 @@
 import RatingBox from "../elements/RatingBox";
 import ReviewsList from "./ReviewsList";
 
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 
 export default {
   props: ["userId"],
@@ -25,8 +25,10 @@ export default {
       "favoritesCount",
       "tasksCount",
       "tasks",
-      "statics",
+      "statics"
     ]),
+
+    ...mapGetters(["isLogged"]),
 
     rating() {
       let rating = (user.rating1 + user.rating2 + user.rating3) / 3;
@@ -155,6 +157,18 @@ export default {
   beforeDestroy() {
     window.removeEventListener("scroll", this.scroll);
     window.removeEventListener("resize", this.scroll);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.common({ type: "userId", value: to.params.userId });
+    this.getUser(to.params.userId);
+    this.getUserTasks();
+    this.updateViews(to.params.userId);
+    this.getFavorites();
+    this.getFavoritesCount();
+    this.getTasksCount();
+    this.getUserStatic();
+    this.getReviewsStatic();
+    next();
   }
 };
 </script>
@@ -171,20 +185,22 @@ export default {
               'background-size':'cover'
             }">
           </div>
-          <button class="send-message" v-if="!isMyPage">Отправить сообщение</button>
-          <button class="edit-profile" v-else>Редактировать профиль</button>
-          <button 
-            class="add-favorite" 
-            @click="addToFavotites" 
-            v-if="!isMyPage && !user.isFavorite">
-            Добавить в избранные
-          </button>
-          <button 
-            class="delete-favorite" 
-            @click="addToFavotites" 
-            v-if="!isMyPage && user.isFavorite">
-            Удалить из избранных
-          </button>
+          <template v-if="isLogged">
+            <button class="send-message" v-if="!isMyPage">Отправить сообщение</button>
+            <button class="edit-profile" v-else>Редактировать профиль</button>
+            <button 
+              class="add-favorite" 
+              @click="addToFavotites" 
+              v-if="!isMyPage && !user.isFavorite">
+              Добавить в избранные
+            </button>
+            <button 
+              class="delete-favorite" 
+              @click="addToFavotites" 
+              v-if="!isMyPage && user.isFavorite">
+              Удалить из избранных
+            </button>
+          </template> 
         </div>
         <div class="mini-box friends" v-if="favoritesCount !== 0">
           <div class="friends-top">

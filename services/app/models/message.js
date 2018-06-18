@@ -18,6 +18,40 @@ model.create = async ({ userId, chatId, text }) => {
 	}
 };
 
+model.getLastMessage = async ({ chatId }) => {
+	const query = `
+		SELECT * FROM
+		messages 
+		WHERE 
+		chatId = ${chatId} 
+		ORDER BY created DESC LIMIT 1
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result[0];
+	} catch (e) {
+		throw e;
+	}
+};
+
+model.getMessages = async ({ chatId }) => {
+	const query = `
+		SELECT * FROM
+		messages 
+		WHERE 
+		chatId = ${chatId} 
+		ORDER BY created ASC
+	;`;
+
+	try {
+		const result = await db.getResult(query);
+		return result;
+	} catch (e) {
+		throw e;
+	}
+};
+
 
 /*
 models.GetFromChat = async function (id_user, id_chat, viewFrom, views, limitMessages) {

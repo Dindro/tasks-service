@@ -1,12 +1,27 @@
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+  created() {}
+};
+</script>
+
 <template>
 	<div class="dinamic">
 		<router-view></router-view>
 		<div id="options">
 			<div class="options-content">
-				<span>Все сообщения df dfdfdfdf dfdfdf dsfdfdfdf</span>
-				<span class="active">Непрочитанные</span>
+				<router-link
+          class="active"
+          tag="span"
+          :to="{name:'chats'}">
+          Все сообщения
+        </router-link>
+				<span >Непрочитанные</span>
 				<span>Важные</span>
-				<div class="line"></div>
+				<!-- <div class="line"></div>
 				<span>Яковлев Андрей</span>
 				<span>Потрясилов Дмитрий</span>
 				<span>Доставить букет цветов</span>
@@ -37,16 +52,15 @@
 					<span>Все сообщения</span>
 					<span>Непрочитанные</span>
 					<span>Важные</span>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
-</script>
+<style lang="scss" scoped>
+@import "../../assets/colors.scss";
 
-<style lang="scss">
 $color-border: #e3e4e8;
 $color-black: #444444;
 
@@ -88,10 +102,17 @@ $color-black: #444444;
         white-space: nowrap; // Запрещаем перенос строк
         text-overflow: ellipsis; // Добавляем многоточие
         overflow: hidden;
+        cursor: pointer;
 
         &.active {
           background-color: #f0f2f5;
           font-weight: 500;
+          border-left: 2px solid $clr-blue;
+          padding-left: 18px;
+        }
+
+        &:hover {
+          background-color: #f0f2f5;
         }
       }
     }
@@ -108,7 +129,7 @@ $color-black: #444444;
         background-color: $color-border;
         border-radius: 10px;
 
-        &:hover{
+        &:hover {
           background-color: #d9dadd;
         }
       }

@@ -7,7 +7,7 @@ model.create = async (comment) => {
 			INSERT INTO comments SET 
 			userId = ${comment.userId},
 			taskId = ${comment.taskId},
-			message = '${comment.message}',
+			message = '${comment.message}'
 		;`;
 	try {
 		const result = await db.getResult(query);

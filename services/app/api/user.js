@@ -107,7 +107,9 @@ api.get = async (req, res) => {
 		}
 		else {
 			user = await User.getById({ userId });
-			if (user) {
+			
+			// узнать пользователя в избранном или нет
+			if (user && userAuthId) {
 				const favorite = await Favorite.getByUsers({
 					userAddedId: userAuthId,
 					userAddingId: userId
