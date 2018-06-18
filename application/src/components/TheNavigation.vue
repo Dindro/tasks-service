@@ -135,10 +135,10 @@ export default {
             <i class="icon-home"></i>
             Моя страница
           </router-link>
-          <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
+          <!-- <router-link :to="{name: 'requestsPage'}" v-if="isLogged">
             <i class="icon-people"></i>
             Избранные
-          </router-link>
+          </router-link> -->
           <router-link :to="{name:'chats'}"  v-if="isLogged">
             <i class="icon-markunread"></i>
             Сообщения
