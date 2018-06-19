@@ -1,6 +1,7 @@
 const Chat = require('../models/chat');
 const User = require('../models/user');
 const Message = require('../models/message');
+const Task = require('../models/task');
 const SocketApi = require('./socket');
 
 let api = {};
@@ -65,6 +66,12 @@ api.getMessages = async (req, res) => {
 	// TODO: сделать проверку на то что мой чат
 
 	try {
+		const chat = await Chat.getById({ chatId });
+		let task;
+		if (chat.taskId) {
+			task = await Task.getById({ taskId: chat.taskId })
+		}
+
 		const messages = await Message.getMessages({ chatId });
 
 		let users = [];
@@ -78,7 +85,7 @@ api.getMessages = async (req, res) => {
 			await item;
 		}
 
-		res.status(200).json({ users, messages });
+		res.status(200).json({ users, messages, task });
 	} catch (error) {
 		console.log(error);
 	}

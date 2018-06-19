@@ -14,7 +14,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("chat", ["chatUsers", "messages"]),
+    ...mapState("chat", ["chatUsers", "messages", "chats"]),
     ...mapGetters(["userAuth"]),
 
     styleMessageBottom() {
@@ -27,7 +27,13 @@ export default {
       const userAuthId = this.userAuth.id;
       const user = this.chatUsers.find(user => user.id !== userAuthId);
       return user;
+    },
+
+    chat() {
+      const chat = this.chats.find(c => c.id == this.chatId);
+      return chat;
     }
+
   },
   components: {
     MessageItem
@@ -112,14 +118,31 @@ export default {
         <router-link class="back" :to="{name: 'chats'}">назад</router-link>
         <div class="user">
           <div 
+            v-if="!chat.taskId"
             :style="{
               'background-image': `url(${user.image})`,
               'background-size':'cover'
             }"
-            class="photo"></div>
-          <router-link :to="{name: 'userPage', params: {userId: user.id}}" class="user-name">
+            class="photo">
+          </div>
+          <div 
+            v-else
+            :style="{
+              'background-image': `url(http://viteksoft.ru/wp-content/themes/generatepress/img/sch.png)`,
+              'background-size':'cover'
+            }"
+            class="photo">
+          </div>
+          <router-link 
+            v-if="!chat.taskId"
+            :to="{name: 'userPage', params: {userId: user.id}}" class="user-name">
             {{user.surname}} {{user.name}}
           </router-link>
+          <span
+            class="user-name"
+            v-else>
+            {{chat.name}}
+          </span>
         </div>
       </div>
 		</div>

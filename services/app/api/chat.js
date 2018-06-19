@@ -129,7 +129,7 @@ api.getChats = async (req, res) => {
 			await item;
 		}
 
-		chats = chats.sort((a, b) => {
+		/* chats = chats.sort((a, b) => {
 			if (a.lastMessage && b.lastMessage === undefined) {
 				return -1;
 			} else if (b.lastMessage && a.lastMessage === undefined) {
@@ -138,7 +138,7 @@ api.getChats = async (req, res) => {
 			else {
 				return a.lastMessage.created > b.lastMessage.created
 			}
-		})
+		}) */
 
 		res.status(200).json({ chats });
 	} catch (e) {
